@@ -1,8 +1,11 @@
-from typing import Generic, Optional, TypeVar
-from src.chronica.utils.pairview import PairView
+from typing import Generic, NamedTuple, TypeVar
 from dataclasses import dataclass
 
 T = TypeVar('T')
+
+class PairView(NamedTuple, Generic[T]):
+    first: T
+    second: T
 
 @dataclass
 class PairwiseWindow(Generic[T]):
@@ -16,15 +19,15 @@ class PairwiseWindow(Generic[T]):
     <i> assign_front(item) </i> allows you to assign/overwrite a value to the front of the window without changing the back.
     """
     
-    front: Optional[T] = None
-    back: Optional[T] = None
+    front: T | None = None
+    back: T | None = None
     
     # ex. [1, 2] -> slide_forward(3) -> [2, 3]
-    def slide_forward(self, item: Optional[T]):
+    def slide_forward(self, item: T | None):
         self.front = self.back
         self.back = item
         
-    def assign_front(self, item: Optional[T]):
+    def assign_front(self, item: T | None):
         self.front = item
         
     def size_non_none(self) -> int:
@@ -41,7 +44,7 @@ class PairwiseWindow(Generic[T]):
         self.back = None
     
     @property
-    def secured_full_snapshot(self) -> Optional[PairView[T]]:
+    def secured_full_snapshot(self) -> PairView[T] | None:
         """
         ### Standard method to access all elements in the window as a pair (Read Only). \n
 
@@ -53,7 +56,7 @@ class PairwiseWindow(Generic[T]):
         return PairView(first=self.front, second=self.back)
     
     @property
-    def appearance(self) -> PairView[Optional[T]]:
+    def appearance(self) -> PairView[T | None]:
         """
         ### Unsafe method to access all elements in the window as a pair (Read Only). \n
         You may get None values in the PairView if the window is not full.
@@ -61,7 +64,7 @@ class PairwiseWindow(Generic[T]):
         <i> ex. You just want to inspect the current state of the window regardless of whether it's full or not. </i>
 
         Returns:
-            _PairView[Optional[T]]_: A PairView containing the current appearance of the window, 
+            PairView[T | None]: A PairView containing the current appearance of the window,
             which may include None values if the window is not full.
         """
         return PairView(first=self.front, second=self.back)
