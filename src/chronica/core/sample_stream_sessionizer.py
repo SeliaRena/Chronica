@@ -4,7 +4,6 @@ from src.chronica.utils.pairwise_window import PairwiseWindow
 from src.chronica.domain.session import Session
 from enum import Enum, auto
 from dataclasses import dataclass
-from typing import Optional
 
 class SessionizerResultStatus(Enum):
     OP_SUCCESS = auto()
@@ -33,12 +32,12 @@ class SessionizerResult:
     # Header
     status: SessionizerResultStatus = SessionizerResultStatus.OP_SUCCESS
     events: tuple[SessionizerEvent, ...] = ()
-    error_type: Optional[SessionizerErrorType] = None
+    error_type: SessionizerErrorType | None = None
     performed_actions: tuple[SessionizerAction, ...] = ()
     # Body
-    session: Optional[Session] = None
+    session: Session | None = None
     # Misc
-    message: Optional[str] = None
+    message: str | None = None
 
 class SampleStreamSessionizer:
     def __init__(self):

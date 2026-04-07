@@ -1,7 +1,6 @@
 import src.chronica.utils.time_util as time_util
 import src.chronica.utils.foreground_context_util as foreground_context_util
 from enum import Enum, auto
-from typing import Optional
 from dataclasses import dataclass
 
 class SamplerState(Enum):
@@ -22,11 +21,11 @@ class SamplerResultStatus(Enum):
 @dataclass(frozen=True)
 class SamplerResult:
     emitted_ts_ms: int = time_util.get_current_unix_timestamp_ms()
-    sample: Optional[foreground_context_util.ForegroundContext] = None
+    sample: foreground_context_util.ForegroundContext | None = None
     state: SamplerState
-    event: Optional[SamplerEvent] = None
+    event: SamplerEvent | None = None
     status: SamplerResultStatus = SamplerResultStatus.SUCCESS
-    message: Optional[str] = None
+    message: str | None = None
 
 class ForegroundContextSampler:
     """
