@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
-from src.chronica.utils.chronosystem import ChronoScale, ChronoSpan
+from chronosystem import ChronoScale, ChronoSpan
 
 @dataclass(slots=True, frozen=True)
 class Session:
