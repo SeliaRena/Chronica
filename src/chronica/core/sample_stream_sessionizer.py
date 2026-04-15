@@ -42,14 +42,15 @@ class SessionizerResult:
 class SampleStreamSessionizer:
     def __init__(self):
         self.window = PairwiseWindow[ForegroundContext]()
+        self.session_id = 0
         
     def _snapshot_session_from_window(self) -> Session:
         if not self.window.is_full():
             raise ValueError("Cannot snapshot session from window that is not full.")
         
         old, new = self.window.secured_full_snapshot
-        
-        return Session(
+        session = Session(
+            id=str(self.session_id),
             start_ts_ms=old.acquired_ts_ms,
             end_ts_ms=new.acquired_ts_ms,
             app_name=old.exe_name,
@@ -57,6 +58,9 @@ class SampleStreamSessionizer:
             window_title=old.window_title
         )
         
+        self.session_id += 1
+        return session
+
     def consume(self, sampler_result: fcs.SamplerResult):
         # Filter 1: Rule out samples with non-success status
         if sampler_result.status != fcs.SamplerResultStatus.SUCCESS:
@@ -119,6 +123,7 @@ class SampleStreamSessionizer:
             terminal_session = self._snapshot_session_from_window()
             
             self.window.clear()
+            self.session_id = 0
             
             return SessionizerResult(
                 events=(
