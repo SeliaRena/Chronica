@@ -49,6 +49,7 @@ class ForegroundContextSampler:
             )
         self.state = SamplerState.SAMPLING
         return SamplerResult(
+            sample=foreground_context_util.get_foreground_context(),
             state=self.state,
             event=SamplerEvent.START_SAMPLING,
             message="Sampler started successfully."
