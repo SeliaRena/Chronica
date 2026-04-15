@@ -1,5 +1,5 @@
-from session import Session
-from session_history import SessionHistory
+from src.chronica.domain.session import Session
+from src.chronica.domain.session_history import SessionHistory
 
 class WindowUsageInfo:
     def __init__(self, window_title: str, 

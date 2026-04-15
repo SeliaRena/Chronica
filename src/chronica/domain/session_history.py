@@ -1,4 +1,4 @@
-from session import Session
+from src.chronica.domain.session import Session
 from datetime import datetime
 
 class SessionHistory:

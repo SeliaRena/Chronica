@@ -1,5 +1,5 @@
-from session import Session
-from app_usage_info import AppUsageInfo
+from src.chronica.domain.session import Session
+from src.chronica.domain.app_usage_info import AppUsageInfo
 
 class AppUsageReport:
     def __init__(self, app_usage_map: dict[str, AppUsageInfo] | None = None,
