@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 from pathlib import Path
 import psutil
@@ -14,7 +14,7 @@ class ForegroundContext:
     window_title: str
     exe: str
     exe_name: str
-    acquired_ts_ms: int = time_util.get_current_unix_timestamp_ms()
+    acquired_ts_ms: int = field(default_factory=time_util.get_current_unix_timestamp_ms)
     
 def same_window(ctx1: ForegroundContext, ctx2: ForegroundContext) -> bool:
     """

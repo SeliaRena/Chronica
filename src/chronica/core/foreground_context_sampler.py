@@ -1,7 +1,7 @@
 import src.chronica.utils.time_util as time_util
 import src.chronica.utils.foreground_context_util as foreground_context_util
 from enum import Enum, auto
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 class SamplerState(Enum):
     IDLE = auto()
@@ -21,7 +21,7 @@ class SamplerResultStatus(Enum):
 @dataclass(frozen=True)
 class SamplerResult:
     state: SamplerState
-    emitted_ts_ms: int = time_util.get_current_unix_timestamp_ms()
+    emitted_ts_ms: int = field(default_factory=time_util.get_current_unix_timestamp_ms)
     sample: foreground_context_util.ForegroundContext | None = None
     event: SamplerEvent | None = None
     status: SamplerResultStatus = SamplerResultStatus.SUCCESS
