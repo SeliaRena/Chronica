@@ -20,9 +20,9 @@ class SamplerResultStatus(Enum):
 
 @dataclass(frozen=True)
 class SamplerResult:
+    state: SamplerState
     emitted_ts_ms: int = time_util.get_current_unix_timestamp_ms()
     sample: foreground_context_util.ForegroundContext | None = None
-    state: SamplerState
     event: SamplerEvent | None = None
     status: SamplerResultStatus = SamplerResultStatus.SUCCESS
     message: str | None = None
