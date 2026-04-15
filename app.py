@@ -2,7 +2,7 @@ from src.chronica.application.engine.test_engine import TestEngine
 import time
 import json
 
-TEST_DURATION_SECONDS = 5
+TEST_DURATION_SECONDS = 60
 TICK_DURATION_S = 1
 
 def main():

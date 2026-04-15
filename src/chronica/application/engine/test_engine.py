@@ -1,5 +1,5 @@
 from src.chronica.core.foreground_context_sampler import ForegroundContextSampler as FCS
-from src.chronica.core.sample_stream_sessionizer import SampleStreamSessionizer as SSS, SessionizerResultStatus
+from src.chronica.core.sample_stream_sessionizer import SampleStreamSessionizer as SSS, SessionizerResultStatus, SessionizerEvent
 from src.chronica.domain.app_usage_report import AppUsageReport
 from src.chronica.domain.session_history import SessionHistory
 import json
@@ -29,16 +29,14 @@ class TestEngine:
         last = self.sss.consume(result)
         print(last)
         self.report.add_session(last.session)
-        self.history.add_session(last.session)
+        self.history.append(last.session)
         
     def tick(self):
         # Test SampleStreamSessionizer
         print("Tick SampleStreamSessionizer...")
         
         sessionizer_result = self.sss.consume(self.fcs.on_tick())
-        if sessionizer_result.status == SessionizerResultStatus.OP_FAILED:
-            print(sessionizer_result.message)
-        elif sessionizer_result.status == SessionizerResultStatus.OP_SUCCESS:
-            print(sessionizer_result)
+        print(sessionizer_result)
+        if SessionizerEvent.SESSION_EMITTED == sessionizer_result.events:
             self.report.add_session(sessionizer_result.session)
-            self.history.add_session(sessionizer_result.session)
+            self.history.append(sessionizer_result.session)
