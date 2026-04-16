@@ -36,7 +36,8 @@ class TestEngine:
         print("Tick SampleStreamSessionizer...")
         
         sessionizer_result = self.sss.consume(self.fcs.on_tick())
-        print(sessionizer_result)
-        if SessionizerEvent.SESSION_EMITTED == sessionizer_result.events:
+        if sessionizer_result.status != SessionizerResultStatus.OP_IGNORED:
+            print(sessionizer_result)
+        if SessionizerEvent.SESSION_EMITTED in sessionizer_result.events:
             self.report.add_session(sessionizer_result.session)
             self.history.append(sessionizer_result.session)
