@@ -33,8 +33,8 @@ class Session:
     def to_debug_dict(self) -> dict:
         return {
             "id": self.id,
-            "start_ts_ms": self.start_datetime,
-            "end_ts_ms": self.end_datetime,
+            "start_ts_ms": datetime.isoformat(self.start_datetime),
+            "end_ts_ms": datetime.isoformat(self.end_datetime),
             "app_name": self.app_name,
             "app_path": self.app_path,
             "window_title": self.window_title,
