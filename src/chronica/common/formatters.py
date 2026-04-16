@@ -3,13 +3,13 @@ from src.chronica.domain.chronosystem import ChronoScale, CascadedChronoSpanForm
 DIGITAL_CLOCK: CascadedChronoSpanFormatter = CascadedChronoSpanFormatterBuilder() \
     .with_patterns({
         ChronoScale.WEEK: "$[value].pad(1, 0)",
-        ChronoScale.DAY: "$[value].pad(1, 0)",
-        ChronoScale.HOUR: "$[value].pad(2, 0)",
-        ChronoScale.MINUTE: "$[value].pad(2, 0)",
-        ChronoScale.SECOND: "$[value].pad(2, 0)",
-        ChronoScale.MILLISECOND: "$[value].pad(3, 0)"
+        ChronoScale.DAY: ":$[value].pad(1, 0)",
+        ChronoScale.HOUR: ":$[value].pad(2, 0)",
+        ChronoScale.MINUTE: ":$[value].pad(2, 0)",
+        ChronoScale.SECOND: ":$[value].pad(2, 0)",
+        ChronoScale.MILLISECOND: ".$[value].pad(3, 0)"
     }) \
-    .with_separator(":") \
+    .with_separator("") \
     .build()
     
 HUMAN_READABLE: CascadedChronoSpanFormatter = CascadedChronoSpanFormatterBuilder() \
