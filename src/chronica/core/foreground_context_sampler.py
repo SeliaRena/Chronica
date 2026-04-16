@@ -1,7 +1,7 @@
 import src.chronica.utils.time_util as time_util
 import src.chronica.utils.foreground_context_util as foreground_context_util
 from enum import Enum, auto
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 
 class SamplerState(Enum):
     IDLE = auto()
@@ -26,6 +26,16 @@ class SamplerResult:
     event: SamplerEvent | None = None
     status: SamplerResultStatus = SamplerResultStatus.SUCCESS
     message: str | None = None
+    
+    def to_debug_dict(self) -> dict:
+        return {
+            "state": self.state.name,
+            "emitted_ts_ms": self.emitted_ts_ms,
+            "sample": asdict(self.sample) if self.sample else None,
+            "event": self.event.name if self.event else None,
+            "status": self.status.name,
+            "message": self.message
+        }
 
 class ForegroundContextSampler:
     """

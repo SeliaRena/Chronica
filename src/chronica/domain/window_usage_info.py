@@ -1,5 +1,7 @@
 from src.chronica.domain.session import Session
 from src.chronica.domain.session_history import SessionHistory
+from src.chronica.domain.chronosystem import CascadedChronoSpan
+from src.chronica.common.formatters import HUMAN_READABLE
 
 class WindowUsageInfo:
     def __init__(self, window_title: str, 
@@ -30,3 +32,10 @@ class WindowUsageInfo:
             return None
         
         return max(self.session_history.chronological_sessions, key=lambda s: s.duration)
+    
+    def to_debug_dict(self) -> dict:
+        return {
+            "window_title": self.window_title,
+            "total_usage_time_ms": HUMAN_READABLE[CascadedChronoSpan.from_total_ms(self.total_usage_time_ms)],
+            "session_history": self.session_history.to_debug_list()
+        }

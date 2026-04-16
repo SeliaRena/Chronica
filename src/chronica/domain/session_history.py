@@ -34,3 +34,6 @@ class SessionHistory:
     @property
     def is_empty(self) -> bool:
         return not self.chronological_sessions
+    
+    def to_debug_list(self) -> list[str]:
+        return [session.to_debug_line() for session in self.chronological_sessions]

@@ -38,6 +38,16 @@ class SessionizerResult:
     session: Session | None = None
     # Misc
     message: str | None = None
+    
+    def to_debug_dict(self) -> dict:
+        return {
+            "status": self.status.name,
+            "events": [event.name for event in self.events],
+            "error_type": self.error_type.name if self.error_type else None,
+            "performed_actions": [action.name for action in self.performed_actions],
+            "session": self.session.to_debug_dict() if self.session else None,
+            "message": self.message
+        }
 
 class SampleStreamSessionizer:
     def __init__(self):
