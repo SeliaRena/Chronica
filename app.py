@@ -1,21 +1,17 @@
-from src.chronica.application.engine.test_engine import TestEngine
 from src.chronica.application.engine.clockheart_engine import ClockheartEngine
+from src.chronica.infra.logging.logging_config import setup_runtime_logger
+from src.chronica.infra.report.report_writer import write_report
 import time
-import json
 import logging
 
-def configure_logging() -> None:
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format="[%(asctime)s] | [%(levelname)s] | in [%(name)s]: %(message)s",
-    )
 logger = logging.getLogger(__name__)
 
 TEST_DURATION_SECONDS = 120
 TICK_DURATION_S = 1
 
 def main():
-    configure_logging()
+    setup_runtime_logger()
+    
     logger.info("----- Starting Chronica Clockheart Engine Execution -----")
     engine = ClockheartEngine()
     engine.start()
@@ -26,7 +22,8 @@ def main():
         nowtime += TICK_DURATION_S
     engine.stop()
     logger.info("----- Chronica Clockheart Engine Execution Finished -----")
-    logger.info(engine.debug_dump)
+    
+    write_report(engine.debug_dump)
 
 if __name__ == "__main__":
     main()
