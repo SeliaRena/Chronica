@@ -102,3 +102,4 @@ class ClockheartEngine:
             
         if sessionizer_result.status != SessionizerResultStatus.OP_IGNORED:
             logger.debug("Engine.tick Sessionizer result: %s", to_pretty_json(sessionizer_result.to_debug_dict()))
+            logger.debug("Engine.tick Sampler result: %s", to_pretty_json(sampler_result.to_debug_dict()))

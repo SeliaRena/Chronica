@@ -65,7 +65,7 @@ class SampleStreamSessionizer:
             end_ts_ms=new.acquired_ts_ms,
             app_name=old.exe_name,
             app_path=old.exe,
-            window_title=old.window_title
+            window_title=old.normalized_window_title
         )
         
         self.session_id += 1

@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from src.chronica.common.errors import ForegroundContextAquisitionError
 from src.chronica.utils.time_util import get_current_unix_timestamp_ms
+from src.chronica.core.window_title_normalizer import DEFAULT_NORMALIZER
 import psutil
 import win32gui
 import win32process
@@ -11,7 +12,8 @@ import win32process
 class ForegroundContext:
     hwnd: int
     pid: int
-    window_title: str
+    raw_window_title: str
+    normalized_window_title: str
     exe: str
     exe_name: str
     acquired_ts_ms: int = field(default_factory=get_current_unix_timestamp_ms)
@@ -28,7 +30,7 @@ def same_window(ctx1: ForegroundContext, ctx2: ForegroundContext) -> bool:
     Returns:
         bool: True if both contexts belong to the same window of the same application, False otherwise
     """
-    return ctx1.exe_name == ctx2.exe_name and ctx1.window_title == ctx2.window_title
+    return ctx1.exe_name == ctx2.exe_name and ctx1.normalized_window_title == ctx2.normalized_window_title
     
 def get_foreground_context() -> ForegroundContext:
     try:
@@ -36,9 +38,10 @@ def get_foreground_context() -> ForegroundContext:
         _, pid = win32process.GetWindowThreadProcessId(hwnd)
         process = psutil.Process(pid)
         title = win32gui.GetWindowText(hwnd)
+        normalized_title = DEFAULT_NORMALIZER.normalize(title)
         exe = process.exe()
-        exe_name = Path(exe).name
+        exe_name = Path(exe).stem
         
-        return ForegroundContext(hwnd=hwnd, pid=pid, window_title=title, exe=exe, exe_name=exe_name)
+        return ForegroundContext(hwnd=hwnd, pid=pid, raw_window_title=title, normalized_window_title=normalized_title, exe=exe, exe_name=exe_name)
     except Exception as e:
         raise ForegroundContextAquisitionError(f"Failed to acquire current foreground context: {e}") from e
