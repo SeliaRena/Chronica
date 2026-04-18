@@ -1,5 +1,6 @@
-import src.chronica.utils.time_util as time_util
-import src.chronica.utils.foreground_context_util as foreground_context_util
+from src.chronica.utils.time_util import get_current_unix_timestamp_ms
+from src.chronica.utils.foreground_context_util import ForegroundContext, get_foreground_context
+from src.chronica.common.errors import ForegroundContextError
 from enum import Enum, auto
 from dataclasses import dataclass, field, asdict
 
@@ -21,10 +22,11 @@ class SamplerResultStatus(Enum):
 @dataclass(frozen=True)
 class SamplerResult:
     state: SamplerState
-    emitted_ts_ms: int = field(default_factory=time_util.get_current_unix_timestamp_ms)
-    sample: foreground_context_util.ForegroundContext | None = None
+    emitted_ts_ms: int = field(default_factory=get_current_unix_timestamp_ms)
+    sample: ForegroundContext | None = None
     event: SamplerEvent | None = None
     status: SamplerResultStatus = SamplerResultStatus.SUCCESS
+    error_class: str | None = None
     message: str | None = None
     
     def to_debug_dict(self) -> dict:
@@ -34,6 +36,7 @@ class SamplerResult:
             "sample": asdict(self.sample) if self.sample else None,
             "event": self.event.name if self.event else None,
             "status": self.status.name,
+            "error_class": self.error_class,
             "message": self.message
         }
 
@@ -43,13 +46,27 @@ class ForegroundContextSampler:
     
     A sample is taken on each tick when the sampler is in the SAMPLING state and the sampling frequency is determined
     by the tick frequency of the qTimer in the main application. \n
-    
-    <i><b> context_data </b></i> is left here for extension, it can be used to store sampled context data if needed.
     """
     
     def __init__(self):
         self.state = SamplerState.IDLE
-        self.context_data = None # left here for extension, can be used to store sampled context data
+        
+    def _try_acquire_sample(self, *, event: SamplerEvent | None = None, success_message: str | None = None) -> SamplerResult:
+        try:
+            sample = get_foreground_context()
+            return SamplerResult(
+                state=self.state,
+                sample=sample,
+                event=event,
+                message=success_message
+            )
+        except ForegroundContextError as e:
+            return SamplerResult(
+                state=self.state,
+                status=SamplerResultStatus.EXTERNAL_ERROR,
+                error_class=type(e).__name__,
+                message=f"Failed to acquire foreground context sample: {e}"
+            )
         
     def start_sampling(self) -> SamplerResult:
         if self.state == SamplerState.SAMPLING:
@@ -58,11 +75,9 @@ class ForegroundContextSampler:
                 status=SamplerResultStatus.ERROR_ALREADY_RUNNING
             )
         self.state = SamplerState.SAMPLING
-        return SamplerResult(
-            sample=foreground_context_util.get_foreground_context(),
-            state=self.state,
+        return self._try_acquire_sample(
             event=SamplerEvent.START_SAMPLING,
-            message="Sampler started successfully."
+            success_message="Sampler started successfully and emitted an initial sample."
         )
             
     def stop_sampling(self) -> SamplerResult:
@@ -72,11 +87,9 @@ class ForegroundContextSampler:
                 status=SamplerResultStatus.ERROR_ALREADY_STOPPED
             )
         self.state = SamplerState.IDLE
-        return SamplerResult(
-            sample=foreground_context_util.get_foreground_context(),
-            state=self.state,
+        return self._try_acquire_sample(
             event=SamplerEvent.STOP_SAMPLING,
-            message="Sampler stopped successfully. Sent a terminal sample of the foreground context at the time of stopping."
+            success_message="Sampler stopped successfully and emitted a terminal sample."
         )
             
     def on_tick(self) -> SamplerResult:
@@ -86,10 +99,5 @@ class ForegroundContextSampler:
                 status=SamplerResultStatus.ERROR_SAMPLING_FAILED,
                 message="Tried to sample while in IDLE state."
             )
-        sample = foreground_context_util.get_foreground_context()
-        return SamplerResult(
-            sample=sample,
-            state=self.state
-        )
-    
-    pass
+            
+        return self._try_acquire_sample()

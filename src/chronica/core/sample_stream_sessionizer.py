@@ -130,7 +130,15 @@ class SampleStreamSessionizer:
             self.window.slide_forward(sampler_result.sample)
             
             # Take a snapshot (build a session) from the window before clearing it.
-            terminal_session = self._snapshot_session_from_window()
+            try:
+                terminal_session = self._snapshot_session_from_window()
+            except ValueError as e:
+                return SessionizerResult(
+                    status=SessionizerResultStatus.OP_FAILED,
+                    events=(SessionizerEvent.STREAM_INTERRUPTED,),
+                    error_type=SessionizerErrorType.EXCEPTION_RAISED,
+                    message=f"Internal sessionizer exception: {e}"
+                )
             
             self.window.clear()
             self.session_id = 0
@@ -160,7 +168,15 @@ class SampleStreamSessionizer:
             # So roll the window to take the new sample to be the latest.
             self.window.slide_forward(sampler_result.sample)
             
-            session = self._snapshot_session_from_window()
+            try:
+                session = self._snapshot_session_from_window()
+            except ValueError as e:
+                return SessionizerResult(
+                    status=SessionizerResultStatus.OP_FAILED,
+                    events=(SessionizerEvent.STREAM_INTERRUPTED,),
+                    error_type=SessionizerErrorType.EXCEPTION_RAISED,
+                    message=f"Internal sessionizer exception: {e}"
+                )
             
             return SessionizerResult(
                 events=(SessionizerEvent.SESSION_EMITTED,),
