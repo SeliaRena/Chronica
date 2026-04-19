@@ -2,7 +2,7 @@ import re
 from enum import Enum, auto
 from collections.abc import Iterable, Callable
 
-_TRANSIENT_NOTIFICATION_TAG_REGEX = re.compile(r'(?:\s*[\(\[]\d+\+?[\)\]])+')
+_TRANSIENT_NOTIFICATION_TAG_REGEX = re.compile(r'(?:\s*[\(\[](?:\d{1,3}(?:,\d{3})*|\d+)\+?[\)\]])+\s*')
 
 class TransientMarkerType(Enum):
     NOTIFICATION_TAG = auto()
