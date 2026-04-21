@@ -23,3 +23,16 @@ HUMAN_READABLE: CascadedChronoSpanFormatter = CascadedChronoSpanFormatterBuilder
     }) \
     .with_separator(", ") \
     .build()
+    
+SIMPLISTIC: CascadedChronoSpanFormatter = CascadedChronoSpanFormatterBuilder() \
+    .with_patterns({
+        ChronoScale.WEEK: "$[value]w",
+        ChronoScale.DAY: "$[value]d",
+        ChronoScale.HOUR: "$[value]h",
+        ChronoScale.MINUTE: "$[value]m",
+        ChronoScale.SECOND: "$[value]s",
+        ChronoScale.MILLISECOND: "$[value]ms"
+    }) \
+    .with_separator(" ") \
+    .with_excluded_scale(ChronoScale.MILLISECOND) \
+    .build()
