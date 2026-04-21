@@ -9,11 +9,12 @@ from src.chronica.common.formatters import DIGITAL_CLOCK
 from src.chronica.utils.json_util import to_pretty_json
 from dataclasses import dataclass
 from datetime import datetime
+from enum import IntEnum
 import logging
 
 logger = logging.getLogger(__name__)
 
-class TickIntervalOption:
+class TickIntervalOption(IntEnum):
     MS_500 = 500
     MS_1000 = 1000
 
@@ -32,12 +33,12 @@ class UISnapshot:
     recent_sessions: tuple[Session, ...]
 
 class ClockheartEngine:
-    def __init__(self, tick_interval: int = TickIntervalOption.MS_1000):
+    def __init__(self, tick_interval: TickIntervalOption = TickIntervalOption.MS_1000):
         self._ticking = False
         self._sampler = ForegroundContextSampler()
         self._sessionizer = SampleStreamSessionizer()
-        self.tick_interval = tick_interval
-        self.ideal_passed_time_ms = 0
+        self.tick_interval = int(tick_interval)
+        self.ideal_elapsed_time_ms = 0
         self.report = AppUsageReport()
         self.history = SessionHistory()
     
@@ -49,9 +50,9 @@ class ClockheartEngine:
     @property
     def ui_snapshot(self) -> UISnapshot:
         return UISnapshot(
-            tracked_time=self.ideal_passed_time_ms,
-            current_app=self._sampler.latest_sample.exe_name,
-            current_window=self._sampler.latest_sample.normalized_window_title,
+            tracked_time=self.ideal_elapsed_time_ms,
+            current_app=self._sampler.latest_sample.exe_name if self._sampler.latest_sample else "N/A",
+            current_window=self._sampler.latest_sample.normalized_window_title if self._sampler.latest_sample else "N/A",
             last_app=self.history.latest.app_name if not self.history.is_empty else "N/A",
             last_window=self.history.latest.window_title if not self.history.is_empty else "N/A",
             last_observed_duration=self.history.latest.duration if not self.history.is_empty else 0,
@@ -75,7 +76,7 @@ class ClockheartEngine:
 
     def start(self):
         logger.info("Starting Clockheart Engine")
-        self.ideal_passed_time_ms = 0
+        self.ideal_elapsed_time_ms = 0
         
         sampler_result = self._sampler.start_sampling()
         if sampler_result.status != SamplerResultStatus.SUCCESS:
@@ -123,7 +124,7 @@ class ClockheartEngine:
         if not self._ticking:
             self._ticking = True
             logger.info("Clockheart Engine ticking phase started")
-        self.ideal_passed_time_ms += self.tick_interval
+        self.ideal_elapsed_time_ms += self.tick_interval
         
         sampler_result = self._sampler.on_tick()
         if sampler_result.status != SamplerResultStatus.SUCCESS:
