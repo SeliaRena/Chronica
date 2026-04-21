@@ -17,8 +17,7 @@ from PySide6.QtWidgets import (
 )
 
 from src.chronica.domain.session import Session
-from src.chronica.common.formatters import SIMPLISTIC
-from src.chronica.domain.chronosystem import CascadedChronoSpan
+from src.chronica.ui.presentation.time_format import simplistic_simplified_ms
 
 class DashboardPanel(QFrame):
     def __init__(self, parent: QWidget | None = None) -> None:
@@ -234,7 +233,7 @@ class DashboardPanel(QFrame):
                 self.recent_sessions_table.setItem(row, 0, QTableWidgetItem(session.start_datetime.isoformat()))
                 self.recent_sessions_table.setItem(row, 1, QTableWidgetItem(session.app_name))
                 self.recent_sessions_table.setItem(row, 2, QTableWidgetItem(session.window_title))
-                self.recent_sessions_table.setItem(row, 3, QTableWidgetItem(SIMPLISTIC[CascadedChronoSpan.from_total_ms(session.duration)]))
+                self.recent_sessions_table.setItem(row, 3, QTableWidgetItem(simplistic_simplified_ms(session.duration)))
             else:
                 # Clear remaining rows
                 for col in range(4):

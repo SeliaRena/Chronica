@@ -3,8 +3,7 @@ from __future__ import annotations
 from PySide6.QtCore import QTimer
 
 from src.chronica.application.engine.clockheart_engine import ClockheartEngine
-from src.chronica.common.formatters import SIMPLISTIC
-from src.chronica.domain.chronosystem import CascadedChronoSpan
+from src.chronica.ui.presentation.time_format import simplistic_simplified_ms
 from src.chronica.ui.main_window import ChronicaMainWindow
 
 class RuntimeController:
@@ -42,9 +41,6 @@ class RuntimeController:
         self.window.control_bar.set_status_hint("Tracking stopped.")
 
         self.refresh_ui()
-        
-    def _ui_format_time(self, total_ms: int) -> str:
-        return SIMPLISTIC[CascadedChronoSpan.from_total_ms(total_ms)] if total_ms >= 1000 else "<1s"
 
     def refresh_ui(self) -> None:
         snapshot = self.engine.ui_snapshot
@@ -54,9 +50,9 @@ class RuntimeController:
         dashboard.set_current_window(snapshot.current_window)
         dashboard.set_last_external_app(snapshot.last_app)
         dashboard.set_last_external_window(snapshot.last_window)
-        dashboard.set_last_observed_duration(self._ui_format_time(snapshot.last_observed_duration))
-        dashboard.set_last_observed_at(snapshot.last_app_switch_at.isoformat())
-        dashboard.set_tracked_time(self._ui_format_time(snapshot.tracked_time))
+        dashboard.set_last_observed_duration(simplistic_simplified_ms(snapshot.last_observed_duration))
+        dashboard.set_last_observed_at(snapshot.last_app_switch_at.strftime("%Y-%m-%d %H:%M:%S"))
+        dashboard.set_tracked_time(simplistic_simplified_ms(snapshot.tracked_time))
         dashboard.set_sessions_emitted(str(snapshot.sessions_emitted))
         dashboard.set_unique_apps(str(snapshot.unique_apps_observed))
         dashboard.refresh_recent_sessions(snapshot.recent_sessions)
