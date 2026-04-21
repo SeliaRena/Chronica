@@ -50,6 +50,7 @@ class ForegroundContextSampler:
     
     def __init__(self):
         self.state = SamplerState.IDLE
+        self.latest_sample: ForegroundContext | None = None
         
     def _try_acquire_sample(self, *, event: SamplerEvent | None = None, success_message: str | None = None) -> SamplerResult:
         try:
@@ -75,10 +76,13 @@ class ForegroundContextSampler:
                 status=SamplerResultStatus.ERROR_ALREADY_RUNNING
             )
         self.state = SamplerState.SAMPLING
-        return self._try_acquire_sample(
+        
+        initial_result = self._try_acquire_sample(
             event=SamplerEvent.START_SAMPLING,
             success_message="Sampler started successfully and emitted an initial sample."
         )
+        self.latest_sample = initial_result.sample
+        return initial_result
             
     def stop_sampling(self) -> SamplerResult:
         if self.state == SamplerState.IDLE:
@@ -87,10 +91,13 @@ class ForegroundContextSampler:
                 status=SamplerResultStatus.ERROR_ALREADY_STOPPED
             )
         self.state = SamplerState.IDLE
-        return self._try_acquire_sample(
+        
+        terminal_result = self._try_acquire_sample(
             event=SamplerEvent.STOP_SAMPLING,
             success_message="Sampler stopped successfully and emitted a terminal sample."
         )
+        self.latest_sample = terminal_result.sample
+        return terminal_result
             
     def on_tick(self) -> SamplerResult:
         if self.state == SamplerState.IDLE:
@@ -100,4 +107,6 @@ class ForegroundContextSampler:
                 message="Tried to sample while in IDLE state."
             )
             
-        return self._try_acquire_sample()
+        result = self._try_acquire_sample()
+        self.latest_sample = result.sample
+        return result
