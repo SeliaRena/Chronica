@@ -59,6 +59,7 @@ class RuntimeController:
         
         top_apps = snapshot.top_apps
         dashboard.set_top_app(top_apps[0][0] if len(top_apps) > 0 else "N/A")
+        dashboard.refresh_top_apps(top_apps)
 
     def timer_event(self) -> None:
         self.engine.tick()

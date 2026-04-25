@@ -2,7 +2,7 @@ from src.chronica.application.engine.clockheart_engine import ClockheartEngine
 from src.chronica.infra.logging.logging_config import setup_runtime_logger
 from src.chronica.infra.report.report_writer import write_report
 from src.chronica.ui.main_window import ChronicaMainWindow
-from src.chronica.ui.controller.runtime_controller import RuntimeController
+from src.chronica.ui.controllers.runtime_controller import RuntimeController
 from PySide6.QtWidgets import QApplication
 import time
 import logging
