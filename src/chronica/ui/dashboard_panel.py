@@ -17,6 +17,8 @@ from PySide6.QtWidgets import (
 )
 
 from src.chronica.domain.session import Session
+from src.chronica.domain.app_usage_info import AppUsageInfo
+from src.chronica.ui.style_loader import load_stylesheet
 from src.chronica.ui.presentation.time_format import simplistic_simplified_ms
 
 class DashboardPanel(QFrame):
@@ -25,7 +27,7 @@ class DashboardPanel(QFrame):
         self.setObjectName("dashboardPanel")
 
         root_layout = QVBoxLayout(self)
-        root_layout.setContentsMargins(0, 0, 0, 0)
+        root_layout.setContentsMargins(12, 12, 12, 12)
         root_layout.setSpacing(12)
 
         self.observation_card = self._build_observation_card()
@@ -36,35 +38,7 @@ class DashboardPanel(QFrame):
         root_layout.addWidget(self.summary_cards)
         root_layout.addLayout(bottom_row, 1)
         
-        self.setStyleSheet(
-            """
-            QFrame#dashboardPanel,
-            QFrame#observationCard,
-            QFrame#recentSessionsPanel,
-            QFrame#topAppsPanel,
-            QFrame#statCard {
-                background-color: #1d2129;
-                border: 1px solid #2b3240;
-                border-radius: 12px;
-            }
-
-            QListWidget, QTableWidget {
-                background-color: #1b1f27;
-                border: 1px solid #2b3240;
-                border-radius: 10px;
-            }
-
-            QHeaderView::section {
-                background-color: #222834;
-                border: none;
-                padding: 6px;
-            }
-
-            QLabel {
-                color: #e8ecf1;
-            }
-            """
-        )
+        self.setStyleSheet(load_stylesheet("dashboard_panel"))
 
     def _build_observation_card(self) -> QFrame:
         card = QFrame()
@@ -153,9 +127,17 @@ class DashboardPanel(QFrame):
         title.setFont(title_font)
 
         self.recent_sessions_table = QTableWidget(5, 4)
+        self.recent_sessions_table.setObjectName("recentSessionsTable")
+        self.recent_sessions_table.setEnabled(False)
         self.recent_sessions_table.setHorizontalHeaderLabels(
             ["Start", "App", "Title", "Duration"]
         )
+        
+        table_wrapper = QFrame()
+        table_wrapper.setObjectName("tableWrapper")
+        wrapper_layout = QVBoxLayout(table_wrapper)
+        wrapper_layout.setContentsMargins(5, 5, 5, 5)
+        wrapper_layout.addWidget(self.recent_sessions_table, 1)
 
         header = self.recent_sessions_table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
@@ -164,7 +146,7 @@ class DashboardPanel(QFrame):
         header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
 
         layout.addWidget(title)
-        layout.addWidget(self.recent_sessions_table, 1)
+        layout.addWidget(table_wrapper, 1)
 
         return panel
 
@@ -191,9 +173,15 @@ class DashboardPanel(QFrame):
                 "Explorer — 3s",
             ]
         )
+        
+        list_wrapper = QFrame()
+        list_wrapper.setObjectName("listWrapper")
+        wrapper_layout = QVBoxLayout(list_wrapper)
+        wrapper_layout.setContentsMargins(5, 5, 5, 5)
+        wrapper_layout.addWidget(self.top_apps_list, 1)
 
         layout.addWidget(title)
-        layout.addWidget(self.top_apps_list, 1)
+        layout.addWidget(list_wrapper, 1)
 
         return panel
 
@@ -206,6 +194,9 @@ class DashboardPanel(QFrame):
         layout.setSpacing(4)
 
         label = QLabel(label_text)
+        label_font = QFont()
+        label_font.setItalic(True)
+        label.setFont(label_font)
 
         value_font = QFont()
         value_font.setPointSize(14)
@@ -230,7 +221,7 @@ class DashboardPanel(QFrame):
         for row in range(5):
             if row < len(recent_sessions):
                 session = recent_sessions[row]
-                self.recent_sessions_table.setItem(row, 0, QTableWidgetItem(session.start_datetime.isoformat()))
+                self.recent_sessions_table.setItem(row, 0, QTableWidgetItem(session.start_datetime.strftime("%Y-%m-%d %H:%M:%S")))
                 self.recent_sessions_table.setItem(row, 1, QTableWidgetItem(session.app_name))
                 self.recent_sessions_table.setItem(row, 2, QTableWidgetItem(session.window_title))
                 self.recent_sessions_table.setItem(row, 3, QTableWidgetItem(simplistic_simplified_ms(session.duration)))
@@ -238,6 +229,12 @@ class DashboardPanel(QFrame):
                 # Clear remaining rows
                 for col in range(4):
                     self.recent_sessions_table.setItem(row, col, QTableWidgetItem(""))
+                    
+    def refresh_top_apps(self, top_apps: tuple[tuple[str, AppUsageInfo], ...]) -> None:
+        self.top_apps_list.clear()
+        for app_name, app_info in top_apps:
+            item_text = f"{app_name} — {simplistic_simplified_ms(app_info.total_usage_time_ms)}"
+            self.top_apps_list.addItem(QListWidgetItem(item_text))
 
     def set_current_app(self, text: str) -> None:
         self.current_app_value.setText(text)
