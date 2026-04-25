@@ -3,7 +3,6 @@ from __future__ import annotations
 from PySide6.QtCore import QObject, QTimer, Signal
 from PySide6.QtWidgets import QLabel
 
-
 class TypewriterController(QObject):
     """
     Controls a typewriter text effect for a QLabel.

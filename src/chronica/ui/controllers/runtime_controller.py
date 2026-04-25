@@ -3,8 +3,8 @@ from __future__ import annotations
 from PySide6.QtCore import QTimer
 
 from src.chronica.application.engine.clockheart_engine import ClockheartEngine
-from src.chronica.ui.presentation.time_format import simplistic_simplified_ms
-from src.chronica.ui.main_window import ChronicaMainWindow
+from src.chronica.ui.data_display.time_format import simplistic_simplified_ms
+from src.chronica.ui.widgets.main_window import ChronicaMainWindow
 
 class RuntimeController:
     def __init__(self, window: ChronicaMainWindow, engine: ClockheartEngine):

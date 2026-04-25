@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from src.chronica.ui.style_loader import load_stylesheet
+from src.chronica.ui.styles.style_loader import load_stylesheet
 from src.chronica.ui.controllers.typewriter_controller import TypewriterController
 
 _TYPEWRITER_DELAY = 10

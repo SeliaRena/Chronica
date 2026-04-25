@@ -18,8 +18,8 @@ from PySide6.QtWidgets import (
 
 from src.chronica.domain.session import Session
 from src.chronica.domain.app_usage_info import AppUsageInfo
-from src.chronica.ui.style_loader import load_stylesheet
-from src.chronica.ui.presentation.time_format import simplistic_simplified_ms
+from src.chronica.ui.styles.style_loader import load_stylesheet
+from src.chronica.ui.data_display.time_format import simplistic_simplified_ms
 
 class DashboardPanel(QFrame):
     def __init__(self, parent: QWidget | None = None) -> None:
