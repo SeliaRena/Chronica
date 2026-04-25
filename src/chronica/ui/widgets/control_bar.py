@@ -11,6 +11,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.chronica.ui.styles.style_loader import load_stylesheet
+
 class ControlBar(QFrame):
     dashboard_requested = Signal()
     sessions_requested = Signal()
@@ -31,6 +33,7 @@ class ControlBar(QFrame):
         root_layout.setSpacing(12)
 
         title = QLabel("Chronica")
+        title.setObjectName("controlBarTitle")
         title_font = QFont()
         title_font.setPointSize(15)
         title_font.setBold(True)
@@ -72,7 +75,7 @@ class ControlBar(QFrame):
         root_layout.addStretch()
 
         self._connect_internal_signals()
-        self._apply_styles()
+        self.setStyleSheet(load_stylesheet("control_bar"))
 
     def _connect_internal_signals(self) -> None:
         self.dashboard_button.clicked.connect(self.dashboard_requested.emit)
@@ -111,42 +114,3 @@ class ControlBar(QFrame):
             button.style().unpolish(button)
             button.style().polish(button)
             button.update()
-
-    def _apply_styles(self) -> None:
-        self.setStyleSheet(
-            """
-            QFrame#controlBar {
-                background-color: #1d2129;
-                border: 1px solid #2b3240;
-                border-radius: 12px;
-            }
-
-            QLabel {
-                color: #e8ecf1;
-            }
-
-            QPushButton {
-                background-color: #2b3240;
-                color: #e8ecf1;
-                border: 1px solid #3a4457;
-                border-radius: 8px;
-                padding: 10px 12px;
-                text-align: left;
-            }
-
-            QPushButton:hover {
-                background-color: #364055;
-            }
-
-            QPushButton:disabled {
-                background-color: #22262f;
-                color: #8b93a3;
-            }
-
-            QPushButton[active="true"] {
-                background-color: #46546f;
-                border: 1px solid #64748b;
-                font-weight: bold;
-            }
-            """
-        )
