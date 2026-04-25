@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
 
 from src.chronica.ui.styles.style_loader import load_stylesheet
 from src.chronica.ui.controllers.typewriter_controller import TypewriterController
+from src.chronica.characters.chronica.dialogues import random_pick_dialogue, Scenario
 
 _TYPEWRITER_DELAY = 10
 
@@ -52,7 +53,7 @@ class DialoguePanel(QFrame):
         self.text_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
 
         self.typewriter = TypewriterController(self.text_label, _TYPEWRITER_DELAY)
-        self.set_dialogue("Chronica", "Welcome to Chronica, this is a test message, you're very lucky to see this in early stage development.")
+        self.set_dialogue("Chronica", random_pick_dialogue(Scenario.BOOTUP))
 
         text_layout.addWidget(self.channel_label)
         text_layout.addWidget(self.speaker_label)

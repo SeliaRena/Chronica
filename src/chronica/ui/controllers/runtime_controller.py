@@ -5,6 +5,7 @@ from PySide6.QtCore import QTimer
 from src.chronica.application.engine.clockheart_engine import ClockheartEngine
 from src.chronica.ui.data_display.time_format import simplistic_simplified_ms
 from src.chronica.ui.widgets.main_window import ChronicaMainWindow
+from src.chronica.characters.chronica.dialogues import random_pick_dialogue, Scenario
 
 class RuntimeController:
     def __init__(self, window: ChronicaMainWindow, engine: ClockheartEngine):
@@ -30,6 +31,7 @@ class RuntimeController:
 
         self.window.control_bar.set_tracking_running()
         self.window.control_bar.set_status_hint("Tracking is active.")
+        self.window.dialogue.set_dialogue("Chronica", random_pick_dialogue(Scenario.START_TRACKING))
 
         self.refresh_ui()
 
@@ -39,6 +41,7 @@ class RuntimeController:
 
         self.window.control_bar.set_tracking_idle()
         self.window.control_bar.set_status_hint("Tracking stopped.")
+        self.window.dialogue.set_dialogue("Chronica", random_pick_dialogue(Scenario.STOP_TRACKING))
 
         self.refresh_ui()
 
