@@ -10,7 +10,9 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from src.chronica.common.resource_locator import ResourceLocator
 from src.chronica.ui.styles.style_loader import load_stylesheet
+from src.chronica.ui.resources.font_loader import load_font
 from src.chronica.ui.controllers.typewriter_controller import TypewriterController
 from src.chronica.characters.chronica.dialogues import random_pick_dialogue, Scenario
 
@@ -51,6 +53,9 @@ class DialoguePanel(QFrame):
         self.text_label.setObjectName("dialogueText")
         self.text_label.setWordWrap(True)
         self.text_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+        
+        text_label_font = load_font(ResourceLocator.character_asset("chronica", "fonts", "VCR_OSD_MONO_1.001.ttf"))
+        self.text_label.setFont(text_label_font)
 
         self.typewriter = TypewriterController(self.text_label, _TYPEWRITER_DELAY)
         self.set_dialogue("Chronica", random_pick_dialogue(Scenario.BOOTUP))

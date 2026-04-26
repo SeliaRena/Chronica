@@ -22,13 +22,13 @@ QLabel#dialogueChannel {
 
 QLabel#dialogueSpeaker {
     color: #4FD1C5;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: bold;
 }
 
 QLabel#dialogueText {
     color: #E8ECF1;
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.4;
     background-color: #1D2129;
     border: 1px solid #3A4457;
