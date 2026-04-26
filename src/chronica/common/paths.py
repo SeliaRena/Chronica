@@ -12,3 +12,6 @@ UI_DIR = PACKAGE_BASE / "ui"
 
 # UI subdirectories
 STYLES_DIR = UI_DIR / "styles"
+
+# Characters subdirectories
+CHARACTERS_DIR = PACKAGE_BASE / "characters"
