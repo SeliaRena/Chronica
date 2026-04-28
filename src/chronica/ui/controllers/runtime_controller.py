@@ -4,7 +4,7 @@ from PySide6.QtCore import QTimer
 
 from src.chronica.application.engine.clockheart_engine import ClockheartEngine
 from src.chronica.ui.data_display.time_format import simplistic_simplified_ms
-from src.chronica.ui.widgets.main_window import ChronicaMainWindow
+from src.chronica.ui.pages.main_window import ChronicaMainWindow
 from src.chronica.characters.chronica.dialogues import random_pick_dialogue, Scenario
 
 class RuntimeController:

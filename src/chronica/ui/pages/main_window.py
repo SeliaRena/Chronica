@@ -10,9 +10,9 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from src.chronica.ui.widgets.dashboard_panel import DashboardPanel
-from src.chronica.ui.widgets.control_bar import ControlBar
-from src.chronica.ui.widgets.dialogue_panel import DialoguePanel
+from src.chronica.ui.pages.dashboard_panel import DashboardPanel
+from src.chronica.ui.pages.control_bar import ControlBar
+from src.chronica.ui.pages.dialogue_panel import DialoguePanel
 from src.chronica.ui.styles.style_loader import load_stylesheet
 
 class ChronicaMainWindow(QMainWindow):
