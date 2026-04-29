@@ -1,5 +1,6 @@
 from src.chronica.core.foreground_context_sampler import ForegroundContextSampler, SamplerResultStatus, SamplerResult
 from src.chronica.core.sample_stream_sessionizer import SampleStreamSessionizer, SessionizerEvent, SessionizerResultStatus
+from src.chronica.domain.tracking_record import TrackingRecord
 from src.chronica.domain.app_usage_report import AppUsageReport
 from src.chronica.domain.app_usage_info import AppUsageInfo
 from src.chronica.domain.session_history import SessionHistory
@@ -7,6 +8,7 @@ from src.chronica.domain.chronosystem import CascadedChronoSpan, CascadingType
 from src.chronica.domain.session import Session
 from src.chronica.common.formatters import DIGITAL_CLOCK
 from src.chronica.utils.json_util import to_pretty_json
+from src.chronica.utils.time_util import get_current_unix_timestamp_ms
 from dataclasses import dataclass
 from datetime import datetime
 from enum import IntEnum
@@ -41,7 +43,18 @@ class ClockheartEngine:
         self.ideal_elapsed_time_ms = 0
         self.report = AppUsageReport()
         self.history = SessionHistory()
-    
+
+    @property
+    def temp_record_source(self) -> TrackingRecord:
+        return TrackingRecord(
+            title=f"Record at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+            generated_at_ts_ms=get_current_unix_timestamp_ms(),
+            start_ts_ms=self.history.oldest.start_ts_ms,
+            end_ts_ms=self.history.latest.end_ts_ms,
+            app_usage_report=self.report,
+            session_history=self.history
+        )
+
     @property
     def current_cycle_duration(self) -> str:
         duration = self.history.latest.end_ts_ms - self.history.oldest.start_ts_ms

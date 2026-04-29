@@ -8,9 +8,11 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QVBoxLayout,
     QWidget,
+    QStackedWidget
 )
 
 from src.chronica.ui.pages.dashboard_panel import DashboardPanel
+from src.chronica.ui.pages.tracking_archive_panel import TrackingArchivePanel
 from src.chronica.ui.pages.control_bar import ControlBar
 from src.chronica.ui.pages.dialogue_panel import DialoguePanel
 from src.chronica.ui.styles.style_loader import load_stylesheet
@@ -39,15 +41,32 @@ class ChronicaMainWindow(QMainWindow):
         left_layout.setContentsMargins(0, 0, 0, 0)
         left_layout.setSpacing(12)
 
-        # 4. three main sections: dashboard, dialogue panel, control bar
+        # 4. pages integration
         self.dashboard = DashboardPanel()
+        self.tracking_archive = TrackingArchivePanel()
+        
+        self.main_section_stack = QStackedWidget()
+        self.main_section_stack.addWidget(self.dashboard)
+        self.main_section_stack.addWidget(self.tracking_archive)
+        
         self.dialogue = DialoguePanel()
         self.control_bar = ControlBar()
 
+        self.control_bar.sessions_requested.connect(self.switch_to_tracking_archive)
+        self.control_bar.dashboard_requested.connect(self.switch_to_dashboard)
+
         # 5. left side vertical arrangement
-        left_layout.addWidget(self.dashboard, 5)
+        left_layout.addWidget(self.main_section_stack, 5)
         left_layout.addWidget(self.dialogue, 2)
 
         # 6. outer horizontal arrangement
         root_layout.addWidget(left_container, 5)
         root_layout.addWidget(self.control_bar, 1)
+
+    def switch_to_dashboard(self) -> None:
+        self.control_bar.set_active_nav("dashboard")
+        self.main_section_stack.setCurrentWidget(self.dashboard)
+
+    def switch_to_tracking_archive(self) -> None:
+        self.control_bar.set_active_nav("sessions")
+        self.main_section_stack.setCurrentWidget(self.tracking_archive)

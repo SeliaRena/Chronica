@@ -1,0 +1,20 @@
+QFrame#trackingRecordSelector {
+    background-color: #1D2129;
+    border: none;
+    border-radius: 10px;
+}
+
+QListWidget#selectorListWidget {
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+}
+
+QFrame#selectorListWrapper {
+    border: 1px solid #C084FC;
+    border-radius: 5px;
+}
+
+QLabel#titleLabel {
+    color: #4FD1C5;
+}

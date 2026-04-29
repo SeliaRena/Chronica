@@ -1,0 +1,5 @@
+QFrame#trackingArchivePanel {
+    background-color: #171B22;
+    border: 1px solid #38BDF8;
+    border-radius: 12px;
+}

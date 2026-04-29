@@ -1,0 +1,22 @@
+QFrame#appUsageReportPanel {
+    background-color: #1D2129;
+    border: none;
+    border-radius: 12px;
+}
+
+QWidget#treeWrapper {
+    border: 1px solid #C084FC;
+    border-radius: 5px;
+}
+
+QTreeWidget {
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+}
+
+QHeaderView::section {
+    background-color: #171B22;
+    border: none;
+    padding: 6px;
+}

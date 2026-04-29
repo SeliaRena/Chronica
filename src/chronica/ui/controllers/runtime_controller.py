@@ -43,6 +43,9 @@ class RuntimeController:
         self.window.control_bar.set_status_hint("Tracking stopped.")
         self.window.dialogue.set_dialogue("Chronica", random_pick_dialogue(Scenario.STOP_TRACKING))
 
+        record_selector = self.window.tracking_archive.tracking_record_selector
+        record_selector.add_tracking_record_item(self.engine.temp_record_source)
+
         self.refresh_ui()
 
     def refresh_ui(self) -> None:

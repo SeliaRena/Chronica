@@ -54,7 +54,7 @@ class ControlBar(QFrame):
         root_layout.addSpacing(10)
 
         self.dashboard_button = QPushButton("Dashboard")
-        self.sessions_button = QPushButton("Sessions")
+        self.sessions_button = QPushButton("Tracking Archive")
         self.reports_button = QPushButton("Reports")
         self.settings_button = QPushButton("Settings")
 
