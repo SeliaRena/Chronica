@@ -52,7 +52,7 @@ class ChronicaMainWindow(QMainWindow):
         self.dialogue = DialoguePanel()
         self.control_bar = ControlBar()
 
-        self.control_bar.sessions_requested.connect(self.switch_to_tracking_archive)
+        self.control_bar.tracking_archive_requested.connect(self.switch_to_tracking_archive)
         self.control_bar.dashboard_requested.connect(self.switch_to_dashboard)
 
         # 5. left side vertical arrangement
@@ -68,5 +68,5 @@ class ChronicaMainWindow(QMainWindow):
         self.main_section_stack.setCurrentWidget(self.dashboard)
 
     def switch_to_tracking_archive(self) -> None:
-        self.control_bar.set_active_nav("sessions")
+        self.control_bar.set_active_nav("tracking archive")
         self.main_section_stack.setCurrentWidget(self.tracking_archive)

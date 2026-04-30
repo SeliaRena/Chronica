@@ -15,8 +15,7 @@ from src.chronica.ui.styles.style_loader import load_stylesheet
 
 class ControlBar(QFrame):
     dashboard_requested = Signal()
-    sessions_requested = Signal()
-    reports_requested = Signal()
+    tracking_archive_requested = Signal()
     settings_requested = Signal()
 
     start_requested = Signal()
@@ -54,13 +53,11 @@ class ControlBar(QFrame):
         root_layout.addSpacing(10)
 
         self.dashboard_button = QPushButton("Dashboard")
-        self.sessions_button = QPushButton("Tracking Archive")
-        self.reports_button = QPushButton("Reports")
+        self.tracking_archive_button = QPushButton("Tracking Archive")
         self.settings_button = QPushButton("Settings")
 
         root_layout.addWidget(self.dashboard_button)
-        root_layout.addWidget(self.sessions_button)
-        root_layout.addWidget(self.reports_button)
+        root_layout.addWidget(self.tracking_archive_button)
         root_layout.addWidget(self.settings_button)
 
         root_layout.addSpacing(16)
@@ -79,8 +76,7 @@ class ControlBar(QFrame):
 
     def _connect_internal_signals(self) -> None:
         self.dashboard_button.clicked.connect(self.dashboard_requested.emit)
-        self.sessions_button.clicked.connect(self.sessions_requested.emit)
-        self.reports_button.clicked.connect(self.reports_requested.emit)
+        self.tracking_archive_button.clicked.connect(self.tracking_archive_requested.emit)
         self.settings_button.clicked.connect(self.settings_requested.emit)
 
         self.start_button.clicked.connect(self.start_requested.emit)
@@ -104,8 +100,7 @@ class ControlBar(QFrame):
     def set_active_nav(self, page_name: str) -> None:
         buttons = {
             "dashboard": self.dashboard_button,
-            "sessions": self.sessions_button,
-            "reports": self.reports_button,
+            "tracking archive": self.tracking_archive_button,
             "settings": self.settings_button,
         }
 
