@@ -5,9 +5,11 @@ from src.chronica.common.formatters import HUMAN_READABLE
 
 class AppUsageInfo:
     def __init__(self, app_name: str,
+                 app_path: str,
                  window_usage_map: dict[str, WindowUsageInfo] | None = None,
                  total_usage_time_ms: int = 0) -> None:
         self.app_name: str = app_name
+        self.app_path: str = app_path
         self.window_usage_map: dict[str, WindowUsageInfo] = window_usage_map if window_usage_map is not None else {}
         self.total_usage_time_ms: int = total_usage_time_ms
     

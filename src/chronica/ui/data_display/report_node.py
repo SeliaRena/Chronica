@@ -41,7 +41,7 @@ def app_usage_report_to_report_node(app_usage_report: AppUsageReport) -> ReportN
             children=tuple(ReportNode(
                 name=app_usage_info.app_name,
                 duration=simplistic_simplified_ms(app_usage_info.total_usage_time_ms),
-                detail=f"path: {tuple(app_usage_info.window_usage_map.values())[0].session_history.latest.app_path}",
+                detail=f"path: {app_usage_info.app_path}",
                 children=tuple(
                     window_usage_info_to_report_node(window_usage_info) for window_usage_info in app_usage_info.window_usage_map.values()
                 )

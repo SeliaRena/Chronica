@@ -11,7 +11,7 @@ class AppUsageReport:
     
     def add_session(self, session: Session) -> None:
         if session.app_name not in self.app_usage_map:
-            self.app_usage_map[session.app_name] = AppUsageInfo(session.app_name)
+            self.app_usage_map[session.app_name] = AppUsageInfo(session.app_name, session.app_path)
         
         self.app_usage_map[session.app_name].add_session(session)
         self.total_usage_time_ms += session.duration
