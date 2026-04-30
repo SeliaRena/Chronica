@@ -13,10 +13,10 @@ from src.chronica.domain.app_usage_report import AppUsageReport
 from src.chronica.ui.styles.style_loader import load_stylesheet
 from src.chronica.ui.data_display.report_node import ReportNode, app_usage_report_to_report_node
 
-class AppUsageReportPanel(QFrame):
+class TrackingRecordViewer(QFrame):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName("appUsageReportPanel")
+        self.setObjectName("trackingRecordViewer")
         
         layout = QVBoxLayout(self)
         layout.setContentsMargins(16, 16, 16, 16)
@@ -43,7 +43,7 @@ class AppUsageReportPanel(QFrame):
         
         layout.addWidget(tree_wrapper)
         
-        self.setStyleSheet(load_stylesheet("app_usage_report_panel"))
+        self.setStyleSheet(load_stylesheet("tracking_record_viewer"))
 
     def _make_tree_item(self, node: ReportNode) -> QTreeWidgetItem:
         item = QTreeWidgetItem([node.name, node.duration, node.detail])

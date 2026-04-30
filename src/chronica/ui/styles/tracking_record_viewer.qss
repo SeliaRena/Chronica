@@ -1,4 +1,4 @@
-QFrame#appUsageReportPanel {
+QFrame#trackingRecordViewer {
     background-color: #1D2129;
     border: none;
     border-radius: 12px;

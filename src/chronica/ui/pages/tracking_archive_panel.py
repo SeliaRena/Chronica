@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
 
 from src.chronica.ui.widgets.tracking_record_selector import TrackingRecordSelector
 from src.chronica.ui.widgets.tracking_record_item_widget import TrackingRecordItemWidget
-from src.chronica.ui.widgets.app_usage_report_panel import AppUsageReportPanel
+from src.chronica.ui.widgets.tracking_record_viewer import TrackingRecordViewer
 from src.chronica.ui.styles.style_loader import load_stylesheet
 
 class TrackingArchivePanel(QFrame):
@@ -22,23 +22,23 @@ class TrackingArchivePanel(QFrame):
         
         self.tracking_record_selector = TrackingRecordSelector()
         self.tracking_record_selector.list_widget.currentItemChanged.connect(self._on_current_record_changed)
-        self.app_usage_report_panel = AppUsageReportPanel()
+        self.tracking_record_viewer = TrackingRecordViewer()
 
         layout.addWidget(self.tracking_record_selector, 1)
-        layout.addWidget(self.app_usage_report_panel, 3)
+        layout.addWidget(self.tracking_record_viewer, 3)
         
         self.setStyleSheet(load_stylesheet("tracking_archive_panel"))
         
     def _on_current_record_changed(self, current: QListWidgetItem | None, previous: QListWidgetItem | None):
         if current is None:
-            self.app_usage_report_panel.tree_widget.clear()
+            self.tracking_record_viewer.tree_widget.clear()
             return
 
         widget = self.tracking_record_selector.list_widget.itemWidget(current)
 
         if not isinstance(widget, TrackingRecordItemWidget):
-            self.app_usage_report_panel.tree_widget.clear()
+            self.tracking_record_viewer.tree_widget.clear()
             return
         
         record = widget.tracking_record
-        self.app_usage_report_panel.set_report(record.app_usage_report)
+        self.tracking_record_viewer.set_report(record.app_usage_report)
