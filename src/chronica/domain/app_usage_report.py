@@ -1,7 +1,5 @@
 from src.chronica.domain.session import Session
 from src.chronica.domain.app_usage_info import AppUsageInfo
-from src.chronica.domain.chronosystem import CascadedChronoSpan
-from src.chronica.common.formatters import HUMAN_READABLE
 
 class AppUsageReport:
     def __init__(self, app_usage_map: dict[str, AppUsageInfo] | None = None,
@@ -18,6 +16,6 @@ class AppUsageReport:
         
     def to_debug_dict(self) -> dict:
         return {
-            "total_usage_time_ms": HUMAN_READABLE[CascadedChronoSpan.from_total_ms(self.total_usage_time_ms)],
+            "total_usage_time_ms": self.total_usage_time_ms,
             "app_usage_map": {app_name: info.to_debug_dict() for app_name, info in self.app_usage_map.items()}
         }
