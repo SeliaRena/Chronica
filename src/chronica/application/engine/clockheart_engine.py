@@ -8,10 +8,10 @@ from src.chronica.domain.chronosystem import CascadedChronoSpan, CascadingType
 from src.chronica.domain.session import Session
 from src.chronica.common.formatters import DIGITAL_CLOCK
 from src.chronica.utils.json_util import to_pretty_json
-from src.chronica.utils.time_util import get_current_unix_timestamp_ms
 from dataclasses import dataclass
 from datetime import datetime
 from enum import IntEnum
+import src.chronica.common.timestamp as timestamp
 import logging
 
 logger = logging.getLogger(__name__)
@@ -48,7 +48,7 @@ class ClockheartEngine:
     def temp_record_source(self) -> TrackingRecord:
         return TrackingRecord(
             title=f"Record at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-            generated_at_ts_ms=get_current_unix_timestamp_ms(),
+            generated_at_ts_ms=timestamp.now_ts_ms(),
             start_ts_ms=self.history.oldest.start_ts_ms,
             end_ts_ms=self.history.latest.end_ts_ms,
             app_usage_report=self.report,

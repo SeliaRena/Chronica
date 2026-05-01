@@ -2,11 +2,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 from src.chronica.common.errors import ForegroundContextAquisitionError
-from src.chronica.utils.time_util import get_current_unix_timestamp_ms
 from src.chronica.core.window_title_normalizer import DEFAULT_NORMALIZER
 import psutil
 import win32gui
 import win32process
+import src.chronica.common.timestamp as timestamp
 
 @dataclass(frozen=True)
 class ForegroundContext:
@@ -16,7 +16,7 @@ class ForegroundContext:
     normalized_window_title: str
     exe: str
     exe_name: str
-    acquired_ts_ms: int = field(default_factory=get_current_unix_timestamp_ms)
+    acquired_ts_ms: int = field(default_factory=timestamp.now_ts_ms)
     
 def same_window(ctx1: ForegroundContext, ctx2: ForegroundContext) -> bool:
     """

@@ -1,8 +1,8 @@
-from src.chronica.utils.time_util import get_current_unix_timestamp_ms
 from src.chronica.utils.foreground_context_util import ForegroundContext, get_foreground_context
 from src.chronica.common.errors import ForegroundContextError
 from enum import Enum, auto
 from dataclasses import dataclass, field, asdict
+import src.chronica.common.timestamp as timestamp
 
 class SamplerState(Enum):
     IDLE = auto()
@@ -22,7 +22,7 @@ class SamplerResultStatus(Enum):
 @dataclass(frozen=True)
 class SamplerResult:
     state: SamplerState
-    emitted_ts_ms: int = field(default_factory=get_current_unix_timestamp_ms)
+    emitted_ts_ms: int = field(default_factory=timestamp.now_ts_ms)
     sample: ForegroundContext | None = None
     event: SamplerEvent | None = None
     status: SamplerResultStatus = SamplerResultStatus.SUCCESS
