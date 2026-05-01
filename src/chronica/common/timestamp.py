@@ -33,3 +33,13 @@ class TimestampContext:
             dt = dt.astimezone(self.timezone)
 
         return int(dt.timestamp() * 1000)
+    
+class TimestampContextProvider:
+    def __init__(self, ts_ctx: TimestampContext | None = None) -> None:
+        self._ts_ctx = ts_ctx or TimestampContext.from_local_timezone()
+        
+    def get(self):
+        return self._ts_ctx
+    
+    def set(self, ts_ctx: TimestampContext):
+        self._ts_ctx = ts_ctx

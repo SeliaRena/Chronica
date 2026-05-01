@@ -20,15 +20,15 @@ class TickIntervalOption(IntEnum):
     MS_500 = 500
     MS_1000 = 1000
 
-@dataclass(frozen=True)
-class UISnapshot:
-    tracked_time: int
+@dataclass(frozen=True, slots=True)
+class EngineSnapshot:
+    ideal_elapsed_time_ms: int
     current_app: str
     current_window: str
     last_app: str
     last_window: str
     last_observed_duration: int
-    last_app_switch_at: datetime
+    last_app_switch_at_ts_ms: int
     sessions_emitted: int
     unique_apps_observed: int
     top_apps: tuple[tuple[str, AppUsageInfo], ...]
@@ -36,11 +36,11 @@ class UISnapshot:
 
 class ClockheartEngine:
     def __init__(self, tick_interval: TickIntervalOption = TickIntervalOption.MS_1000):
-        self._ticking = False
+        self._ticking: bool = False
         self._sampler = ForegroundContextSampler()
         self._sessionizer = SampleStreamSessionizer()
         self.tick_interval = int(tick_interval)
-        self.ideal_elapsed_time_ms = 0
+        self.ideal_elapsed_time_ms: int = 0
         self.report = AppUsageReport()
         self.history = SessionHistory()
 
@@ -61,15 +61,15 @@ class ClockheartEngine:
         return DIGITAL_CLOCK[CascadedChronoSpan.from_total_ms(duration).transform(CascadingType.FULL_PADDED)]
     
     @property
-    def ui_snapshot(self) -> UISnapshot:
-        return UISnapshot(
-            tracked_time=self.ideal_elapsed_time_ms,
+    def snapshot(self) -> EngineSnapshot:
+        return EngineSnapshot(
+            ideal_elapsed_time_ms=self.ideal_elapsed_time_ms,
             current_app=self._sampler.latest_sample.exe_name if self._sampler.latest_sample else "N/A",
             current_window=self._sampler.latest_sample.normalized_window_title if self._sampler.latest_sample else "N/A",
             last_app=self.history.latest.app_name if not self.history.is_empty else "N/A",
             last_window=self.history.latest.window_title if not self.history.is_empty else "N/A",
             last_observed_duration=self.history.latest.duration if not self.history.is_empty else 0,
-            last_app_switch_at=self.history.latest.end_datetime if not self.history.is_empty else datetime.min,
+            last_app_switch_at_ts_ms=self.history.latest.end_ts_ms if not self.history.is_empty else 0,
             sessions_emitted=len(self.history),
             unique_apps_observed=len(self.report.app_usage_map),
             top_apps=tuple(sorted(self.report.app_usage_map.items(), key=lambda app: app[1].total_usage_time_ms, reverse=True)[:5]),

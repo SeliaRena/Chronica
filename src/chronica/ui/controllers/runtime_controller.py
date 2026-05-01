@@ -3,14 +3,19 @@ from __future__ import annotations
 from PySide6.QtCore import QTimer
 
 from src.chronica.application.engine.clockheart_engine import ClockheartEngine
-from src.chronica.ui.data_display.time_format import simplistic_simplified_ms
+from src.chronica.ui.data_display.display_models import TrackingRecordDisplay
+from src.chronica.ui.data_display.engine_snapshot_displays import DashboardSnapshot
+from src.chronica.ui.data_display.engine_result_interpreter import EngineResultInterpreter
 from src.chronica.ui.pages.main_window import ChronicaMainWindow
+from src.chronica.common.timestamp import TimestampContext
 from src.chronica.characters.chronica.dialogues import random_pick_dialogue, Scenario
 
 class RuntimeController:
     def __init__(self, window: ChronicaMainWindow, engine: ClockheartEngine):
         self.window = window
         self.engine = engine
+        self.app_ctx = self.window.app_ctx
+        self.interpreter = EngineResultInterpreter(self.app_ctx.ts_ctx_provider)
         
         self.timer = QTimer()
         self.timer.setInterval(self.engine.tick_interval)
@@ -44,21 +49,23 @@ class RuntimeController:
         self.window.dialogue.set_dialogue("Chronica", random_pick_dialogue(Scenario.STOP_TRACKING))
 
         record_selector = self.window.tracking_archive.tracking_record_selector
-        record_selector.add_tracking_record_item(self.engine.temp_record_source)
+        record_selector.add_tracking_record_item(
+            TrackingRecordDisplay.from_tracking_record(self.engine.temp_record_source, self.app_ctx.ts_ctx_provider.get())
+        )
 
         self.refresh_ui()
 
     def refresh_ui(self) -> None:
-        snapshot = self.engine.ui_snapshot
+        snapshot: DashboardSnapshot = self.interpreter.to_dashboard_snapshot(self.engine.snapshot)
         dashboard = self.window.dashboard
 
         dashboard.set_current_app(snapshot.current_app)
         dashboard.set_current_window(snapshot.current_window)
         dashboard.set_last_external_app(snapshot.last_app)
         dashboard.set_last_external_window(snapshot.last_window)
-        dashboard.set_last_observed_duration(simplistic_simplified_ms(snapshot.last_observed_duration))
-        dashboard.set_last_observed_at(snapshot.last_app_switch_at.strftime("%Y-%m-%d %H:%M:%S"))
-        dashboard.set_tracked_time(simplistic_simplified_ms(snapshot.tracked_time))
+        dashboard.set_last_observed_duration(snapshot.last_observed_duration)
+        dashboard.set_last_observed_at(snapshot.last_app_switch_at)
+        dashboard.set_tracked_time(snapshot.tracked_time)
         dashboard.set_sessions_emitted(str(snapshot.sessions_emitted))
         dashboard.set_unique_apps(str(snapshot.unique_apps_observed))
         dashboard.refresh_recent_sessions(snapshot.recent_sessions)

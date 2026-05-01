@@ -16,10 +16,10 @@ from PySide6.QtWidgets import (
     QHeaderView,
 )
 
-from src.chronica.domain.session import Session
-from src.chronica.domain.app_usage_info import AppUsageInfo
 from src.chronica.ui.styles.style_loader import load_stylesheet
-from src.chronica.ui.data_display.time_format import simplistic_simplified_ms
+from src.chronica.ui.data_display.display_models import SessionDisplay, AppUsageInfoDisplay
+from src.chronica.ui.data_display.chrono_display import simplistic_simplified_ms
+from src.chronica.ui.data_display.datetime_display import ymd_hms
 
 class DashboardPanel(QFrame):
     def __init__(self, parent: QWidget | None = None) -> None:
@@ -217,11 +217,11 @@ class DashboardPanel(QFrame):
         layout.addWidget(key_label, row, 0, alignment=Qt.AlignmentFlag.AlignTop)
         layout.addWidget(value, row, 1)
 
-    def refresh_recent_sessions(self, recent_sessions: tuple[Session, ...]) -> None:
+    def refresh_recent_sessions(self, recent_sessions: tuple[SessionDisplay, ...]) -> None:
         for row in range(5):
             if row < len(recent_sessions):
                 session = recent_sessions[row]
-                self.recent_sessions_table.setItem(row, 0, QTableWidgetItem(session.start_datetime.strftime("%Y-%m-%d %H:%M:%S")))
+                self.recent_sessions_table.setItem(row, 0, QTableWidgetItem(ymd_hms(session.start)))
                 self.recent_sessions_table.setItem(row, 1, QTableWidgetItem(session.app_name))
                 self.recent_sessions_table.setItem(row, 2, QTableWidgetItem(session.window_title))
                 self.recent_sessions_table.setItem(row, 3, QTableWidgetItem(simplistic_simplified_ms(session.duration)))
@@ -230,10 +230,10 @@ class DashboardPanel(QFrame):
                 for col in range(4):
                     self.recent_sessions_table.setItem(row, col, QTableWidgetItem(""))
                     
-    def refresh_top_apps(self, top_apps: tuple[tuple[str, AppUsageInfo], ...]) -> None:
+    def refresh_top_apps(self, top_apps: tuple[tuple[str, AppUsageInfoDisplay], ...]) -> None:
         self.top_apps_list.clear()
         for app_name, app_info in top_apps:
-            item_text = f"{app_name} — {simplistic_simplified_ms(app_info.total_usage_time_ms)}"
+            item_text = f"{app_name} — {simplistic_simplified_ms(app_info.total_usage_time)}"
             self.top_apps_list.addItem(QListWidgetItem(item_text))
 
     def set_current_app(self, text: str) -> None:

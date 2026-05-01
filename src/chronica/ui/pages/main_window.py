@@ -16,10 +16,12 @@ from src.chronica.ui.pages.tracking_archive_panel import TrackingArchivePanel
 from src.chronica.ui.pages.control_bar import ControlBar
 from src.chronica.ui.pages.dialogue_panel import DialoguePanel
 from src.chronica.ui.styles.style_loader import load_stylesheet
+from src.chronica.common.app_runtime_context import AppRuntimeContext
 
 class ChronicaMainWindow(QMainWindow):
-    def __init__(self) -> None:
+    def __init__(self, app_ctx: AppRuntimeContext) -> None:
         super().__init__()
+        self.app_ctx = app_ctx
         self.setObjectName("chronicaMainWindow")
         self.setWindowTitle("Chronica")
         self.resize(1280, 800)
@@ -43,7 +45,7 @@ class ChronicaMainWindow(QMainWindow):
 
         # 4. pages integration
         self.dashboard = DashboardPanel()
-        self.tracking_archive = TrackingArchivePanel()
+        self.tracking_archive = TrackingArchivePanel(self.app_ctx)
         
         self.main_section_stack = QStackedWidget()
         self.main_section_stack.addWidget(self.dashboard)
