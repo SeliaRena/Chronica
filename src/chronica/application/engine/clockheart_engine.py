@@ -45,17 +45,6 @@ class ClockheartEngine:
         self.history = SessionHistory()
 
     @property
-    def temp_record_source(self) -> TrackingRecord:
-        return TrackingRecord(
-            title=f"Record at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-            generated_at_ts_ms=timestamp.now_ts_ms(),
-            start_ts_ms=self.history.oldest.start_ts_ms,
-            end_ts_ms=self.history.latest.end_ts_ms,
-            app_usage_report=self.report,
-            session_history=self.history
-        )
-
-    @property
     def current_cycle_duration(self) -> str:
         duration = self.history.latest.end_ts_ms - self.history.oldest.start_ts_ms
         return DIGITAL_CLOCK[CascadedChronoSpan.from_total_ms(duration).transform(CascadingType.FULL_PADDED)]
@@ -87,7 +76,28 @@ class ClockheartEngine:
         if sampler_result.status == SamplerResultStatus.EXTERNAL_ERROR:
             logger.error("External error occurred: %s", sampler_result.error_class)
 
-    def start(self):
+    def generate_tracking_record(self) -> TrackingRecord:
+        current_ts_ms = timestamp.now_ts_ms()
+        tracking_start_ts_ms, tracking_end_ts_ms = self.history.time_range_ts_ms
+        
+        return TrackingRecord(
+            title=f"New record {current_ts_ms}",
+            generated_at_ts_ms=current_ts_ms,
+            start_ts_ms=tracking_start_ts_ms,
+            end_ts_ms=tracking_end_ts_ms,
+            app_usage_report=self.report,
+            session_history=self.history
+        )
+    
+    def reset(self) -> None:
+        self._ticking = False
+        self._sampler.reset()
+        # sessionizer will reset itself after consuming the last sample
+        self.ideal_elapsed_time_ms = 0
+        self.report = AppUsageReport()
+        self.history = SessionHistory()
+
+    def start(self) -> None:
         logger.info("Starting Clockheart Engine")
         self.ideal_elapsed_time_ms = 0
         
@@ -108,7 +118,7 @@ class ClockheartEngine:
             logger.info("Sessionizer initialized successfully, emitted events: %s", [event.name for event in sessionizer_result.events])
         logger.debug("Initial Sessionizer result: %s", to_pretty_json(sessionizer_result.to_debug_dict()))
         
-    def stop(self):
+    def stop(self) -> None:
         self._ticking = False
         logger.info("Stopping Clockheart Engine, ticking phase ended")
 
@@ -133,7 +143,7 @@ class ClockheartEngine:
         
         logger.info("This cycle's duration: %s", self.current_cycle_duration)
         
-    def tick(self):
+    def tick(self) -> None:
         if not self._ticking:
             self._ticking = True
             logger.info("Clockheart Engine ticking phase started")

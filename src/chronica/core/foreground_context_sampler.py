@@ -68,7 +68,11 @@ class ForegroundContextSampler:
                 error_class=type(e).__name__,
                 message=f"Failed to acquire foreground context sample: {e}"
             )
-        
+
+    def reset(self) -> None:
+        self.state = SamplerState.IDLE
+        self.latest_sample = None
+
     def start_sampling(self) -> SamplerResult:
         if self.state == SamplerState.SAMPLING:
             return SamplerResult(

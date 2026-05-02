@@ -50,10 +50,11 @@ class RuntimeController:
 
         record_selector = self.window.tracking_archive.tracking_record_selector
         record_selector.add_tracking_record_item(
-            TrackingRecordDisplay.from_tracking_record(self.engine.temp_record_source, self.app_ctx.ts_ctx_provider.get())
+            TrackingRecordDisplay.from_tracking_record(self.engine.generate_tracking_record(), self.app_ctx.ts_ctx_provider.get())
         )
 
         self.refresh_ui()
+        self.engine.reset()
 
     def refresh_ui(self) -> None:
         snapshot: DashboardSnapshot = self.interpreter.to_dashboard_snapshot(self.engine.snapshot)
