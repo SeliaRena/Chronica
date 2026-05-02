@@ -1,6 +1,5 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from datetime import datetime
 from src.chronica.domain.chronosystem import ChronoScale, ChronoSpan
 
 @dataclass(slots=True, frozen=True)
@@ -19,15 +18,7 @@ class Session:
     @property
     def duration_chronospan(self) -> ChronoSpan:
         return ChronoSpan(self.duration, ChronoScale.MILLISECOND)
-    
-    @property
-    def start_datetime(self) -> datetime:
-        return datetime.fromtimestamp(self.start_ts_ms / 1000)
-    
-    @property
-    def end_datetime(self) -> datetime:
-        return datetime.fromtimestamp(self.end_ts_ms / 1000)
-    
+
     def to_debug_dict(self) -> dict:
         return {
             "id": self.id,

@@ -1,5 +1,4 @@
 from src.chronica.domain.session import Session
-from datetime import datetime
 
 class SessionHistory:
     def __init__(self, sessions: list[Session] | None = None):
@@ -23,13 +22,17 @@ class SessionHistory:
         return self.chronological_sessions[-1] if self.chronological_sessions else None
     
     @property
-    def time_range(self) -> tuple[datetime, datetime] | None:
+    def time_range_ts_ms(self) -> tuple[int, int] | None:
+        """
+        Returns the start and end timestamps of the oldest and latest session in the history, respectively.
+        """
+
         if not self.chronological_sessions:
             return None
         
         oldest = self.chronological_sessions[0]
         latest = self.chronological_sessions[-1]
-        return (oldest.start_datetime, latest.end_datetime)
+        return (oldest.start_ts_ms, latest.end_ts_ms)
     
     @property
     def is_empty(self) -> bool:
