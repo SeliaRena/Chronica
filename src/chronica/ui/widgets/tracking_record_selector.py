@@ -10,7 +10,7 @@ from PySide6.QtGui import QFont
 
 from src.chronica.ui.styles.style_loader import load_stylesheet
 from src.chronica.ui.widgets.tracking_record_item_widget import TrackingRecordItemWidget
-from src.chronica.ui.data_display.display_models import TrackingRecordDisplay
+from src.chronica.ui.presentation.models import TrackingRecordDisplay
 
 class TrackingRecordSelector(QFrame):
     def __init__(self, parent: QWidget | None = None) -> None:

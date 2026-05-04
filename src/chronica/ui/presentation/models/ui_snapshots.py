@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.chronica.ui.data_display.display_models import SessionDisplay, AppUsageInfoDisplay
+from src.chronica.ui.presentation.models.general_display_models import SessionDisplay, AppUsageInfoDisplay
 
 type ChronoDisplayOutput = str
 type DatetimeDisplayOutput = str

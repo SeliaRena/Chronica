@@ -3,9 +3,8 @@ from __future__ import annotations
 from PySide6.QtCore import QTimer
 
 from src.chronica.application.engine.clockheart_engine import ClockheartEngine
-from src.chronica.ui.data_display.display_models import TrackingRecordDisplay
-from src.chronica.ui.data_display.engine_snapshot_displays import DashboardSnapshot
-from src.chronica.ui.data_display.engine_result_interpreter import EngineResultInterpreter
+from src.chronica.ui.presentation.models import TrackingRecordDisplay, DashboardSnapshot
+from src.chronica.ui.presentation.interpreters.engine_result_interpreter import EngineResultInterpreter
 from src.chronica.ui.pages.main_window import ChronicaMainWindow
 from src.chronica.common.timestamp import TimestampContext
 from src.chronica.characters.chronica.dialogues import random_pick_dialogue, Scenario

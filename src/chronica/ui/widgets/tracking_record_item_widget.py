@@ -6,8 +6,8 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QFont
 
-from src.chronica.ui.data_display.display_models import TrackingRecordDisplay
-from src.chronica.ui.data_display.datetime_display import ymd_hms
+from src.chronica.ui.presentation.models import TrackingRecordDisplay
+from src.chronica.ui.presentation.formatters import ymd_hms
 
 class TrackingRecordItemWidget(QWidget):
     def __init__(self, record: TrackingRecordDisplay, parent: QWidget | None = None):

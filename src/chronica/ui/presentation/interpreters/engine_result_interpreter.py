@@ -1,7 +1,9 @@
-from src.chronica.ui.data_display.display_models import SessionDisplay, AppUsageInfoDisplay
-from src.chronica.ui.data_display.engine_snapshot_displays import DashboardSnapshot
-from src.chronica.ui.data_display.chrono_display import simplistic_simplified_ms
-from src.chronica.ui.data_display.datetime_display import ymd_hms
+from src.chronica.ui.presentation.models import (
+    SessionDisplay,
+    AppUsageInfoDisplay,
+    DashboardSnapshot
+)
+from src.chronica.ui.presentation.formatters import simplistic_simplified_ms, ymd_hms
 from src.chronica.application.engine.clockheart_engine import EngineSnapshot
 from src.chronica.common.timestamp import TimestampContextProvider
 

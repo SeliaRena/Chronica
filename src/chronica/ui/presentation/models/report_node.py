@@ -3,8 +3,7 @@ from src.chronica.domain.app_usage_report import AppUsageReport
 from src.chronica.domain.app_usage_info import AppUsageInfo
 from src.chronica.domain.window_usage_info import WindowUsageInfo
 from src.chronica.domain.session_history import SessionHistory
-from src.chronica.ui.data_display.chrono_display import simplistic_simplified_ms
-from src.chronica.ui.data_display.datetime_display import ymd_hms
+from src.chronica.ui.presentation.formatters import simplistic_simplified_ms, ymd_hms
 from src.chronica.common.timestamp import TimestampContextProvider
 from dataclasses import dataclass, field
 
