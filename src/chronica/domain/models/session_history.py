@@ -1,4 +1,4 @@
-from src.chronica.domain.session import Session
+from src.chronica.domain.models.session import Session
 
 class SessionHistory:
     def __init__(self, sessions: list[Session] | None = None):

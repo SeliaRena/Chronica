@@ -1,11 +1,14 @@
 from __future__ import annotations
-from src.chronica.domain.app_usage_report import AppUsageReport
-from src.chronica.domain.app_usage_info import AppUsageInfo
-from src.chronica.domain.window_usage_info import WindowUsageInfo
-from src.chronica.domain.session_history import SessionHistory
 from src.chronica.ui.presentation.formatters import simplistic_simplified_ms, ymd_hms
 from src.chronica.common.timestamp import TimestampContextProvider
 from dataclasses import dataclass, field
+
+from src.chronica.domain.models import (
+    SessionHistory,
+    WindowUsageInfo,
+    AppUsageInfo,
+    AppUsageReport
+)
 
 @dataclass(frozen=True, slots=True)
 class ReportNode:

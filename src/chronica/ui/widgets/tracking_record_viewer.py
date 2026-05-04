@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
-from src.chronica.domain.app_usage_report import AppUsageReport
+from src.chronica.domain.models import AppUsageReport
 from src.chronica.ui.styles.style_loader import load_stylesheet
 from src.chronica.ui.presentation.models import ReportNode, ReportNodeMapper
 from src.chronica.common.app_runtime_context import AppRuntimeContext

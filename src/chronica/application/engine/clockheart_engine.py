@@ -1,11 +1,14 @@
+from src.chronica.domain.models import (
+    Session,
+    SessionHistory,
+    AppUsageInfo,
+    AppUsageReport,
+    TrackingRecord
+)
+
 from src.chronica.core.foreground_context_sampler import ForegroundContextSampler, SamplerResultStatus, SamplerResult
 from src.chronica.core.sample_stream_sessionizer import SampleStreamSessionizer, SessionizerEvent, SessionizerResultStatus
-from src.chronica.domain.tracking_record import TrackingRecord
-from src.chronica.domain.app_usage_report import AppUsageReport
-from src.chronica.domain.app_usage_info import AppUsageInfo
-from src.chronica.domain.session_history import SessionHistory
 from src.chronica.domain.chronosystem import CascadedChronoSpan, CascadingType
-from src.chronica.domain.session import Session
 from src.chronica.common.formatters import DIGITAL_CLOCK
 from src.chronica.utils.json_util import to_pretty_json
 from dataclasses import dataclass

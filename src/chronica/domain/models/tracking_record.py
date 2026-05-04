@@ -1,5 +1,5 @@
-from src.chronica.domain.app_usage_report import AppUsageReport
-from src.chronica.domain.session_history import SessionHistory
+from src.chronica.domain.models.app_usage_report import AppUsageReport
+from src.chronica.domain.models.session_history import SessionHistory
 from dataclasses import dataclass
 
 @dataclass(frozen=True, slots=True)

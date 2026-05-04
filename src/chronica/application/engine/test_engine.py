@@ -1,8 +1,6 @@
 from src.chronica.core.foreground_context_sampler import ForegroundContextSampler as FCS
 from src.chronica.core.sample_stream_sessionizer import SampleStreamSessionizer as SSS, SessionizerResultStatus, SessionizerEvent
-from src.chronica.domain.app_usage_report import AppUsageReport
-from src.chronica.domain.session_history import SessionHistory
-import json
+from src.chronica.domain.models import AppUsageReport, SessionHistory
 
 class TestEngine:
     def __init__(self):

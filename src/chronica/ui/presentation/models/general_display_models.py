@@ -2,12 +2,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from src.chronica.domain.chronosystem import CascadedChronoSpan
-from src.chronica.domain.session import Session
-from src.chronica.domain.app_usage_info import AppUsageInfo
-from src.chronica.domain.app_usage_report import AppUsageReport
-from src.chronica.domain.session_history import SessionHistory
-from src.chronica.domain.tracking_record import TrackingRecord
 from src.chronica.common.timestamp import TimestampContext
+
+from src.chronica.domain.models import (
+    Session,
+    SessionHistory,
+    AppUsageInfo,
+    AppUsageReport,
+    TrackingRecord
+)
 
 @dataclass(frozen=True, slots=True)
 class SessionDisplay:

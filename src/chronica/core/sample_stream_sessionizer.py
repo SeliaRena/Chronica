@@ -1,7 +1,7 @@
 import src.chronica.core.foreground_context_sampler as fcs
 from src.chronica.utils.foreground_context_util import ForegroundContext, same_window
 from src.chronica.utils.pairwise_window import PairwiseWindow
-from src.chronica.domain.session import Session
+from src.chronica.domain.models.session import Session
 from enum import Enum, auto
 from dataclasses import dataclass
 
