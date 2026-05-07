@@ -3,7 +3,7 @@ from src.chronica.infra.logging.logging_config import setup_runtime_logger
 from src.chronica.infra.report.report_writer import write_report
 from src.chronica.ui.pages.main_window import ChronicaMainWindow
 from src.chronica.ui.controllers.runtime_controller import RuntimeController
-from src.chronica.common.app_runtime_context import AppRuntimeContext
+from src.chronica.common.runtime import AppRuntimeContext
 from PySide6.QtWidgets import QApplication
 import time
 import logging

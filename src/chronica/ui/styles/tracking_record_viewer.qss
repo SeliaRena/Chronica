@@ -1,22 +1,35 @@
 QFrame#trackingRecordViewer {
-    background-color: #1D2129;
+    background-color: #171B22;
+    border: 1px solid #38BDF8;
+    border-radius: 12px;
+}
+
+QWidget#viewModeBar {
+    background-color: #1d2129;
     border: none;
     border-radius: 12px;
 }
 
-QWidget#treeWrapper {
-    border: 1px solid #C084FC;
-    border-radius: 5px;
+QPushButton {
+    background-color: #2b3240;
+    color: #e8ecf1;
+    border: 1px solid #3a4457;
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: left;
 }
 
-QTreeWidget {
-    background-color: transparent;
-    border: none;
-    border-radius: 10px;
+QPushButton:hover {
+    background-color: #364055;
 }
 
-QHeaderView::section {
-    background-color: #171B22;
-    border: none;
-    padding: 6px;
+QPushButton:disabled {
+    background-color: #22262f;
+    color: #8b93a3;
+}
+
+QPushButton[active="true"] {
+    background-color: #46546f;
+    border: 1px solid #64748b;
+    font-weight: bold;
 }

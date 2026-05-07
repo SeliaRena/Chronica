@@ -16,7 +16,7 @@ from src.chronica.ui.pages.tracking_archive_panel import TrackingArchivePanel
 from src.chronica.ui.pages.control_bar import ControlBar
 from src.chronica.ui.pages.dialogue_panel import DialoguePanel
 from src.chronica.ui.styles.style_loader import load_stylesheet
-from src.chronica.common.app_runtime_context import AppRuntimeContext
+from src.chronica.common.runtime import AppRuntimeContext
 
 class ChronicaMainWindow(QMainWindow):
     def __init__(self, app_ctx: AppRuntimeContext) -> None:
