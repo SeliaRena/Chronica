@@ -4,7 +4,7 @@ from src.chronica.domain.chronosystem import ChronoScale, ChronoSpan
 
 @dataclass(slots=True, frozen=True)
 class Session:
-    id: str
+    seq: int
     start_ts_ms: int
     end_ts_ms: int
     app_name: str
@@ -21,7 +21,7 @@ class Session:
 
     def to_debug_dict(self) -> dict:
         return {
-            "id": self.id,
+            "seq": self.seq,
             "start_ts_ms": self.start_ts_ms,
             "end_ts_ms": self.end_ts_ms,
             "app_name": self.app_name,
@@ -31,4 +31,4 @@ class Session:
         }
 
     def to_debug_line(self) -> str:
-        return f"(id: {self.id}, use_period: |{self.start_ts_ms} ~ {self.end_ts_ms}|, app: {self.app_name}, window: {self.window_title}, duration: {self.duration})"
+        return f"(seq: {self.seq}, use_period: |{self.start_ts_ms} ~ {self.end_ts_ms}|, app: {self.app_name}, window: {self.window_title}, duration: {self.duration})"
