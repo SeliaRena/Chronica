@@ -6,6 +6,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 LOGS_DIR = PROJECT_ROOT / "logs"
 REPORTS_DIR = PROJECT_ROOT / "reports"
 
+# database specific
+DATA_DIR = PROJECT_ROOT / "data"
+DB_PATH = DATA_DIR / "chronica.db"
+
 # Package-level directories
 PACKAGE_BASE = PROJECT_ROOT / "src" / "chronica"
 UI_DIR = PACKAGE_BASE / "ui"
