@@ -108,6 +108,66 @@ class TrackingRecordRepository:
         ]
 
         return TrackingRecordMapper.compose_domain(record_row, session_rows)
+    
+    def get_by_ts_ms_range(self, start_ts_ms: int, end_ts_ms: int) -> list[TrackingRecord]:
+        res: list[TrackingRecord] = []
+        
+        with self._db.transaction() as conn:
+            record_raws = conn.execute(
+                """
+                SELECT *
+                FROM tracking_records
+                WHERE start_ts_ms >= ? AND end_ts_ms <= ?
+                ORDER BY start_ts_ms DESC
+                """,
+                (start_ts_ms, end_ts_ms),
+            ).fetchall()
+            
+            for record_raw in record_raws:
+                record_row = self._tracking_record_row_from_sqlite(record_raw)
+                session_raws = conn.execute(
+                    """
+                    SELECT *
+                    FROM sessions
+                    WHERE record_id = ?
+                    ORDER BY session_seq ASC
+                    """,
+                    (record_row.id,),
+                ).fetchall()
+                
+                session_rows = [
+                    self._session_row_from_sqlite(row)
+                    for row in session_raws
+                ]
+                
+                res.append(TrackingRecordMapper.compose_domain(record_row, session_rows))
+
+        return res
+    
+    def get_all(self) -> list[TrackingRecord]:
+        res: list[TrackingRecord] = []
+        record_rows = self.list_record_rows()
+        
+        for record_row in record_rows:
+            with self._db.transaction() as conn:
+                session_raws = conn.execute(
+                    """
+                    SELECT *
+                    FROM sessions
+                    WHERE record_id = ?
+                    ORDER BY session_seq ASC
+                    """,
+                    (record_row.id,),
+                ).fetchall()
+                
+                session_rows = [
+                    self._session_row_from_sqlite(row)
+                    for row in session_raws
+                ]
+                
+                res.append(TrackingRecordMapper.compose_domain(record_row, session_rows))
+        
+        return res
 
     def list_record_rows(self) -> list[TrackingRecordRow]:
         with self._db.transaction() as conn:

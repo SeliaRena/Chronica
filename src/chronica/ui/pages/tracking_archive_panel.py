@@ -24,7 +24,7 @@ class TrackingArchivePanel(QFrame):
         layout.setContentsMargins(12, 12, 12, 12)
         layout.setSpacing(12)
 
-        self.tracking_record_selector = TrackingRecordSelector()
+        self.tracking_record_selector = TrackingRecordSelector(self.app_ctx)
         self.tracking_record_selector.list_widget.currentItemChanged.connect(self._on_current_record_changed)
         self.tracking_record_viewer = TrackingRecordViewer(self.app_ctx)
 

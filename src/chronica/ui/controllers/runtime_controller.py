@@ -47,10 +47,13 @@ class RuntimeController:
         self.window.control_bar.set_status_hint("Tracking stopped.")
         self.window.dialogue.set_dialogue("Chronica", random_pick_dialogue(Scenario.STOP_TRACKING))
 
+        ts_ctx = self.app_ctx.ts_ctx_provider.get()
+        record = self.engine.generate_tracking_record()
+        record_service = self.app_ctx.storage.tracking_records
         record_selector = self.window.tracking_archive.tracking_record_selector
-        record_selector.add_tracking_record_item(
-            TrackingRecordDisplay.from_tracking_record(self.engine.generate_tracking_record(), self.app_ctx.ts_ctx_provider.get())
-        )
+
+        record_service.save(record)
+        record_selector.add_tracking_record_item(TrackingRecordDisplay.from_tracking_record(record, ts_ctx))
 
         self.refresh_ui()
         self.engine.reset()

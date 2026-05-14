@@ -3,7 +3,7 @@ from src.chronica.infra.logging.logging_config import setup_runtime_logger
 from src.chronica.infra.report.report_writer import write_report
 from src.chronica.ui.pages.main_window import ChronicaMainWindow
 from src.chronica.ui.controllers.runtime_controller import RuntimeController
-from src.chronica.common.runtime import AppRuntimeContext
+from src.chronica.common.runtime import build_app_runtime_context
 from PySide6.QtWidgets import QApplication
 import time
 import logging
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 TEST_DURATION_SECONDS = 120
 TICK_DURATION_S = 1
 
-def main():
+def console_test():
     setup_runtime_logger()
     
     logger.info("----- Starting Chronica Clockheart Engine Execution -----")
@@ -33,13 +33,20 @@ def run_gui() -> int:
     setup_runtime_logger()
     
     app = QApplication([])
-    app_context = AppRuntimeContext()
-    window = ChronicaMainWindow(app_context)
+    app_runtime_context = build_app_runtime_context()
+    window = ChronicaMainWindow(app_runtime_context)
     engine = ClockheartEngine()
     controller = RuntimeController(window, engine)
     
-    window.show()
-    return app.exec()
+    exit_code = 0
+    
+    try:
+        window.show()
+        exit_code = app.exec()
+    finally:
+        app_runtime_context.storage.db.close()
+        
+    return exit_code
 
 if __name__ == "__main__":
     raise SystemExit(run_gui())

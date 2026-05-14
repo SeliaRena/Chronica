@@ -14,6 +14,13 @@ def now_ts_ms() -> UnixTimestampMs:
 
     return int(time.time_ns() // 1_000_000)
 
+def as_ts_ms(dt: datetime) -> UnixTimestampMs:
+    """
+    Returns the unix timestamp in milliseconds from a datetime regardless of timezone
+    """
+    
+    return int(dt.timestamp() * 1000)
+
 @dataclass(frozen=True, slots=True)
 class TimestampContext:
     timezone: ZoneInfo
@@ -29,8 +36,12 @@ class TimestampContext:
         return datetime.fromtimestamp(ts_ms / 1000, self.timezone)
     
     def ts_ms_from_datetime(self, dt: datetime) -> UnixTimestampMs:
+        """
+        Aside from returning the timestamp in milliseconds, this function also ensures the datetime has timezone information
+        """
+        
         if dt.tzinfo is None:
-            dt = dt.astimezone(self.timezone)
+            dt = dt.replace(tzinfo=self.timezone)
 
         return int(dt.timestamp() * 1000)
     
