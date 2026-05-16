@@ -74,7 +74,7 @@ class RuntimeController:
         dashboard.refresh_recent_sessions(snapshot.recent_sessions)
         
         top_apps = snapshot.top_apps
-        dashboard.set_top_app(top_apps[0][0] if len(top_apps) > 0 else "N/A")
+        dashboard.set_top_app(top_apps[0].app_name if len(top_apps) > 0 else "N/A")
         dashboard.refresh_top_apps(top_apps)
 
     def timer_event(self) -> None:

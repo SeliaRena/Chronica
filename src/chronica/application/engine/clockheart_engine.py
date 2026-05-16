@@ -28,14 +28,8 @@ class EngineSnapshot:
     ideal_elapsed_time_ms: int
     current_app: str
     current_window: str
-    last_app: str
-    last_window: str
-    last_observed_duration: int
-    last_app_switch_at_ts_ms: int
-    sessions_emitted: int
-    unique_apps_observed: int
-    top_apps: tuple[tuple[str, AppUsageInfo], ...]
-    recent_sessions: tuple[Session, ...]
+    app_usage_report: AppUsageReport
+    session_history: SessionHistory
 
 class ClockheartEngine:
     def __init__(self, tick_interval: TickIntervalOption = TickIntervalOption.MS_1000):
@@ -58,14 +52,8 @@ class ClockheartEngine:
             ideal_elapsed_time_ms=self.ideal_elapsed_time_ms,
             current_app=self._sampler.latest_sample.exe_name if self._sampler.latest_sample else "N/A",
             current_window=self._sampler.latest_sample.normalized_window_title if self._sampler.latest_sample else "N/A",
-            last_app=self.history.latest.app_name if not self.history.is_empty else "N/A",
-            last_window=self.history.latest.window_title if not self.history.is_empty else "N/A",
-            last_observed_duration=self.history.latest.duration if not self.history.is_empty else 0,
-            last_app_switch_at_ts_ms=self.history.latest.end_ts_ms if not self.history.is_empty else 0,
-            sessions_emitted=len(self.history),
-            unique_apps_observed=len(self.report.app_usage_map),
-            top_apps=tuple(sorted(self.report.app_usage_map.items(), key=lambda app: app[1].total_usage_time_ms, reverse=True)[:5]),
-            recent_sessions=tuple(self.history.chronological_sessions[-5:] if len(self.history) >= 5 else self.history.chronological_sessions)
+            app_usage_report=self.report,
+            session_history=self.history
         )
 
     @property

@@ -6,6 +6,7 @@ from .general_display_models import (
 
 from .ui_snapshots import DashboardSnapshot
 from .report_node import ReportNode, ReportNodeMapper
+from .top_apps_item_data import TopAppsItemData
 
 from .session_timeline_models import (
     SessionTimelineSegment,
@@ -20,6 +21,7 @@ __all__ = [
     "DashboardSnapshot",
     "ReportNode",
     "ReportNodeMapper",
+    "TopAppsItemData",
     "SessionTimelineSegment",
     "SessionTimelineRow",
     "SessionTimeline"

@@ -17,8 +17,11 @@ from PySide6.QtWidgets import (
 )
 
 from src.chronica.ui.styles.style_loader import load_stylesheet
-from src.chronica.ui.presentation.models import SessionDisplay, AppUsageInfoDisplay
+from src.chronica.ui.presentation.models import SessionDisplay, AppUsageInfoDisplay, TopAppsItemData
 from src.chronica.ui.presentation.formatters import simplistic_simplified_ms, ymd_hms
+from src.chronica.ui.widgets.top_apps_view import TopAppsView
+
+from warnings import deprecated
 
 class DashboardPanel(QFrame):
     def __init__(self, parent: QWidget | None = None) -> None:
@@ -104,7 +107,7 @@ class DashboardPanel(QFrame):
         layout.setSpacing(12)
 
         self.recent_sessions_panel = self._build_recent_sessions_panel()
-        self.top_apps_panel = self._build_top_apps_panel()
+        self.top_apps_panel = TopAppsView(item_count=5)
 
         layout.addWidget(self.recent_sessions_panel, 3)
         layout.addWidget(self.top_apps_panel, 2)
@@ -149,6 +152,7 @@ class DashboardPanel(QFrame):
 
         return panel
 
+    @deprecated("This method is deprecated and will be removed in a future version. Use TopAppsView instead.")
     def _build_top_apps_panel(self) -> QFrame:
         panel = QFrame()
         panel.setObjectName("topAppsPanel")
@@ -229,11 +233,8 @@ class DashboardPanel(QFrame):
                 for col in range(4):
                     self.recent_sessions_table.setItem(row, col, QTableWidgetItem(""))
                     
-    def refresh_top_apps(self, top_apps: tuple[tuple[str, AppUsageInfoDisplay], ...]) -> None:
-        self.top_apps_list.clear()
-        for app_name, app_info in top_apps:
-            item_text = f"{app_name} — {simplistic_simplified_ms(app_info.total_usage_time)}"
-            self.top_apps_list.addItem(QListWidgetItem(item_text))
+    def refresh_top_apps(self, top_apps: tuple[TopAppsItemData, ...]) -> None:
+        self.top_apps_panel.set_items_data(top_apps)
 
     def set_current_app(self, text: str) -> None:
         self.current_app_value.setText(text)
