@@ -1,0 +1,30 @@
+QLabel {
+    color: #b8f7ff;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QLabel#appIconLabel,
+QWidget#nameAndProgress,
+QLabel#shareRatioLabel,
+QLabel#durationLabel {
+    background-color: #252B36;
+    border-radius: 5px;
+}
+
+QProgressBar {
+    border: 1px solid #263845;
+    border-radius: 6px;
+    background-color: #0b1117;
+    color: #b8f7ff;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    min-height: 16px;
+}
+
+QProgressBar::chunk {
+    border-radius: 5px;
+    background-color: #19d3ff;
+    margin: 2px;
+}

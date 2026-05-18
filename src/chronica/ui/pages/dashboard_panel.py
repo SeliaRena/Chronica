@@ -109,8 +109,8 @@ class DashboardPanel(QFrame):
         self.recent_sessions_panel = self._build_recent_sessions_panel()
         self.top_apps_panel = TopAppsView(item_count=5)
 
-        layout.addWidget(self.recent_sessions_panel, 3)
-        layout.addWidget(self.top_apps_panel, 2)
+        layout.addWidget(self.recent_sessions_panel, 1)
+        layout.addWidget(self.top_apps_panel, 1)
 
         return layout
 
