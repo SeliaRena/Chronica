@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from src.chronica.ui.presentation.models.general_display_models import SessionDisplay
 from src.chronica.ui.presentation.models.top_apps_item_data import TopAppsItemData
+from src.chronica.ui.presentation.models.recent_sessions_item_data import RecentSessionsItemData
 
 type ChronoDisplayOutput = str
 type DatetimeDisplayOutput = str
@@ -17,4 +18,4 @@ class DashboardSnapshot:
     sessions_emitted: int
     unique_apps_observed: int
     top_apps: tuple[TopAppsItemData, ...]
-    recent_sessions: tuple[SessionDisplay, ...]
+    recent_sessions: tuple[RecentSessionsItemData, ...]

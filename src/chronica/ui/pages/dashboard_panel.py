@@ -17,9 +17,21 @@ from PySide6.QtWidgets import (
 )
 
 from src.chronica.ui.styles.style_loader import load_stylesheet
-from src.chronica.ui.presentation.models import SessionDisplay, AppUsageInfoDisplay, TopAppsItemData
-from src.chronica.ui.presentation.formatters import simplistic_simplified_ms, ymd_hms
+
+from src.chronica.ui.presentation.models import (
+    SessionDisplay, 
+    AppUsageInfoDisplay, 
+    TopAppsItemData, 
+    RecentSessionsItemData
+)
+
+from src.chronica.ui.presentation.formatters import (
+    simplistic_simplified_ms, 
+    ymd_hms
+)
+
 from src.chronica.ui.widgets.top_apps_view import TopAppsView
+from src.chronica.ui.widgets.recent_sessions_view import RecentSessionsView
 
 from warnings import deprecated
 
@@ -106,7 +118,7 @@ class DashboardPanel(QFrame):
         layout = QHBoxLayout()
         layout.setSpacing(12)
 
-        self.recent_sessions_panel = self._build_recent_sessions_panel()
+        self.recent_sessions_panel = RecentSessionsView()
         self.top_apps_panel = TopAppsView(item_count=5)
 
         layout.addWidget(self.recent_sessions_panel, 1)
@@ -114,6 +126,7 @@ class DashboardPanel(QFrame):
 
         return layout
 
+    @deprecated("This method is deprecated and will be removed in a future version. Use RecentSessionsView instead.")
     def _build_recent_sessions_panel(self) -> QFrame:
         panel = QFrame()
         panel.setObjectName("recentSessionsPanel")
@@ -220,18 +233,8 @@ class DashboardPanel(QFrame):
         layout.addWidget(key_label, row, 0, alignment=Qt.AlignmentFlag.AlignTop)
         layout.addWidget(value, row, 1)
 
-    def refresh_recent_sessions(self, recent_sessions: tuple[SessionDisplay, ...]) -> None:
-        for row in range(5):
-            if row < len(recent_sessions):
-                session = recent_sessions[row]
-                self.recent_sessions_table.setItem(row, 0, QTableWidgetItem(ymd_hms(session.start)))
-                self.recent_sessions_table.setItem(row, 1, QTableWidgetItem(session.app_name))
-                self.recent_sessions_table.setItem(row, 2, QTableWidgetItem(session.window_title))
-                self.recent_sessions_table.setItem(row, 3, QTableWidgetItem(simplistic_simplified_ms(session.duration)))
-            else:
-                # Clear remaining rows
-                for col in range(4):
-                    self.recent_sessions_table.setItem(row, col, QTableWidgetItem(""))
+    def refresh_recent_sessions(self, recent_sessions: tuple[RecentSessionsItemData, ...]) -> None:
+        self.recent_sessions_panel.set_recent_sessions(recent_sessions)
                     
     def refresh_top_apps(self, top_apps: tuple[TopAppsItemData, ...]) -> None:
         self.top_apps_panel.set_items_data(top_apps)

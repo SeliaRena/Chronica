@@ -1,0 +1,34 @@
+QLabel#startTimeLabel,
+QLabel#endTimeLabel {
+    font-size: 10px;
+    font-weight: bold;
+    color: #4B5563;
+}
+
+QLabel#chipWindowTitleLabel {
+    font-size: 10px;
+    font-weight: bold;
+    color: #B8C0CC;
+}
+
+QFrame#sessionChip {
+    background-color: #252B36;
+    border: 1px solid #4FD1C5;
+    border-radius: 5px;
+}
+
+QLabel#chipIconLabel {
+    background-color: white;
+    border-radius: 5px;
+    padding: 4px;
+}
+
+QLabel#chipAppNameLabel,
+QLabel#chipDurationLabel {
+    font-size: 12px;
+    font-weight: bold;
+    color: #E2E8F0;
+    background-color: #1D2129;
+    border-radius: 5px;
+    padding-left: 4px;
+}

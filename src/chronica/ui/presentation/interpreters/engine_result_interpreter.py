@@ -8,10 +8,11 @@ from src.chronica.ui.presentation.models import (
     SessionDisplay,
     AppUsageInfoDisplay,
     DashboardSnapshot,
-    TopAppsItemData
+    TopAppsItemData,
+    RecentSessionsItemData
 )
 
-from src.chronica.ui.presentation.formatters import simplistic_simplified_ms, ymd_hms
+from src.chronica.ui.presentation.formatters import simplistic_simplified_ms, ymd_hms, hms
 from src.chronica.application.engine.clockheart_engine import EngineSnapshot
 from src.chronica.common.timestamp import TimestampContextProvider
 
@@ -41,11 +42,31 @@ class EngineResultInterpreter:
             ) for appinfo in top_apps_raw
         )
     
-    def _extract_recent_sessions(self, history: SessionHistory) -> tuple[SessionDisplay, ...]:
-        return tuple(
-            SessionDisplay.from_session(session, self.ts_ctx_provider.get()) 
-            for session in history.chronological_sessions[-5:]
-        )
+    def _extract_recent_sessions(self, history: SessionHistory) -> tuple[RecentSessionsItemData, ...]:
+        new5_raw_sessions = history.chronological_sessions[-5:]
+        ret: list[RecentSessionsItemData] = []
+        ts_ctx = self.ts_ctx_provider.get()
+        
+        for i, s in enumerate(new5_raw_sessions):
+            s_display = SessionDisplay.from_session(s, ts_ctx)
+            is_first = (i == 0)
+            day_delta = (s_display.end.date() - s_display.start.date()).days
+            is_cross_day = day_delta != 0
+            
+            ret.append(
+                RecentSessionsItemData(
+                    start_time=hms(s_display.start),
+                    end_time=hms(s_display.end) if not is_cross_day else f"+{day_delta} day(s):\n{ymd_hms(s_display.end)}",
+                    duration=simplistic_simplified_ms(s_display.duration),
+                    app_name=s_display.app_name,
+                    app_path=s_display.app_path,
+                    window_title=s_display.window_title,
+                    is_first=is_first,
+                    is_cross_day=is_cross_day
+                )
+            )
+        
+        return tuple(ret)
 
     def to_dashboard_snapshot(self, engine_snapshot: EngineSnapshot) -> DashboardSnapshot:
         ts_ctx = self.ts_ctx_provider.get()
