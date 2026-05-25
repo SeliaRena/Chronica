@@ -1,0 +1,35 @@
+QWidget#digitalTimeStrip {
+    background-color: #10141c;
+    border: 1px solid #242c38;
+    border-radius: 8px;
+}
+
+QLabel#digitalTimeStripTitle {
+    color: #9aa7b8;
+    font-weight: 600;
+}
+
+QFrame#digitalTimeShadedSegment {
+    background-color: #0b0e14;
+    border: 1px solid #1d2430;
+    border-radius: 6px;
+}
+
+QFrame#digitalTimeEmphasizedSegment {
+    background-color: #111927;
+    border: 1px solid #2f415a;
+    border-radius: 6px;
+}
+
+QLabel#digitalTimeShadedLabel {
+    color: #44505f;
+    font-family: "DSEG7 Classic", "Digital-7", "JetBrains Mono", "Consolas", monospace;
+    font-size: 14px;
+}
+
+QLabel#digitalTimeEmphasizedLabel {
+    color: #d7f3ff;
+    font-family: "DSEG7 Classic", "Digital-7", "JetBrains Mono", "Consolas", monospace;
+    font-size: 14px;
+    font-weight: 700;
+}

@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
 
 from src.chronica.ui.styles.style_loader import load_stylesheet
 from src.chronica.ui.widgets.app_usage_report_treeview import AppUsageReportTreeview
+from src.chronica.ui.widgets.usage_report import UsageReportView
 from src.chronica.ui.widgets.session_timeline_view import SessionTimelineView
 from src.chronica.common.runtime import AppRuntimeContext
 
@@ -28,11 +29,11 @@ class TrackingRecordViewer(QFrame):
         self.view_mode_bar.setObjectName("viewModeBar")
         
         # 2. display section
-        self.report_treeview = AppUsageReportTreeview(self.app_ctx) # index 0
+        self.usage_report = UsageReportView(app_ctx.app_icon_provider) # index 0
         self.session_timeline = SessionTimelineView() # index 1
         
         self.display_section_stack = QStackedWidget()
-        self.display_section_stack.addWidget(self.report_treeview)
+        self.display_section_stack.addWidget(self.usage_report)
         self.display_section_stack.addWidget(self.session_timeline)
         
         # 3. integration
@@ -41,7 +42,7 @@ class TrackingRecordViewer(QFrame):
         
         # 4. initialization
         self._connect_view_mode_bar_buttons()
-        self.switch_to_report_treeview()
+        self.switch_to_usage_report()
         
         # 5. style
         self.setStyleSheet(load_stylesheet("tracking_record_viewer"))
@@ -64,7 +65,7 @@ class TrackingRecordViewer(QFrame):
         return view_mode_bar
     
     def _connect_view_mode_bar_buttons(self) -> None:
-        self.show_app_usage_report_button.clicked.connect(self.switch_to_report_treeview)
+        self.show_app_usage_report_button.clicked.connect(self.switch_to_usage_report)
         self.show_session_timeline_button.clicked.connect(self.switch_to_session_timeline)
     
     def set_active_button(self, button_name: str) -> None:
@@ -79,7 +80,7 @@ class TrackingRecordViewer(QFrame):
             button.style().polish(button)
             button.update()
             
-    def switch_to_report_treeview(self) -> None:
+    def switch_to_usage_report(self) -> None:
         self.display_section_stack.setCurrentIndex(0)
         self.set_active_button("showAppUsageReportButton")
         

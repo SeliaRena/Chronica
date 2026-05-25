@@ -14,22 +14,45 @@ class WindowUsageInfo:
         self.total_usage_time_ms += session.duration
     
     @property
-    def focus_count(self) -> int:
+    def session_count(self) -> int:
         return len(self.session_history)
     
     @property
-    def last_used_ts_ms(self) -> int | None:
-        if self.session_history.is_empty:
-            return None
+    def first_used_ts_ms(self) -> int:
+        """
+        Returns the start timestamp of the oldest session in the history \n
+        This property assumes that the session history is not empty, and raises ValueError if the session history is empty
+        """
         
-        return self.session_history.latest.end_ts_ms
+        return self.session_history.require_oldest.start_ts_ms
     
     @property
-    def peak_usage_session(self) -> Session | None:
-        if self.session_history.is_empty:
-            return None
+    def last_used_ts_ms(self) -> int:
+        """
+        Returns the end timestamp of the latest session in the history \n
+        This property assumes that the session history is not empty, and raises ValueError if the session history is empty
+        """
         
+        return self.session_history.require_latest.end_ts_ms
+    
+    @property
+    def peak_usage_session(self) -> Session:
         return max(self.session_history.chronological_sessions, key=lambda s: s.duration)
+    
+    @property
+    def peak_gap_duration_ms(self) -> int:
+        sessions = self.session_history.chronological_sessions
+        ret = 0
+        
+        for i, s in enumerate(sessions):
+            if i > 0:
+                ret = max(ret, s.start_ts_ms - sessions[i - 1].end_ts_ms)
+        
+        return ret
+    
+    @property
+    def avg_session_duration_ms(self) -> int:
+        return self.total_usage_time_ms // len(self.session_history)
     
     def to_debug_dict(self) -> dict:
         return {

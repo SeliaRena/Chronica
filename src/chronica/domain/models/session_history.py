@@ -22,6 +22,34 @@ class SessionHistory:
         return self.chronological_sessions[-1] if self.chronological_sessions else None
     
     @property
+    def require_oldest(self) -> Session:
+        if not self.chronological_sessions:
+            raise ValueError("Session history is empty.")
+        
+        return self.chronological_sessions[0]
+    
+    @property
+    def require_latest(self) -> Session:
+        if not self.chronological_sessions:
+            raise ValueError("Session history is empty.")
+        
+        return self.chronological_sessions[-1]
+    
+    @property
+    def contiguous_segment_count(self) -> int:
+        sessions = self.chronological_sessions
+        
+        if not sessions:
+            return 0
+        
+        count = 1
+        for prev, curr in zip(sessions, sessions[1:]):
+            if not prev.is_contiguous_with(curr):
+                count += 1
+        
+        return count
+    
+    @property
     def time_range_ts_ms(self) -> tuple[int, int] | None:
         """
         Returns the start and end timestamps of the oldest and latest session in the history, respectively.

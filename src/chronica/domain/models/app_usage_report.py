@@ -13,7 +13,15 @@ class AppUsageReport:
         
         self.app_usage_map[session.app_name].add_session(session)
         self.total_usage_time_ms += session.duration
-        
+
+    @property
+    def app_count(self) -> int:
+        return len(self.app_usage_map)
+
+    @property
+    def total_app_entry_count(self) -> int:
+        return sum(a.app_entry_count for a in self.app_usage_map.values())
+
     def to_debug_dict(self) -> dict:
         return {
             "total_usage_time_ms": self.total_usage_time_ms,

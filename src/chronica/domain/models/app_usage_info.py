@@ -1,4 +1,5 @@
 from src.chronica.domain.models.session import Session
+from src.chronica.domain.models.session_history import SessionHistory
 from src.chronica.domain.models.window_usage_info import WindowUsageInfo
 
 class AppUsageInfo:
@@ -17,31 +18,37 @@ class AppUsageInfo:
         
         self.window_usage_map[session.window_title].add_session(session)
         self.total_usage_time_ms += session.duration
-        
+
     @property
-    def focus_count(self) -> int:
-        return sum(window_usage_info.focus_count for window_usage_info in self.window_usage_map.values())
+    def session_count(self) -> int:
+        return sum(w.session_count for w in self.window_usage_map.values())
     
     @property
-    def last_used_window(self) -> WindowUsageInfo | None:
-        if not self.window_usage_map:
-            return None
-        
-        return max(self.window_usage_map.values(), key=lambda w: w.last_used_ts_ms or 0)
+    def window_count(self) -> int:
+        return len(self.window_usage_map)
     
     @property
-    def peak_total_usage_window(self) -> WindowUsageInfo | None:
-        if not self.window_usage_map:
-            return None
+    def app_entry_count(self) -> int:
+        sorted_merged_history = SessionHistory(
+            sorted(
+                (
+                    s
+                    for w in self.window_usage_map.values()
+                    for s in w.session_history.chronological_sessions
+                ),
+                key=lambda s: s.start_ts_ms
+            )
+        )
         
-        return max(self.window_usage_map.values(), key=lambda w: w.total_usage_time_ms)
+        return sorted_merged_history.contiguous_segment_count
     
     @property
-    def peak_single_time_usage_window(self) -> WindowUsageInfo | None:
-        if not self.window_usage_map:
-            return None
-        
-        return max(self.window_usage_map.values(), key=lambda w: w.peak_usage_session.duration if w.peak_usage_session else 0)
+    def first_used_ts_ms(self) -> int:
+        return min(wu.first_used_ts_ms for wu in self.window_usage_map.values())
+    
+    @property
+    def last_used_ts_ms(self) -> int:
+        return max(wu.last_used_ts_ms for wu in self.window_usage_map.values())
     
     def to_debug_dict(self) -> dict:
         return {

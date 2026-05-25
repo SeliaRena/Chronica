@@ -18,6 +18,21 @@ class Session:
     @property
     def duration_chronospan(self) -> ChronoSpan:
         return ChronoSpan(self.duration, ChronoScale.MILLISECOND)
+    
+    def is_contiguous_with(self, other: Session) -> bool:
+        """
+        Returns true if the two sessions are contiguous \n
+        ### Definition of contiguous: \n
+        - The start timestamp of one session is equal to the end timestamp of the other session \n
+        - The end timestamp of one session is equal to the start timestamp of the other session \n\n
+        
+        For example (code below is pseudocode): \n
+        >>> a = Session(start_ts_ms=1, end_ts_ms=2) \n
+        >>> b = Session(start_ts_ms=2, end_ts_ms=3) \n
+        >>> a.is_contiguous_with(b) == True # and vice versa
+        """
+        
+        return self.end_ts_ms == other.start_ts_ms or self.start_ts_ms == other.end_ts_ms
 
     def to_debug_dict(self) -> dict:
         return {

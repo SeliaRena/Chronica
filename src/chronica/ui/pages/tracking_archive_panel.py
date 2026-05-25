@@ -10,6 +10,7 @@ from src.chronica.ui.widgets.tracking_record_selector import TrackingRecordSelec
 from src.chronica.ui.widgets.tracking_record_item_widget import TrackingRecordItemWidget
 from src.chronica.ui.widgets.tracking_record_viewer import TrackingRecordViewer
 from src.chronica.ui.presentation.interpreters.session_history_interpreter import SessionHistoryInterpreter
+from src.chronica.ui.presentation.mappers.usage_report_data_mapper import UsageReportDataMapper
 from src.chronica.ui.styles.style_loader import load_stylesheet
 from src.chronica.common.runtime import AppRuntimeContext
 
@@ -19,6 +20,7 @@ class TrackingArchivePanel(QFrame):
         self.setObjectName("trackingArchivePanel")
         self.app_ctx = app_ctx
         self.interpreter = SessionHistoryInterpreter(app_ctx.ts_ctx_provider, app_ctx.session_timeline_settings)
+        self.mapper = UsageReportDataMapper(app_ctx.ts_ctx_provider)
 
         layout = QHBoxLayout(self)
         layout.setContentsMargins(12, 12, 12, 12)
@@ -34,19 +36,19 @@ class TrackingArchivePanel(QFrame):
         self.setStyleSheet(load_stylesheet("tracking_archive_panel"))
 
     def _on_current_record_changed(self, current: QListWidgetItem | None, previous: QListWidgetItem | None):
-        report_treeview = self.tracking_record_viewer.report_treeview
+        usage_report_view = self.tracking_record_viewer.usage_report
         session_timeline_view = self.tracking_record_viewer.session_timeline
         
         if current is None:
-            report_treeview.tree_widget.clear()
+            usage_report_view.clear()
             return
 
         item_widget = self.tracking_record_selector.list_widget.itemWidget(current)
 
         if not isinstance(item_widget, TrackingRecordItemWidget):
-            report_treeview.tree_widget.clear()
+            usage_report_view.clear()
             return
 
         tracking_record = item_widget.record
-        report_treeview.set_report(tracking_record.app_usage_report)
+        usage_report_view.set_report(self.mapper.map(tracking_record))
         session_timeline_view.set_timeline(self.interpreter.to_session_timeline(tracking_record.session_history))

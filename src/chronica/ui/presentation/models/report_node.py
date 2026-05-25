@@ -34,7 +34,7 @@ class ReportNodeMapper:
         return ReportNode(
             name=window_usage_info.window_title,
             duration=simplistic_simplified_ms(window_usage_info.total_usage_time_ms),
-            detail=f"focus count: {window_usage_info.focus_count} time(s)",
+            detail=f"focus count: {window_usage_info.session_count} time(s)",
             children=self._from_session_history(window_usage_info.session_history)
         )
 

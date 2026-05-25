@@ -15,6 +15,12 @@ from .session_timeline_models import (
     SessionTimeline
 )
 
+from .usage_report_models import (
+    WindowUsageItemData,
+    AppUsageItemData,
+    UsageReportData
+)
+
 __all__ = [
     "SessionDisplay",
     "AppUsageInfoDisplay",
@@ -26,5 +32,8 @@ __all__ = [
     "RecentSessionsItemData",
     "SessionTimelineSegment",
     "SessionTimelineRow",
-    "SessionTimeline"
+    "SessionTimeline",
+    "WindowUsageItemData",
+    "AppUsageItemData",
+    "UsageReportData"
 ]
