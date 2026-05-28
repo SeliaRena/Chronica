@@ -1,0 +1,15 @@
+QFrame#plainIconHeader {
+    border: none;
+    background-color: transparent;
+}
+
+QLabel#plainIconHeaderIconLabel {
+    border: none;
+    background-color: transparent;
+}
+
+QLabel#plainIconHeaderTitleLabel {
+    color: #D7F3FF;
+    font-weight: 700;
+    font-size: $font_size$px;
+}

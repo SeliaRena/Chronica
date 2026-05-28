@@ -6,6 +6,7 @@ QWidget#digitalTimeStrip {
 
 QLabel#digitalTimeStripTitle {
     color: #9aa7b8;
+    font-size: 12px;
     font-weight: 600;
 }
 
@@ -24,12 +25,12 @@ QFrame#digitalTimeEmphasizedSegment {
 QLabel#digitalTimeShadedLabel {
     color: #44505f;
     font-family: "DSEG7 Classic", "Digital-7", "JetBrains Mono", "Consolas", monospace;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 QLabel#digitalTimeEmphasizedLabel {
     color: #d7f3ff;
     font-family: "DSEG7 Classic", "Digital-7", "JetBrains Mono", "Consolas", monospace;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
 }

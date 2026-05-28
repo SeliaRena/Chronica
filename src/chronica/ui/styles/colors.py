@@ -1,22 +1,20 @@
-COLORS = {
-    "bg_app": "#111318",
-    "bg_secondary": "#171B22",
-    "bg_panel": "#1D2129",
-    "bg_panel_hover": "#252B36",
+BLACK_PALETTE = {
+    "page_bg": "#05070B",
+    "panel_bg": "#070A10",
+    "panel_elevated": "#0A0E16",
+    "card_bg": "#0D111A",
+    "card_bg_alt": "#101520",
+    "card_header": "#171B26",
 
-    "border_soft": "#2F3745",
-    "border_active": "#46546F",
+    "border_soft": "rgba(180, 195, 220, 18)",
+    "border_card": "rgba(180, 195, 220, 26)",
+    "border_hover": "rgba(210, 225, 255, 40)",
 
-    "text_primary": "#E8ECF1",
-    "text_secondary": "#B8C0CC",
-    "text_muted": "#7F8896",
+    "text_primary": "#F4F7FF",
+    "text_secondary": "rgba(185, 200, 225, 150)",
+    "text_muted": "rgba(145, 160, 185, 110)",
 
-    "accent_primary": "#4FD1C5",
-    "accent_secondary": "#38BDF8",
-    "accent_optional": "#C084FC",
-
-    "state_idle": "#667085",
-    "state_tracking": "#4FD1C5",
-    "state_warning": "#F6C453",
-    "state_error": "#F87171",
+    "accent_violet": "#8B5CF6",
+    "accent_blue": "#3B82F6",
+    "accent_cyan": "#22D3EE",
 }

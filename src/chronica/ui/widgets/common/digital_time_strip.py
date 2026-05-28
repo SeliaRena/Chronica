@@ -9,7 +9,8 @@ from PySide6.QtWidgets import (
 )
 
 from src.chronica.ui.resources import (
-    Stylesheets
+    Stylesheets,
+    QIcons
 )
 
 class DigitalTimeStrip(QWidget):
@@ -24,9 +25,18 @@ class DigitalTimeStrip(QWidget):
         super().__init__(parent)
 
         self.setObjectName("digitalTimeStrip")
+        
+        time_icon = QIcons.load("wall-clock.png")
+        self._time_icon_label = QLabel()
+        self._time_icon_label.setObjectName("digitalTimeIconLabel")
+        self._time_icon_label.setScaledContents(True)
+        self._time_icon_label.setPixmap(time_icon.pixmap(20, 20))
+        self._time_icon_label.setFixedSize(20, 20)
+        self._time_icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self._title_label = QLabel(title)
         self._title_label.setObjectName("digitalTimeStripTitle")
+        self._title_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
         self._shaded_segment = QFrame()
         self._shaded_segment.setObjectName("digitalTimeShadedSegment")
@@ -61,8 +71,10 @@ class DigitalTimeStrip(QWidget):
         main_layout = QHBoxLayout(self)
         main_layout.setContentsMargins(10, 6, 10, 6)
         main_layout.setSpacing(12)
-        main_layout.addWidget(self._title_label, stretch=1)
+        main_layout.addWidget(self._time_icon_label, 0, alignment=Qt.AlignmentFlag.AlignCenter)
+        main_layout.addWidget(self._title_label, 0)
         main_layout.addLayout(time_layout)
+        main_layout.addStretch()
         
         self.setStyleSheet(Stylesheets.load("common", "digital_time_strip.qss"))
 

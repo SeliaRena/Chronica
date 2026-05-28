@@ -1,0 +1,5 @@
+QFrame#usageReportWidget {
+    border: none;
+    background-color: transparent;
+    border-radius: 12px;
+}

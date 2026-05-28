@@ -1,17 +1,17 @@
 QFrame#ExpandableSection {
-    border: 1px solid #2a2f3a;
+    border: 1px solid #323232;
     border-radius: 8px;
-    background-color: #11151c;
+    background-color: transparent;
 }
 
 QWidget#ExpandableSectionHeader {
-    background-color: #171d27;
+    background-color: #1b1b1b;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
 
 QWidget#ExpandableSectionHeader:hover {
-    background-color: #1d2633;
+    background-color: #323232;
 }
 
 QLabel#ExpandableSectionTitle {
@@ -25,5 +25,5 @@ QToolButton#ExpandableSectionToggleButton {
 }
 
 QWidget#ExpandableSectionContent {
-    background-color: #11151c;
+    background-color: #0a0a0a;
 }

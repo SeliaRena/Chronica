@@ -1,6 +1,6 @@
 from PySide6.QtGui import QIcon
-from PySide6.QtCore import QFileInfo
-from PySide6.QtWidgets import QFileIconProvider
+from PySide6.QtCore import QFileInfo, Qt
+from PySide6.QtWidgets import QFileIconProvider, QLabel
 
 from src.chronica.common.resource_locator import ResourceLocator
 
@@ -10,6 +10,32 @@ class QIcons:
     @staticmethod
     def load(*path_parts: str) -> QIcon:
         return QIcon(str(ResourceLocator.ui_icon(*path_parts)))
+    
+    @staticmethod
+    def make_icon_label(icon: QIcon, *, w: int = 24, h: int = 24, object_name: str | None = None) -> QLabel:
+        """
+        Simple function to create a QLabel with the given icon. \n
+        This is useful when you need to make an atomic widget out of an icon, and have free control over its
+        objectName to set whatever stylesheet you want. \n\n
+        
+        initialized properties: \n
+        - scaledContents (True) \n
+        - fixedSize (w, h) \n
+        - alignment (center) \n
+        - pixmap (icon.pixmap(w, h)) \n
+        - objectName (optional objectName, will not set if arg is None) \n
+        """
+        
+        label = QLabel()
+        label.setScaledContents(True)
+        label.setFixedSize(w, h)
+        label.setPixmap(icon.pixmap(w, h))
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        if object_name is not None:
+            label.setObjectName(object_name)
+        
+        return label
 
 class AppIconProvider:
     def __init__(self):
@@ -39,4 +65,4 @@ class AppIconProvider:
         return icon
 
     def fallback_icon(self) -> QIcon:
-        return QIcons.load("application.svg")
+        return QIcons.load("software.png")

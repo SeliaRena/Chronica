@@ -3,6 +3,7 @@ from src.chronica.infra.logging.logging_config import setup_runtime_logger
 from src.chronica.infra.report.report_writer import write_report
 from src.chronica.ui.pages.main_window import ChronicaMainWindow
 from src.chronica.ui.controllers.runtime_controller import RuntimeController
+from src.chronica.ui.resources import QFonts
 from src.chronica.common.runtime import build_app_runtime_context
 from PySide6.QtWidgets import QApplication
 import time
@@ -37,6 +38,8 @@ def run_gui() -> int:
     window = ChronicaMainWindow(app_runtime_context)
     engine = ClockheartEngine()
     controller = RuntimeController(window, engine)
+    
+    QFonts.load_all_ui_fonts()
     
     exit_code = 0
     

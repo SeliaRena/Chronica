@@ -1,0 +1,13 @@
+QFrame#windowUsageItemWidget {
+    border: 1px solid #5e5e5e;
+    background-color: #0a0a0a;
+    border-radius: 8px;
+}
+
+QFrame#windowItemMajorStats,
+QFrame#windowItemProgressBars,
+QFrame#windowItemMinorStats {
+    border: none;
+    background-color: transparent;
+    border-radius: 8px;
+}

@@ -25,6 +25,10 @@ class UsageReportWidget(QFrame):
         self.app_icon_provider = app_icon_provider
 
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(10, 10, 10, 10)
+        layout.setSpacing(12)
 
         for app_item_data in self.data.apps:
             layout.addWidget(AppUsageItemWidget(app_item_data, self.app_icon_provider))
+        
+        self.setStyleSheet(Stylesheets.load("usage_report", "usage_report_widget.qss"))

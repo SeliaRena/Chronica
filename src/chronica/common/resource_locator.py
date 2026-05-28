@@ -15,5 +15,9 @@ class ResourceLocator:
         return ResourceLocator.ui_asset("icons") / Path(*parts)
     
     @staticmethod
+    def ui_font(*parts: str) -> Path:
+        return ResourceLocator.ui_asset("fonts") / Path(*parts)
+    
+    @staticmethod
     def stylesheet(*parts: str) -> Path:
         return paths.STYLES_DIR.joinpath(*parts)

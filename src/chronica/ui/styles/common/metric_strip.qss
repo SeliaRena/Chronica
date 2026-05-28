@@ -1,0 +1,35 @@
+QFrame#metricStrip {
+    border: none;
+    background-color: transparent;
+    border-left: 3px solid #7F8A99;
+}
+
+QLabel#metricStripTitleLabel {
+    background-color: #0a0a0a;
+    color: #7F8A99;
+
+    border: 1px solid #323232;
+    border-radius: 5px;
+
+    padding-right: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+QLabel#metricStripValueLabel {
+    background-color: #1b1b1b;
+    color: #D7F3FF;
+
+    border: 1px solid #323232;
+    border-radius: 5px;
+
+    padding-left: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    font-size: 13px;
+    font-weight: 700;
+}

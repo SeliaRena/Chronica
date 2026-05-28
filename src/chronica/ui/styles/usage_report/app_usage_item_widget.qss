@@ -1,0 +1,19 @@
+QFrame#appUsageItemWidget {
+    border: 1px solid #5e5e5e;
+    background-color: #0a0a0a;
+    border-radius: 8px;
+}
+
+QFrame#appItemMajorStats,
+QFrame#appItemProgressRows,
+QFrame#appItemMinorStats {
+    border: none;
+    background-color: transparent;
+    border-radius: 8px;
+}
+
+QFrame#appItemWindowItems {
+    border: none;
+    background-color: #0a0a0a;
+    border-radius: 8px;
+}

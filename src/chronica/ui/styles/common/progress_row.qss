@@ -1,0 +1,44 @@
+QFrame#progressRow {
+    background-color: #0a0a0a;
+    border: 1px solid #323232;
+    border-radius: 9px;
+}
+
+QLabel#progressRowTitleLabel {
+    font-size: 12px;
+    font-weight: 700;
+
+    color: #D7F3FF;
+}
+
+QLabel#progressRowSubtitleLabel {
+    font-size: 11px;
+    font-weight: 600;
+    font-style: italic;
+    
+    color: #7F8A99;
+}
+
+QProgressBar#progressRowProgressBar {
+    background-color: #1b1b1b;
+    border-radius: 4px;
+
+    min-height: 8px;
+    max-height: 8px;
+
+    text-align: center;
+    color: transparent;
+}
+
+QProgressBar#progressRowProgressBar::chunk {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 1, y2: 0,
+        stop: 0 #0891B2,
+        stop: 0.42 #2563EB,
+        stop: 0.72 #7C3AED,
+        stop: 1 #A855F7
+    );
+
+    border-radius: 4px;
+}

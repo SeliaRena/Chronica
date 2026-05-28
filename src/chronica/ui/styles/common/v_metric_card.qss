@@ -1,0 +1,34 @@
+QFrame#vMetricCard {
+    background-color: #0a0a0a;
+    
+    border: 1px solid #323232;
+    border-radius: 12px;
+}
+
+QLabel#vMetricCardTitleLabel {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 1, y2: 0,
+        stop: 0 rgba(34, 211, 238, 70),
+        stop: 0.55 rgba(59, 130, 246, 50),
+        stop: 1 rgba(139, 92, 246, 45)
+    );
+    color: #D7F3FF;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    min-height: 18px;
+    max-height: 18px;
+
+    border: none;
+    border-radius: 9px;
+
+    padding: 4px;
+}
+
+QLabel#vMetricCardValueLabel {
+    color: #D7F3FF;
+    font-size: $font_size$px;
+    font-weight: 800;
+}

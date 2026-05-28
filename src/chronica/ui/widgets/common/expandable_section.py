@@ -57,11 +57,11 @@ class ExpandableSection(QFrame):
         self._content_container.setObjectName("ExpandableSectionContent")
 
         self._content_layout = QVBoxLayout(self._content_container)
-        self._content_layout.setContentsMargins(12, 8, 12, 12)
+        self._content_layout.setContentsMargins(10, 10, 10, 10)
         self._content_layout.setSpacing(8)
 
         main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setContentsMargins(5, 5, 5, 5)
         main_layout.setSpacing(0)
         main_layout.addWidget(self._header)
         main_layout.addWidget(self._content_container)

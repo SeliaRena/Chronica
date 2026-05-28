@@ -1,0 +1,15 @@
+QFrame#usageReportView {
+    background-color: #0a0a0a;
+    border: none;
+    border-radius: 12px;
+}
+
+QFrame#usageReportScrollAreaFrame {
+    background-color: #1b1b1b;
+    border: none;
+    border-radius: 12px;
+}
+
+QScrollArea#usageReportScrollArea {
+    background-color: transparent;
+}
