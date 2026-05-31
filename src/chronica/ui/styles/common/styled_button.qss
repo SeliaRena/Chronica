@@ -1,0 +1,37 @@
+QPushButton#styledButton {
+    background-color: #0a0a0a;
+    color: #dddcde;
+
+    border: 1px solid #5e5e5e;
+    border-radius: 15px;
+
+    min-height: 30px;
+    min-width: 100px;
+
+    text-align: center;
+    font-size: 12px;
+    font-weight: 400;
+
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+QPushButton#styledButton:hover {
+    background-color: #5e5e5e;
+    border: 1px solid #dddcde;
+}
+
+QPushButton#styledButton:pressed {
+    background-color: #dddcde;
+    color: #0a0a0a;
+}
+
+QPushButton#styledButton:disabled {
+    border: 1px solid #1b1b1b;
+    color: #1b1b1b;
+}
+
+QPushButton#styledButton[active="true"] {
+    background-color: #dddcde;
+    color: #0a0a0a;
+}

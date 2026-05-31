@@ -5,9 +5,9 @@ QWidget#digitalTimeStrip {
 }
 
 QLabel#digitalTimeStripTitle {
-    color: #9aa7b8;
+    color: #dddcde;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 QFrame#digitalTimeShadedSegment {

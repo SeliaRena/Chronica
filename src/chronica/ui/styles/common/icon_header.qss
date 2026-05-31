@@ -31,6 +31,7 @@ QLabel#iconHeaderIconLabel {
 }
 
 QLabel#iconHeaderTitleLabel {
+    font-family: "Sora";
     font-size: $title_font_size$px;
     $title_font_weight$
     $title_font_style$

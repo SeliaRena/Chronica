@@ -1,18 +1,30 @@
 QFrame#trackingRecordSelector {
-    background-color: #1D2129;
-    border: none;
+    background-color: #1b1b1b;
+    border: 1px solid #5e5e5e;
     border-radius: 10px;
+}
+
+QFrame#selectorRecordList {
+    background-color: #0a0a0a;
+    border: none;
+    border-radius: 8px;
 }
 
 QListWidget#selectorListWidget {
-    background-color: transparent;
+    background-color: #1b1b1b;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
+}
+
+QListWidget#selectorListWidget::item {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 QFrame#selectorListWrapper {
-    border: 1px solid #C084FC;
-    border-radius: 5px;
+    background-color: #1b1b1b;
+    border: none;
+    border-radius: 8px;
 }
 
 QLabel#titleLabel {

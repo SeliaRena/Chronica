@@ -21,6 +21,12 @@ from src.chronica.storage.sqlite.query import (
     TrackingRecordQuery
 )
 
+from src.chronica.ui.resources import (
+    Stylesheets,
+    QIcons
+)
+
+from src.chronica.ui.widgets.common import PlainIconHeader
 from src.chronica.ui.styles.style_loader import load_stylesheet
 from src.chronica.common.resource_locator import ResourceLocator
 
@@ -92,7 +98,7 @@ class TrackingRecordFilterBar(QFrame):
         layout.addWidget(self.filter_tool_open_button)
         
         self._connect_internal_signals()
-        self.setStyleSheet(load_stylesheet("tracking_record_filter_bar"))
+        self.setStyleSheet(Stylesheets.load("tracking_record_filter_bar.qss"))
 
     def make_query(self) -> TrackingRecordQuery:
         return TrackingRecordQuery(
@@ -109,25 +115,40 @@ class TrackingRecordFilterBar(QFrame):
         popup_layout.setContentsMargins(10, 10, 10, 10)
         popup_layout.setSpacing(12)
         
-        common_label_font = QFont()
-        common_label_font.setPointSize(8)
+        time_filter_header = PlainIconHeader(
+            QIcons.get("calendar-clock.svg"),
+            "Time Filter:",
+            icon_w=16,
+            icon_h=16,
+            title_px=12,
+        )
         
-        time_filter_label = QLabel("Time Filters:")
-        time_filter_label.setFont(common_label_font)
-        duration_filter_label = QLabel("Duration Filters:")
-        duration_filter_label.setFont(common_label_font)
-        sort_mode_label = QLabel("Sort Mode:")
-        sort_mode_label.setFont(common_label_font)
+        duration_filter_header = PlainIconHeader(
+            QIcons.get("duration-alt.svg"),
+            "Duration Filter:",
+            icon_w=16,
+            icon_h=16,
+            title_px=12,
+        )
+        
+        sort_mode_header = PlainIconHeader(
+            QIcons.get("apps-sort.svg"),
+            "Sort Mode:",
+            icon_w=16,
+            icon_h=16,
+            title_px=12,
+        )
         
         combos = QWidget()
         combos.setObjectName("popupCombos")
         combos_layout = QVBoxLayout(combos)
         combos_layout.setContentsMargins(12, 12, 12, 12)
-        combos_layout.addWidget(time_filter_label)
+        combos_layout.setSpacing(10)
+        combos_layout.addWidget(time_filter_header)
         combos_layout.addWidget(self.time_filter_combo)
-        combos_layout.addWidget(duration_filter_label)
+        combos_layout.addWidget(duration_filter_header)
         combos_layout.addWidget(self.duration_filter_combo)
-        combos_layout.addWidget(sort_mode_label)
+        combos_layout.addWidget(sort_mode_header)
         combos_layout.addWidget(self.sort_mode_combo)
         
         buttons = QWidget()

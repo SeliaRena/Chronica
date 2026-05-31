@@ -21,7 +21,7 @@ QLabel#metricStripTitleLabel {
 
 QLabel#metricStripValueLabel {
     background-color: #1b1b1b;
-    color: #D7F3FF;
+    color: #dddcde;
 
     border: 1px solid #323232;
     border-radius: 5px;

@@ -13,7 +13,7 @@ QLabel#vMetricCardTitleLabel {
         stop: 0.55 rgba(59, 130, 246, 50),
         stop: 1 rgba(139, 92, 246, 45)
     );
-    color: #D7F3FF;
+    color: #dddcde;
 
     font-size: 12px;
     font-weight: 600;
@@ -28,7 +28,8 @@ QLabel#vMetricCardTitleLabel {
 }
 
 QLabel#vMetricCardValueLabel {
-    color: #D7F3FF;
+    color: #dddcde;
+
     font-size: $font_size$px;
     font-weight: 800;
 }

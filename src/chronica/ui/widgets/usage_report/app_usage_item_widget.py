@@ -44,7 +44,8 @@ class AppUsageItemWidget(QFrame):
             icon=self.app_icon_provider.icon_for_path(self.data.app_path),
             title=self.data.app_name,
             subtitle=self.data.app_path,
-            title_px=16,
+            title_px=18,
+            title_bold=False
         )
         
         # 2. Digital Time Strip

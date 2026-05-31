@@ -30,5 +30,7 @@ class UsageReportWidget(QFrame):
 
         for app_item_data in self.data.apps:
             layout.addWidget(AppUsageItemWidget(app_item_data, self.app_icon_provider))
-        
+
+        layout.addStretch()
+
         self.setStyleSheet(Stylesheets.load("usage_report", "usage_report_widget.qss"))

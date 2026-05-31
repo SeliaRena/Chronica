@@ -5,6 +5,7 @@ from .icon_header import IconHeader
 from .expandable_section import ExpandableSection
 from .digital_time_strip import DigitalTimeStrip
 from .plain_icon_header import PlainIconHeader
+from .styled_button import StyledButton
 
 __all__ = [
     "VMetricCard",
@@ -13,5 +14,6 @@ __all__ = [
     "IconHeader",
     "ExpandableSection",
     "DigitalTimeStrip",
-    "PlainIconHeader"
+    "PlainIconHeader",
+    "StyledButton"
 ]

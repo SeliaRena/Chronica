@@ -1,18 +1,18 @@
 QFrame#trackingRecordFilterBar {
-    background-color: #1D2129;
-    border: 1px solid #C084FC;
-    border-radius: 5px;
+    background-color: #0a0a0a;
+    border: none;
+    border-radius: 8px;
 }
 
 QWidget#filterOptionsPopup {
-    background-color: #171B22;
+    background-color: #0a0a0a;
     border: none;
     border-radius: 5px;
 }
 
 QWidget#popupCombos,
 QWidget#popupButtons {
-    background-color: #1D2129;
-    border: 1px solid #C084FC;
+    background-color: #0a0a0a;
+    border: 1px solid #5e5e5e;
     border-radius: 5px;
 }

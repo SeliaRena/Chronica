@@ -28,15 +28,15 @@ class UsageReportView(QFrame):
         self.app_icon_provider = app_icon_provider
 
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(16, 16, 16, 16)
-        layout.setSpacing(16)
+        layout.setContentsMargins(14, 14, 14, 14)
+        layout.setSpacing(12)
 
         self.header = PlainIconHeader(
-            QIcons.load("data-analytics.png"),
+            QIcons.load("business-report.png"),
             "Usage Report",
-            icon_w=28,
-            icon_h=28,
-            title_px=14,
+            icon_w=24,
+            icon_h=24,
+            title_px=12,
         )
 
         self.usage_report_widget = self._default_widget()

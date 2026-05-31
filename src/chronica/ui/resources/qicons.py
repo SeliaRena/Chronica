@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import QFileInfo, Qt
 from PySide6.QtWidgets import QFileIconProvider, QLabel
@@ -6,10 +8,25 @@ from src.chronica.common.resource_locator import ResourceLocator
 
 from pathlib import Path
 
+_GLOBAL_ICON_CACHE: dict[str, QIcon] = {}
+
 class QIcons:
     @staticmethod
     def load(*path_parts: str) -> QIcon:
         return QIcon(str(ResourceLocator.ui_icon(*path_parts)))
+    
+    @staticmethod
+    def preload_ui_icons() -> None:
+        for icon_path in ResourceLocator.ui_icon().iterdir():
+            filename = icon_path.name
+            _GLOBAL_ICON_CACHE[filename] = QIcon(str(icon_path))
+
+    @staticmethod
+    def get(filename: str) -> QIcon:
+        if filename not in _GLOBAL_ICON_CACHE:
+            raise ValueError(f"Unregistered icon: {filename}")
+        
+        return _GLOBAL_ICON_CACHE[filename]
     
     @staticmethod
     def make_icon_label(icon: QIcon, *, w: int = 24, h: int = 24, object_name: str | None = None) -> QLabel:
@@ -65,4 +82,4 @@ class AppIconProvider:
         return icon
 
     def fallback_icon(self) -> QIcon:
-        return QIcons.load("software.png")
+        return QIcons.get("software.png")

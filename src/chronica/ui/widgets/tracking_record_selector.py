@@ -6,7 +6,18 @@ from PySide6.QtWidgets import (
     QLabel,
     QVBoxLayout
 )
+
 from PySide6.QtGui import QFont
+from PySide6.QtCore import Qt
+
+from src.chronica.ui.resources import (
+    Stylesheets,
+    QIcons
+)
+
+from src.chronica.ui.widgets.common import (
+    PlainIconHeader
+)
 
 from src.chronica.ui.styles.style_loader import load_stylesheet
 from src.chronica.ui.widgets.tracking_record_item_widget import TrackingRecordItemWidget
@@ -21,28 +32,43 @@ class TrackingRecordSelector(QFrame):
         self.setObjectName("trackingRecordSelector")
         self.app_ctx = app_ctx
         
-        title_label = QLabel("Selected Records")
-        title_label.setObjectName("titleLabel")
-        title_font = QFont()
-        title_font.setPointSize(10)
-        title_font.setBold(True)
-        title_label.setFont(title_font)
-        
         self.filter_bar = TrackingRecordFilterBar(self)
         self.filter_bar.query_applied.connect(self._on_query_applied)
+        
+        self.record_list_header = PlainIconHeader(
+            QIcons.get("folder.png"),
+            "Selected Tracking Records",
+            icon_w=24,
+            icon_h=24,
+            title_px=12,
+        )
 
         self.list_widget = QListWidget(self)
         self.list_widget.setObjectName("selectorListWidget")
+        self.list_widget.setVerticalScrollMode(QListWidget.ScrollMode.ScrollPerPixel)
+        self.list_widget.setTextElideMode(Qt.TextElideMode.ElideRight)
+        self.list_widget.setResizeMode(QListWidget.ResizeMode.Adjust)
+        
         list_wrapper = QFrame()
         list_wrapper.setObjectName("selectorListWrapper")
+        
         wrapper_layout = QVBoxLayout(list_wrapper)
-        wrapper_layout.setContentsMargins(5, 5, 5, 5)
-        wrapper_layout.addWidget(self.list_widget, 1)
+        wrapper_layout.setContentsMargins(10, 10, 10, 10)
+        wrapper_layout.addWidget(self.list_widget)
+        
+        self.record_list = QFrame()
+        self.record_list.setObjectName("selectorRecordList")
+        self.record_list.setFrameShape(QFrame.Shape.NoFrame)
+        
+        record_list_layout = QVBoxLayout(self.record_list)
+        record_list_layout.setContentsMargins(12, 12, 12, 12)
+        record_list_layout.setSpacing(12)
+        record_list_layout.addWidget(self.record_list_header)
+        record_list_layout.addWidget(list_wrapper)
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.filter_bar)
-        layout.addWidget(title_label)
-        layout.addWidget(list_wrapper)
+        layout.addWidget(self.record_list)
         layout.setContentsMargins(16, 16, 16, 16)
         layout.setSpacing(12)
         
@@ -52,7 +78,10 @@ class TrackingRecordSelector(QFrame):
         item = QListWidgetItem(self.list_widget)
         widget = TrackingRecordItemWidget(record)
 
-        item.setSizeHint(widget.sizeHint())
+        hint = widget.sizeHint()
+        hint.setHeight(hint.height() + 10)
+        hint.setWidth(self.list_widget.width() - 20)
+        item.setSizeHint(hint)
 
         self.list_widget.addItem(item)
         self.list_widget.setItemWidget(item, widget)

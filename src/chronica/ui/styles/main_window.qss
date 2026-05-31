@@ -1,4 +1,9 @@
 #root {
-    background: #111318;
-    color: #E8ECF1;
+    background: #0a0a0a;
+    color: #dddcde;
+}
+
+QWidget {
+    font-family: "Segoe UI";
+    color: #dddcde;
 }

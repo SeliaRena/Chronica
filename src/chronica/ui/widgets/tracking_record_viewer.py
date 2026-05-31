@@ -8,6 +8,16 @@ from PySide6.QtWidgets import (
     QFrame
 )
 
+from src.chronica.ui.widgets.common import (
+    PlainIconHeader,
+    StyledButton
+)
+
+from src.chronica.ui.resources import (
+    Stylesheets,
+    QIcons
+)
+
 from src.chronica.ui.styles.style_loader import load_stylesheet
 from src.chronica.ui.widgets.app_usage_report_treeview import AppUsageReportTreeview
 from src.chronica.ui.widgets.usage_report import UsageReportView
@@ -49,18 +59,32 @@ class TrackingRecordViewer(QFrame):
         
     def _build_view_mode_bar(self) -> QWidget:
         view_mode_bar = QWidget()
+        view_mode_buttons = QWidget()
         
-        layout = QHBoxLayout(view_mode_bar)
-        layout.setContentsMargins(12, 12, 12, 12)
+        layout = QHBoxLayout(view_mode_buttons)
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(12)
         
-        self.show_app_usage_report_button = QPushButton("View App Usage Report")
-        self.show_app_usage_report_button.setObjectName("showAppUsageReportButton")
-        self.show_session_timeline_button = QPushButton("View Timeline Chart")
-        self.show_session_timeline_button.setObjectName("showSessionTimelineButton")
+        self.bar_header = PlainIconHeader(
+            QIcons.load("dashboard.png"),
+            "View Modes",
+            icon_w=24,
+            icon_h=24,
+            title_px=12
+        )
         
-        layout.addWidget(self.show_app_usage_report_button)
-        layout.addWidget(self.show_session_timeline_button)
+        self.show_app_usage_report_button = StyledButton("View Usage Report")
+        self.show_session_timeline_button = StyledButton("View Session Timeline")
+        
+        layout.addWidget(self.show_app_usage_report_button, 0)
+        layout.addWidget(self.show_session_timeline_button, 0)
+        layout.addStretch()
+        
+        bar_layout = QVBoxLayout(view_mode_bar)
+        bar_layout.setContentsMargins(12, 12, 12, 12)
+        bar_layout.setSpacing(12)
+        bar_layout.addWidget(self.bar_header)
+        bar_layout.addWidget(view_mode_buttons)
         
         return view_mode_bar
     
@@ -82,8 +106,8 @@ class TrackingRecordViewer(QFrame):
             
     def switch_to_usage_report(self) -> None:
         self.display_section_stack.setCurrentIndex(0)
-        self.set_active_button("showAppUsageReportButton")
+        # self.set_active_button("showAppUsageReportButton")
         
     def switch_to_session_timeline(self) -> None:
         self.display_section_stack.setCurrentIndex(1)
-        self.set_active_button("showSessionTimelineButton")
+        # self.set_active_button("showSessionTimelineButton")

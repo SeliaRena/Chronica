@@ -30,8 +30,8 @@ class TrackingArchivePanel(QFrame):
         self.tracking_record_selector.list_widget.currentItemChanged.connect(self._on_current_record_changed)
         self.tracking_record_viewer = TrackingRecordViewer(self.app_ctx)
 
-        layout.addWidget(self.tracking_record_selector, 1)
-        layout.addWidget(self.tracking_record_viewer, 3)
+        layout.addWidget(self.tracking_record_selector, 2)
+        layout.addWidget(self.tracking_record_viewer, 5)
 
         self.setStyleSheet(load_stylesheet("tracking_archive_panel"))
 

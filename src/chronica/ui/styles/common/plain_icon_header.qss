@@ -9,7 +9,7 @@ QLabel#plainIconHeaderIconLabel {
 }
 
 QLabel#plainIconHeaderTitleLabel {
-    color: #D7F3FF;
-    font-weight: 700;
+    color: #dddcde;
+    font-weight: $font_weight$;
     font-size: $font_size$px;
 }

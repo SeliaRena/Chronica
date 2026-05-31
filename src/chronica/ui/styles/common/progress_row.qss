@@ -8,7 +8,7 @@ QLabel#progressRowTitleLabel {
     font-size: 12px;
     font-weight: 700;
 
-    color: #D7F3FF;
+    color: #dddcde;
 }
 
 QLabel#progressRowSubtitleLabel {
