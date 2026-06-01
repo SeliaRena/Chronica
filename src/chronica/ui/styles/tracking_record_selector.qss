@@ -1,6 +1,6 @@
 QFrame#trackingRecordSelector {
     background-color: #1b1b1b;
-    border: 1px solid #5e5e5e;
+    border: none;
     border-radius: 10px;
 }
 

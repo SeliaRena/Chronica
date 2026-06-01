@@ -1,0 +1,29 @@
+QPushButton#controlBarButton {
+    background-color: transparent;
+    color: #dddcde;
+
+    border: none;
+    border-radius: 5px;
+
+    min-height: 32px;
+
+    font-size: 12px;
+
+    text-align: left;
+
+    padding-left: 8px;
+    padding-right: 0px;
+}
+
+QPushButton#controlBarButton:hover {
+    background-color: #232323;
+}
+
+QPushButton#controlBarButton:disabled {
+    color: #323232;
+}
+
+QPushButton#controlBarButton[active="true"] {
+    border: 1px solid #4FD1C5;
+    font-weight: 700;
+}

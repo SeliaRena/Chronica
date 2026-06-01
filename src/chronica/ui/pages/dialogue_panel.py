@@ -45,17 +45,11 @@ class DialoguePanel(QFrame):
 
         self.speaker_label = QLabel("Chronica")
         self.speaker_label.setObjectName("dialogueSpeaker")
-        speaker_font = QFont()
-        speaker_font.setBold(True)
-        self.speaker_label.setFont(speaker_font)
-
+        
         self.text_label = QLabel()
         self.text_label.setObjectName("dialogueText")
         self.text_label.setWordWrap(True)
         self.text_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
-        
-        text_label_font = load_font(ResourceLocator.character_asset("chronica", "fonts", "VCR_OSD_MONO_1.001.ttf"))
-        self.text_label.setFont(text_label_font)
 
         self.typewriter = TypewriterController(self.text_label, _TYPEWRITER_DELAY)
         self.set_dialogue("Chronica", random_pick_dialogue(Scenario.BOOTUP))

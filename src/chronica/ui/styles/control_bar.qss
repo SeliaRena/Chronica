@@ -1,37 +1,27 @@
 QFrame#controlBar {
-    background-color: #1d2129;
-    border: 1px solid #38BDF8;
+    background-color: #1b1b1b;
+    border: none;
     border-radius: 12px;
 }
 
-QLabel {
-    color: #e8ecf1;
+QFrame#controlBarNavSection,
+QFrame#controlBarControlSection {
+    background-color: #0a0a0a;
+    border: none;
+    border-radius: 8px;
+}
+
+QFrame#controlBarNavButtons,
+QFrame#controlBarControlButtons {
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
 }
 
 QLabel#controlBarTitle {
     color: #4FD1C5;
-}
 
-QPushButton {
-    background-color: #2b3240;
-    color: #e8ecf1;
-    border: 1px solid #3a4457;
-    border-radius: 8px;
-    padding: 10px 12px;
-    text-align: left;
-}
-
-QPushButton:hover {
-    background-color: #364055;
-}
-
-QPushButton:disabled {
-    background-color: #22262f;
-    color: #8b93a3;
-}
-
-QPushButton[active="true"] {
-    background-color: #46546f;
-    border: 1px solid #64748b;
-    font-weight: bold;
+    font-size: 20px;
+    font-weight: 400;
+    font-family: "Sora";
 }

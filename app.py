@@ -5,6 +5,7 @@ from src.chronica.ui.pages.main_window import ChronicaMainWindow
 from src.chronica.ui.controllers.runtime_controller import RuntimeController
 from src.chronica.ui.resources import QFonts, QIcons
 from src.chronica.common.runtime import build_app_runtime_context
+from src.chronica.common.resource_locator import ResourceLocator
 from PySide6.QtWidgets import QApplication
 import time
 import logging
@@ -37,6 +38,7 @@ def run_gui() -> int:
     
     # pre-initialization
     app_runtime_context = build_app_runtime_context()
+    QFonts.load_directory(ResourceLocator.character_asset("chronica", "fonts"))
     QFonts.load_all_ui_fonts()
     QIcons.preload_ui_icons()
     

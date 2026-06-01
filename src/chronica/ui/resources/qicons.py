@@ -27,32 +27,6 @@ class QIcons:
             raise ValueError(f"Unregistered icon: {filename}")
         
         return _GLOBAL_ICON_CACHE[filename]
-    
-    @staticmethod
-    def make_icon_label(icon: QIcon, *, w: int = 24, h: int = 24, object_name: str | None = None) -> QLabel:
-        """
-        Simple function to create a QLabel with the given icon. \n
-        This is useful when you need to make an atomic widget out of an icon, and have free control over its
-        objectName to set whatever stylesheet you want. \n\n
-        
-        initialized properties: \n
-        - scaledContents (True) \n
-        - fixedSize (w, h) \n
-        - alignment (center) \n
-        - pixmap (icon.pixmap(w, h)) \n
-        - objectName (optional objectName, will not set if arg is None) \n
-        """
-        
-        label = QLabel()
-        label.setScaledContents(True)
-        label.setFixedSize(w, h)
-        label.setPixmap(icon.pixmap(w, h))
-        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        
-        if object_name is not None:
-            label.setObjectName(object_name)
-        
-        return label
 
 class AppIconProvider:
     def __init__(self):

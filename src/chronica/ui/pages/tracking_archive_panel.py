@@ -23,7 +23,7 @@ class TrackingArchivePanel(QFrame):
         self.mapper = UsageReportDataMapper(app_ctx.ts_ctx_provider)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(12, 12, 12, 12)
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(12)
 
         self.tracking_record_selector = TrackingRecordSelector(self.app_ctx)

@@ -20,6 +20,10 @@ from src.chronica.ui.resources import (
     QIcons
 )
 
+from src.chronica.ui.widgets.common.factories import (
+    icon_label
+)
+
 from src.chronica.ui.widgets.elided_label import ElidedLabel
 
 class PlainIconHeader(QFrame):
@@ -44,7 +48,7 @@ class PlainIconHeader(QFrame):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(12)
 
-        self.icon_label = QIcons.make_icon_label(
+        self.icon_label = icon_label(
             icon,
             w=icon_w,
             h=icon_h,
@@ -70,3 +74,13 @@ class PlainIconHeader(QFrame):
                 font_weight=font_weight
             )
         )
+    
+    def set_title(self, title: str) -> None:
+        self.title_label.setText(title)
+        self.title_label.setToolTip(title)
+    
+    def set_icon(self, icon: QIcon, w: int | None = None, h: int | None = None) -> None:
+        if w is not None and h is not None:
+            self.icon_label.setPixmap(icon.pixmap(QSize(w, h)))
+        else:
+            self.icon_label.setPixmap(icon.pixmap(self.icon_label.size()))

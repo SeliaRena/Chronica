@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from PySide6.QtGui import (
     QFontDatabase,
     QFont
@@ -21,6 +23,10 @@ class QFonts:
             raise RuntimeError(f"No font family found in: {font_path}")
     
     @staticmethod
-    def load_all_ui_fonts() -> None:
-        for font_path in ResourceLocator.ui_font().iterdir():
+    def load_directory(dir_path: Path) -> None:
+        for font_path in dir_path.iterdir():
             QFonts.register(font_path)
+    
+    @staticmethod
+    def load_all_ui_fonts() -> None:
+        QFonts.load_directory(ResourceLocator.ui_font())

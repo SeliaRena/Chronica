@@ -1,14 +1,13 @@
 QFrame#dialoguePanel {
-    background-color: #171B22;
-    border: 1px solid #38BDF8;
+    background-color: #1b1b1b;
+    border: none;
     border-radius: 12px;
 }
 
 QLabel#dialoguePortrait {
-    background-color: #252B36;
-    border: 1px solid #C084FC;
+    background-color: #323232;
+    border: none;
     border-radius: 10px;
-    color: #E8ECF1;
     padding: 8px;
     font-weight: bold;
 }
@@ -22,16 +21,22 @@ QLabel#dialogueChannel {
 
 QLabel#dialogueSpeaker {
     color: #4FD1C5;
+
+    font-family: "Sora";
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 400;
 }
 
 QLabel#dialogueText {
-    color: #E8ECF1;
-    font-size: 15px;
+    color: #dddcde;
+
+    font-family: "VCR OSD Mono", monospace;
+    font-size: 14px;
+    
     line-height: 1.4;
-    background-color: #1D2129;
-    border: 1px solid #3A4457;
+    background-color: #0a0a0a;
+
+    border: 1px solid #5e5e5e;
     border-radius: 10px;
     padding: 5px;
 }
