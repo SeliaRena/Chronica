@@ -1,30 +1,49 @@
-QLabel {
-    color: #b8f7ff;
+QFrame#topAppsItemWidget {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 1, y2: 0,
+        stop: 0 #261B3F,
+        stop: 0.55 #181D28,
+        stop: 1 #1B202B
+    );
+
+    border: none;
+    border-radius: 5px;
+}
+
+QLabel#topAppsItemAppNameLabel,
+QLabel#topAppsItemBarPercentageLabel {
     font-size: 12px;
-    font-weight: bold;
 }
 
-QLabel#appIconLabel,
-QWidget#nameAndProgress,
-QLabel#shareRatioLabel,
-QLabel#durationLabel {
-    background-color: #252B36;
-    border-radius: 5px;
+QLabel#topAppsItemDurationLabel {
+    font-size: 10px;
+    font-style: italic;
+    font-weight: 700;
+
+    color: #8a8a8d;
 }
 
-QProgressBar {
-    border: 1px solid #263845;
-    border-radius: 6px;
-    background-color: #0b1117;
-    color: #b8f7ff;
-    font-size: 11px;
-    font-weight: 600;
+QProgressBar#topAppsItemProgressBar {
+    background-color: #20232C;
+    border-radius: 4px;
+
+    min-height: 8px;
+    max-height: 8px;
+
     text-align: center;
-    min-height: 16px;
+    color: transparent;
 }
 
-QProgressBar::chunk {
-    border-radius: 5px;
-    background-color: #19d3ff;
-    margin: 2px;
+QProgressBar#topAppsItemProgressBar::chunk {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 1, y2: 0,
+        stop: 0 #0891B2,
+        stop: 0.42 #2563EB,
+        stop: 0.72 #7C3AED,
+        stop: 1 #A855F7
+    );
+
+    border-radius: 4px;
 }

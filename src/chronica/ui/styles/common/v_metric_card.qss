@@ -1,7 +1,7 @@
 QFrame#vMetricCard {
     background-color: #0a0a0a;
     
-    border: 1px solid #323232;
+    border: $card_border$;
     border-radius: 12px;
 }
 
@@ -31,5 +31,6 @@ QLabel#vMetricCardValueLabel {
     color: #dddcde;
 
     font-size: $font_size$px;
-    font-weight: 800;
+    font-weight: $value_font_weight$;
+    font-family: $value_font_family$;
 }

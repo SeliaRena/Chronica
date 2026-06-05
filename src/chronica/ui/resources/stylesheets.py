@@ -38,6 +38,16 @@ class QSS:
             
         class FontWeight(StrEnum):
             BOLD = "bold"
+
+        class BorderStyle(StrEnum):
+            SOLID = "solid"
+
+        class Border(StrEnum):
+            NONE = "none"
+            
+            @staticmethod
+            def of(width: int, style: QSS.Value.BorderStyle, color: str) -> str:
+                return f"{width}px {style.value} {color}"
     
     class PropertyLine:
         EMPTY = ""

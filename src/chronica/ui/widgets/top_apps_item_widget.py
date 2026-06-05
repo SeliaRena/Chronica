@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import (
     QWidget,
+    QFrame,
     QHBoxLayout,
     QVBoxLayout,
     QLabel,
@@ -7,86 +8,128 @@ from PySide6.QtWidgets import (
     QSizePolicy
 )
 
-from PySide6.QtGui import (
-    QFont,
-    QIcon
-)
-
+from PySide6.QtGui import QIcon
 from PySide6.QtCore import QSize, Qt
 
-from src.chronica.ui.styles.style_loader import load_stylesheet
+from src.chronica.ui.resources import (
+    Stylesheets,
+    QIcons,
+    AppIconProvider
+)
+
+from src.chronica.ui.widgets.common.factories import (
+    icon_label,
+    container
+)
+
 from src.chronica.ui.presentation.models import TopAppsItemData
-from src.chronica.common.resource_locator import ResourceLocator
 from src.chronica.ui.widgets.elided_label import ElidedLabel
 
-FALLBACK_ICON_PATH = str(ResourceLocator.ui_icon("app.png"))
 def fallback_icon() -> QIcon:
-    return QIcon(FALLBACK_ICON_PATH)
+    return QIcons.get("uniqueness.png")
 
-class TopAppsItemWidget(QWidget):
-    def __init__(self, data: TopAppsItemData, parent: QWidget | None = None):
+def placement_icon(placement: int) -> QIcon | None:
+    match placement:
+        case 1:
+            return QIcons.get("vip.png")
+        case 2:
+            return QIcons.get("2nd-place.png")
+        case 3:
+            return QIcons.get("3rd-place.png")
+        case _:
+            return None
+
+def placement_icon_or_placeholder(placement: int) -> QLabel:
+    icon = placement_icon(placement)
+    
+    if icon is not None:
+        return icon_label(
+            icon,
+            w=18,
+            h=18,
+            object_name="topAppsItemPlacementIconLabel"
+        )
+    else:
+        placeholder = QLabel("")
+        placeholder.setObjectName("topAppsItemPlacementIconLabel")
+        placeholder.setFixedSize(18, 18)
+        
+        return placeholder
+
+def percentage(ratio: float) -> int:
+    return int(ratio * 100)
+
+class TopAppsItemWidget(QFrame):
+    def __init__(self, placement: int, data: TopAppsItemData, parent: QWidget | None = None):
         super().__init__(parent)
+        self.placement = placement
         self.data = data
         self.setObjectName("topAppsItemWidget")
+        self.setFrameShape(QFrame.Shape.NoFrame)
         
         layout = QHBoxLayout(self)
         layout.setContentsMargins(10, 5, 10, 5)
         layout.setSpacing(8)
         
-        # structure: widget -> ([app icon] [app name + progress bar] [share ratio] [duration])
-        # 1. app icon
-        app_icon = QIcon(str(self.data.icon_path)) if self.data.icon_path else fallback_icon()
-        self.app_icon_label = QLabel()
-        self.app_icon_label.setObjectName("appIconLabel")
-        self.app_icon_label.setFixedSize(QSize(24, 24))
-        self.app_icon_label.setScaledContents(True)
-        self.app_icon_label.setPixmap(app_icon.pixmap(24, 24))
+        self.placement_icon_label = placement_icon_or_placeholder(self.placement)
+        self.app_icon_label = icon_label(
+            fallback_icon(),
+            w=24,
+            h=24,
+            object_name="topAppsItemIconLabel"
+        )
         
-        # 2. app name + progress bar
-        self.name_and_progress = QWidget()
-        self.name_and_progress.setObjectName("nameAndProgress")
-        name_and_progress_layout = QHBoxLayout(self.name_and_progress)
+        self.right_content, right_content_layout = container(
+            host=QFrame(frameShape=QFrame.Shape.NoFrame),
+            host_object_name="topAppsItemRightContent",
+            vertical=True,
+            margins=(0, 0, 0, 0),
+            spacing=5
+        )
         
-        self.name_label = ElidedLabel(self.data.app_name)
-        self.name_label.setFixedWidth(72)
-        self.name_label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        self.stats, stats_layout = container(
+            host=QFrame(frameShape=QFrame.Shape.NoFrame),
+            host_object_name="topAppsItemStats",
+            vertical=False,
+            margins=(0, 0, 0, 0),
+            spacing=0
+        )
+        
+        self.app_name_label = ElidedLabel("")
+        self.app_name_label.setObjectName("topAppsItemAppNameLabel")
+        self.app_name_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.bar_percentage_label = ElidedLabel("")
+        self.bar_percentage_label.setObjectName("topAppsItemBarPercentageLabel")
+        self.bar_percentage_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        
+        stats_layout.addWidget(self.app_name_label)
+        stats_layout.addWidget(self.bar_percentage_label)
         
         self.progress_bar = QProgressBar()
-        self.progress_bar.setObjectName("progressBar")
-        self.progress_bar.setMinimumWidth(150)
-        self.progress_bar.setFixedHeight(20)
+        self.progress_bar.setObjectName("topAppsItemProgressBar")
         self.progress_bar.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.progress_bar.setRange(0, 100)
-        self.progress_bar.setValue(int(self.data.bar_ratio * 100.0))
+        self.progress_bar.setValue(0)
         
-        name_and_progress_layout.addWidget(self.name_label)
-        name_and_progress_layout.addWidget(self.progress_bar)
+        self.duration_label = ElidedLabel("")
+        self.duration_label.setObjectName("topAppsItemDurationLabel")
         
-        # 3. share ratio
-        self.share_ratio_label = QLabel(f"{int(self.data.share_ratio * 100)}%")
-        self.share_ratio_label.setObjectName("shareRatioLabel")
-        self.share_ratio_label.setFixedWidth(48)
-        self.share_ratio_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        right_content_layout.addWidget(self.stats)
+        right_content_layout.addWidget(self.progress_bar)
+        right_content_layout.addWidget(self.duration_label)
         
-        # 4. duration
-        self.duration_label = ElidedLabel(self.data.duration)
-        self.duration_label.setObjectName("durationLabel")
-        self.duration_label.setFixedWidth(72)
-        self.duration_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.placement_icon_label, alignment=Qt.AlignmentFlag.AlignVCenter)
+        layout.addWidget(self.app_icon_label, alignment=Qt.AlignmentFlag.AlignVCenter)
+        layout.addWidget(self.right_content)
         
-        # assemble
-        layout.addWidget(self.app_icon_label, 0)
-        layout.addWidget(self.name_and_progress, 1)
-        layout.addWidget(self.share_ratio_label, 0)
-        layout.addWidget(self.duration_label, 0)
-        
-        self.setStyleSheet(load_stylesheet("top_apps_item_widget"))
+        self.set_data(data)
+        self.setStyleSheet(Stylesheets.load("top_apps_item_widget.qss"))
         
     def set_data(self, data: TopAppsItemData) -> None:
-        app_icon = QIcon(str(data.icon_path)) if data.icon_path else fallback_icon()
+        app_icon = fallback_icon()
         self.app_icon_label.setPixmap(app_icon.pixmap(24, 24))
-        self.name_label.setText(data.app_name)
-        self.progress_bar.setValue(int(data.bar_ratio * 100.0))
-        self.share_ratio_label.setText(f"{int(data.share_ratio * 100)}%")
+        self.app_name_label.setText(data.app_name)
+        self.bar_percentage_label.setText(f"{percentage(data.bar_ratio)}%")
+        self.progress_bar.setValue(percentage(data.bar_ratio))
         self.duration_label.setText(data.duration)
         self.data = data

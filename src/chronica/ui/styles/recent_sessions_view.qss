@@ -1,16 +1,20 @@
 QFrame#recentSessionsView {
-    background-color: #1D2129;
+    background-color: #0a0a0a;
     border: none;
     border-radius: 8px;
 }
 
 QWidget#recentSessionsOuter {
-    background-color: #171B22;
-    border: 1px solid #C084FC;
+    background-color: #111111;
+    border: none;
     border-radius: 5px;
 }
 
 QWidget#recentSessionsItemContainer {
-    background-color: #171B22;
+    background-color: #111111;
     border-radius: 5px;
+}
+
+QScrollArea#recentSessionsScrollArea {
+    background-color: transparent;
 }

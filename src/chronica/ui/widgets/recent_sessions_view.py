@@ -13,6 +13,15 @@ from PySide6.QtGui import (
 
 from PySide6.QtCore import Qt
 
+from src.chronica.ui.widgets.common import (
+    PlainIconHeader
+)
+
+from src.chronica.ui.resources import (
+    QIcons,
+    Stylesheets
+)
+
 from src.chronica.ui.widgets.recent_sessions_item_widget import RecentSessionsItemWidget
 from src.chronica.ui.presentation.models import RecentSessionsItemData
 from src.chronica.ui.styles.style_loader import load_stylesheet
@@ -29,11 +38,13 @@ class RecentSessionsView(QFrame):
         layout.setContentsMargins(16, 16, 16, 16)
         layout.setSpacing(12)
         
-        title_label = QLabel("Recent Sessions")
-        title_font = QFont()
-        title_font.setPointSize(13)
-        title_font.setBold(True)
-        title_label.setFont(title_font)
+        self.header = PlainIconHeader(
+            icon=QIcons.get("timeline.png"),
+            title="Recent Sessions",
+            icon_w=24,
+            icon_h=24,
+            title_px=18,
+        )
         
         self.item_container = QWidget()
         self.item_container.setObjectName("recentSessionsItemContainer")
@@ -42,6 +53,7 @@ class RecentSessionsView(QFrame):
         self.container_layout.setSpacing(0)
         
         self.scroll_area = QScrollArea()
+        self.scroll_area.setObjectName("recentSessionsScrollArea")
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.item_container)
         self.scroll_area.setFrameShape(QFrame.Shape.NoFrame)
@@ -52,7 +64,7 @@ class RecentSessionsView(QFrame):
         outer_layout.setContentsMargins(5, 5, 5, 5)
         outer_layout.addWidget(self.scroll_area)
         
-        layout.addWidget(title_label)
+        layout.addWidget(self.header)
         layout.addWidget(recent_sessions_outer)
         
         self.setStyleSheet(load_stylesheet("recent_sessions_view"))

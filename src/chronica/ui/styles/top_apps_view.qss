@@ -1,15 +1,19 @@
 QFrame#topAppsView {
-    background-color: #1D2129;
+    background-color: #0a0a0a;
     border-radius: 8px;
 }
 
-QWidget#outer {
-    background-color: #171B22;
+QWidget#topAppsItemContainerOuter {
+    background-color: #111111;
     border-radius: 5px;
-    border: 1px solid #C084FC;
+    border: none;
 }
 
-QWidget#itemContainer {
-    background-color: #171B22;
+QWidget#topAppsItemContainer {
+    background-color: #111111;
     border-radius: 5px;
+}
+
+QScrollArea#topAppsScrollArea {
+    background-color: transparent;
 }

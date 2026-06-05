@@ -38,7 +38,8 @@ class EngineResultInterpreter:
                     appinfo.total_usage_time_ms / report.total_usage_time_ms
                     if report.total_usage_time_ms > 0 else 0.0
                 ),
-                duration=simplistic_simplified_ms(appinfo.total_usage_time_ms)
+                duration=simplistic_simplified_ms(appinfo.total_usage_time_ms),
+                icon_path=appinfo.app_path,
             ) for appinfo in top_apps_raw
         )
     

@@ -1,42 +1,62 @@
 QFrame#dashboardPanel {
-    background-color: #171B22;
-    border: 1px solid #38BDF8;
+    background-color: #1b1b1b;
+    border: none;
     border-radius: 12px;
 }
 
-QFrame#observationCard,
-QFrame#recentSessionsPanel,
-QFrame#topAppsPanel,
-QFrame#statCard {
-    background-color: #1D2129;
-    border-radius: 10px;
-}
-
-QListWidget, QTableWidget {
-    background-color: transparent;
+QFrame#observationCard {
+    background-color: #0a0a0a;
     border: none;
+    border-radius: 12px;
 }
 
-#recentSessionsTable {
-    gridline-color: #1D2129;
-}
+QFrame#observationCardAccentBar {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 rgba(34, 211, 238, 70),
+        stop: 0.55 rgba(59, 130, 246, 50),
+        stop: 1 rgba(139, 92, 246, 45)
+    );
 
-#tableWrapper, #listWrapper {
-    border: 1px solid #C084FC;
+    min-width: 24px;
+    max-width: 24px;
+
+    border: none;
     border-radius: 5px;
 }
 
-QTableWidget::viewport {
-    background: transparent;
-    border-radius: 10px;
-}
+QFrame#observationCardAccentBar2 {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 rgba(139, 92, 246, 45),
+        stop: 0.55 rgba(59, 130, 246, 50),
+        stop: 1 rgba(34, 211, 238, 70)
+    );
 
-QHeaderView::section {
-    background-color: #171B22;
+    min-width: 24px;
+    max-width: 24px;
+
     border: none;
-    padding: 6px;
+    border-radius: 5px;
 }
 
-QLabel {
-    color: #E8ECF1;
+QFrame#observationCardStatTitles QLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: #8a8a8d;
+}
+
+QFrame#observationCardStatValues QLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: #dddcde;
+}
+
+QFrame#observationCardStatTitles,
+QFrame#observationCardStatValues {
+    background-color: #0f0f0f;
+    border: none;
+    border-radius: 5px;
 }

@@ -12,16 +12,28 @@ from PySide6.QtGui import (
 from PySide6.QtCore import Qt
 
 from src.chronica.ui.resources import (
-    Stylesheets
+    Stylesheets,
+    QSS
 )
 
 from src.chronica.ui.widgets.elided_label import ElidedLabel
 
 class VMetricCard(QFrame):
-    def __init__(self, title: str, value: str, *, value_font_px: int = 20, parent: QWidget | None = None):
+    def __init__(
+        self,
+        title: str,
+        value: str,
+        *,
+        value_font_px: int = 20,
+        value_font_weight: int = 700,
+        value_font_family: str = "Segoe UI",
+        border: bool = True,
+        parent: QWidget | None = None
+    ) -> None:
+        
         super().__init__(parent)
         self.setObjectName("vMetricCard")
-        self.setFrameShape(QFrame.Shape.StyledPanel)
+        self.setFrameShape(QFrame.Shape.NoFrame)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
         self.setAutoFillBackground(False)
         
@@ -46,6 +58,13 @@ class VMetricCard(QFrame):
             Stylesheets.load(
                 "common",
                 "v_metric_card.qss",
-                font_size=value_font_px
+                font_size=value_font_px,
+                value_font_weight=value_font_weight,
+                value_font_family=value_font_family,
+                card_border="1px solid #323232" if border else "none"
             )
         )
+    
+    def set_value(self, value: str) -> None:
+        self.value_label.setText(value)
+        self.value_label.setToolTip(value)
