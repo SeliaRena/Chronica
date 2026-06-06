@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtCore import QObject, QTimer, Signal, QEvent, Qt
 from PySide6.QtWidgets import QLabel
+
 
 class TypewriterController(QObject):
     """
@@ -11,6 +12,7 @@ class TypewriterController(QObject):
     - Reveal text character by character.
     - Allow skipping to full text.
     - Allow stopping / clearing.
+    - Optionally allow clicking the target QLabel to skip.
     - Emit signals when started, updated, finished, or skipped.
 
     This class belongs to the presentation layer because it directly depends on Qt widgets.
@@ -20,12 +22,16 @@ class TypewriterController(QObject):
     updated = Signal(str)
     finished = Signal()
     skipped = Signal()
+    stopped = Signal()
+    advance_requested = Signal()
 
     def __init__(
         self,
         target_label: QLabel,
         interval_ms: int = 30,
         parent: QObject | None = None,
+        *,
+        click_to_skip: bool = True,
     ):
         super().__init__(parent)
 
@@ -36,8 +42,14 @@ class TypewriterController(QObject):
         self._current_index: int = 0
         self._is_running: bool = False
 
+        self._click_to_skip = click_to_skip
+
         self._timer = QTimer(self)
         self._timer.timeout.connect(self._step)
+
+        if self._click_to_skip:
+            self._target_label.installEventFilter(self)
+            self._target_label.setCursor(Qt.CursorShape.PointingHandCursor)
 
     @property
     def is_running(self) -> bool:
@@ -60,6 +72,34 @@ class TypewriterController(QObject):
         if self._timer.isActive():
             self._timer.start(self._interval_ms)
 
+    def set_click_to_skip(self, enabled: bool) -> None:
+        if self._click_to_skip == enabled:
+            return
+
+        self._click_to_skip = enabled
+
+        if enabled:
+            self._target_label.installEventFilter(self)
+            self._target_label.setCursor(Qt.CursorShape.PointingHandCursor)
+        else:
+            self._target_label.removeEventFilter(self)
+            self._target_label.unsetCursor()
+
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:
+        if (
+            watched is self._target_label
+            and event.type() == QEvent.Type.MouseButtonRelease
+        ):
+            if self._is_running and self._click_to_skip:
+                self.skip()
+                return True
+
+            if not self._is_running:
+                self.advance_requested.emit()
+                return True
+
+        return super().eventFilter(watched, event)
+
     def start(self, text: str, interval_ms: int | None = None) -> None:
         """
         Start typing a new piece of text.
@@ -70,7 +110,7 @@ class TypewriterController(QObject):
         if interval_ms is not None:
             self.set_interval(interval_ms)
 
-        self.stop(clear=False)
+        self.stop(clear=False, emit_stopped=False)
 
         self._full_text = text
         self._current_index = 0
@@ -85,12 +125,14 @@ class TypewriterController(QObject):
 
         self._timer.start(self._interval_ms)
 
-    def stop(self, clear: bool = False) -> None:
+    def stop(self, clear: bool = False, *, emit_stopped: bool = True) -> None:
         """
         Stop the typewriter effect.
 
         If clear=True, also clears the label text.
         """
+
+        was_running = self._is_running
 
         self._timer.stop()
         self._is_running = False
@@ -98,6 +140,9 @@ class TypewriterController(QObject):
         if clear:
             self._target_label.setText("")
             self.updated.emit("")
+
+        if was_running and emit_stopped:
+            self.stopped.emit()
 
     def skip(self) -> None:
         """

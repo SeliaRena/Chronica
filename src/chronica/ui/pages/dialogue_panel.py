@@ -10,13 +10,9 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from src.chronica.common.resource_locator import ResourceLocator
-from src.chronica.ui.styles.style_loader import load_stylesheet
-from src.chronica.ui.resources.font_loader import load_font
-from src.chronica.ui.controllers.typewriter_controller import TypewriterController
-from src.chronica.characters.chronica.dialogues import random_pick_dialogue, Scenario
-
-_TYPEWRITER_DELAY = 10
+from src.chronica.ui.resources import (
+    Stylesheets
+)
 
 class DialoguePanel(QFrame):
     def __init__(self, parent: QWidget | None = None) -> None:
@@ -51,9 +47,6 @@ class DialoguePanel(QFrame):
         self.text_label.setWordWrap(True)
         self.text_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
 
-        self.typewriter = TypewriterController(self.text_label, _TYPEWRITER_DELAY)
-        self.set_dialogue("Chronica", random_pick_dialogue(Scenario.BOOTUP))
-
         text_layout.addWidget(self.channel_label)
         text_layout.addWidget(self.speaker_label)
         text_layout.addWidget(self.text_label, 1)
@@ -61,20 +54,4 @@ class DialoguePanel(QFrame):
         root_layout.addWidget(self.portrait_label, 0)
         root_layout.addLayout(text_layout, 1)
 
-        self.setStyleSheet(load_stylesheet("dialogue_panel"))
-
-    def set_dialogue(
-        self,
-        speaker: str,
-        text: str,
-        channel: str = "SYSTEM CHANNEL",
-        portrait_text: str | None = None,
-    ) -> None:
-        self.channel_label.setText(channel)
-        self.speaker_label.setText(speaker)
-        self.typewriter.start(text)
-
-        if portrait_text is not None:
-            self.portrait_label.setText(portrait_text)
-        else:
-            self.portrait_label.setText(speaker)
+        self.setStyleSheet(Stylesheets.load("dialogue_panel.qss"))

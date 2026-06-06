@@ -6,8 +6,9 @@ from src.chronica.application.engine.clockheart_engine import ClockheartEngine
 from src.chronica.ui.presentation.models import TrackingRecordDisplay, DashboardSnapshot
 from src.chronica.ui.presentation.interpreters.engine_result_interpreter import EngineResultInterpreter
 from src.chronica.ui.pages.main_window import ChronicaMainWindow
-from src.chronica.common.timestamp import TimestampContext
-from src.chronica.characters.chronica.dialogues import random_pick_dialogue, Scenario
+from src.chronica.characters.character import Character
+from src.chronica.characters.builders import DialogueRenderContextBuilder
+from src.chronica.characters.dialogues import Scenario
 
 class RuntimeController:
     def __init__(self, window: ChronicaMainWindow, engine: ClockheartEngine):
@@ -24,6 +25,13 @@ class RuntimeController:
         self.window.control_bar.set_tracking_idle()
         self._connect_ui()
         
+        # Chronica is alive !! :D
+        dialogue_box = self.window.dialogue.text_label
+        self.chronica: Character = Character(dialogue_box)
+        
+        # Say something, Chronica
+        self.chronica.say_random(Scenario.BOOTUP)
+        
     def _connect_ui(self) -> None:
         bar = self.window.control_bar
         bar.start_requested.connect(self.start_tracking)
@@ -35,7 +43,6 @@ class RuntimeController:
 
         self.window.control_bar.set_tracking_running()
         self.window.control_bar.set_status_hint("Tracking is active.")
-        self.window.dialogue.set_dialogue("Chronica", random_pick_dialogue(Scenario.START_TRACKING))
 
         self.refresh_ui()
 
@@ -45,7 +52,6 @@ class RuntimeController:
 
         self.window.control_bar.set_tracking_idle()
         self.window.control_bar.set_status_hint("Tracking stopped.")
-        self.window.dialogue.set_dialogue("Chronica", random_pick_dialogue(Scenario.STOP_TRACKING))
 
         ts_ctx = self.app_ctx.ts_ctx_provider.get()
         record = self.engine.generate_tracking_record()
