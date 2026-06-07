@@ -29,6 +29,12 @@ class RuntimeController:
         dialogue_box = self.window.dialogue.text_label
         self.chronica: Character = Character(dialogue_box)
         
+        # Connections
+        dialogue_panel = self.window.dialogue
+        self.chronica.finished_speaking.connect(dialogue_panel.on_dialogue_ended)
+        self.chronica.next_line_confirmation_requested.connect(dialogue_panel.on_next_line_confirmation_requested)
+        self.chronica.line_skippable.connect(dialogue_panel.on_line_skippable)
+        
         # Say something, Chronica
         self.chronica.say_random(Scenario.BOOTUP)
         

@@ -40,3 +40,10 @@ QLabel#dialogueText {
     border-radius: 10px;
     padding: 5px;
 }
+
+QFrame#dialogueStates {
+    background-color: #0a0a0a;
+
+    border-radius: 10px;
+    border: none;
+}

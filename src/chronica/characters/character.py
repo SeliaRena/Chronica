@@ -24,6 +24,9 @@ class Character(QObject):
     finished_speaking = Signal()
     current_dialogue_cancelled = Signal()
     
+    line_skippable = Signal(int, str)
+    next_line_confirmation_requested = Signal()
+    
     def __init__(
         self,
         dialogue_box: QLabel,
@@ -43,6 +46,8 @@ class Character(QObject):
         self._speaking: bool = False
         
         self._player.dialogue_finished.connect(self._on_player_finished)
+        self._player.line_started.connect(self.line_skippable)
+        self._player.confirmation_requested.connect(self.next_line_confirmation_requested)
     
     @property
     def speaking(self) -> bool:
