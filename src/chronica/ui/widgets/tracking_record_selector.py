@@ -26,11 +26,14 @@ from src.chronica.ui.presentation.models import TrackingRecordDisplay
 from src.chronica.storage.sqlite.query import TrackingRecordQuery
 from src.chronica.common.runtime import AppRuntimeContext
 
+from src.chronica.characters.character import Character
+
 class TrackingRecordSelector(QFrame):
     def __init__(self, app_ctx: AppRuntimeContext, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.setObjectName("trackingRecordSelector")
         self.app_ctx = app_ctx
+        self.chronica: Character | None = None
         
         self.filter_bar = TrackingRecordFilterBar(self)
         self.filter_bar.query_applied.connect(self._on_query_applied)
@@ -73,10 +76,13 @@ class TrackingRecordSelector(QFrame):
         layout.setSpacing(12)
         
         self.setStyleSheet(load_stylesheet("tracking_record_selector"))
+    
+    def set_character(self, character: Character) -> None:
+        self.chronica = character
         
     def add_tracking_record_item(self, record: TrackingRecordDisplay) -> None:
         item = QListWidgetItem(self.list_widget)
-        widget = TrackingRecordItemWidget(record)
+        widget = TrackingRecordItemWidget(record, self.chronica)
 
         hint = widget.sizeHint()
         hint.setHeight(hint.height() + 10)

@@ -2,7 +2,8 @@ from .chrono_format import (
     simplistic_simplified_ms,
     digital_clock,
     digital_clock_emphasis,
-    DigitalTimeEmphasis
+    DigitalTimeEmphasis,
+    human_readable
 )
 
 from .datetime_format import ymd_hms, hms
@@ -12,6 +13,7 @@ __all__ = [
     "digital_clock",
     "digital_clock_emphasis",
     "DigitalTimeEmphasis",
+    "human_readable",
     "ymd_hms",
     "hms"
 ]

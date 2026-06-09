@@ -29,7 +29,7 @@ class DialoguePlayer(QObject):
 
         self._typewriter = TypewriterController(
             target_label=bound_label,
-            interval_ms=10,
+            interval_ms=20,
             parent=self,
         )
 

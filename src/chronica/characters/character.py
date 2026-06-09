@@ -53,18 +53,18 @@ class Character(QObject):
     def speaking(self) -> bool:
         return self._speaking
     
-    def say_random(self, scenario: Scenario) -> None:
+    def say_random(self, scenario: Scenario, context: DialogueRenderContext | None = None) -> None:
         if self._speaking:
             self._cancel_speaking()
 
         picked_dialogue = random.choice(list(self._database[scenario].values()))
-        rendered_without_context = picked_dialogue.render()
+        rendered = picked_dialogue.render(context)
         
         self._speaking = True
-        self.started_speaking.emit(scenario, picked_dialogue.key, rendered_without_context)
-        self._player.play(rendered_without_context)
+        self.started_speaking.emit(scenario, picked_dialogue.key, rendered)
+        self._player.play(rendered)
     
-    def say_certain(self, scenario: Scenario, dialogue_key: DialogueKey, context: DialogueRenderContext) -> None:
+    def say_certain(self, scenario: Scenario, dialogue_key: DialogueKey, context: DialogueRenderContext | None = None) -> None:
         if dialogue_key not in self._database[scenario]:
             raise ValueError(f"Unknown dialogue key: {dialogue_key}")
         

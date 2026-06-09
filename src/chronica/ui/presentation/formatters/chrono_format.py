@@ -5,7 +5,8 @@ from src.chronica.domain.chronosystem import (
 
 from src.chronica.common.formatters import (
     SIMPLISTIC,
-    DIGITAL_CLOCK
+    DIGITAL_CLOCK,
+    HUMAN_READABLE
 )
 
 from dataclasses import dataclass
@@ -23,6 +24,10 @@ def simplistic_simplified_ms(timespan: CascadedChronoSpan | int) -> str:
 def digital_clock(timespan: CascadedChronoSpan | int) -> str:
     span = _to_cascaded_span(timespan)
     return DIGITAL_CLOCK.format(span.transform(CascadingType.FULL_PADDED))
+
+def human_readable(timespan: CascadedChronoSpan | int) -> str:
+    span = _to_cascaded_span(timespan)
+    return HUMAN_READABLE.format(span)
 
 @dataclass(frozen=True, slots=True)
 class DigitalTimeEmphasis:

@@ -29,6 +29,11 @@ class RuntimeController:
         dialogue_box = self.window.dialogue.text_label
         self.chronica: Character = Character(dialogue_box)
         
+        # Dependency injections
+        # This is a temporarily solution to let chronica gain control of every record item in tracking record list.
+        # It needs a more stable solution in the future.
+        self.window.tracking_archive.tracking_record_selector.set_character(self.chronica)
+        
         # Connections
         dialogue_panel = self.window.dialogue
         self.chronica.finished_speaking.connect(dialogue_panel.on_dialogue_ended)
@@ -46,6 +51,8 @@ class RuntimeController:
     def start_tracking(self) -> None:
         self.engine.start()
         self.timer.start()
+        
+        self.chronica.say_random(Scenario.START_TRACKING)
 
         self.window.control_bar.set_tracking_running()
         self.window.control_bar.set_status_hint("Tracking is active.")
@@ -55,6 +62,8 @@ class RuntimeController:
     def stop_tracking(self) -> None:
         self.engine.stop()
         self.timer.stop()
+        
+        self.chronica.say_random(Scenario.STOP_TRACKING)
 
         self.window.control_bar.set_tracking_idle()
         self.window.control_bar.set_status_hint("Tracking stopped.")

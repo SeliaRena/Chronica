@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
     QSizePolicy
 )
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal, Slot
 
 from src.chronica.ui.resources import (
     Stylesheets,
@@ -16,7 +16,8 @@ from src.chronica.ui.resources import (
 
 from src.chronica.ui.presentation.formatters import (
     simplistic_simplified_ms,
-    ymd_hms
+    ymd_hms,
+    human_readable
 )
 
 from src.chronica.ui.widgets.common import (
@@ -29,11 +30,24 @@ from src.chronica.ui.widgets.common.factories import (
 
 from src.chronica.ui.presentation.models import TrackingRecordDisplay
 
+from src.chronica.characters.character import Character
+from src.chronica.characters.dialogues import Scenario
+from src.chronica.characters.models import DialogueRenderContext
+from src.chronica.characters.builders import DialogueRenderContextBuilder
+
 class TrackingRecordItemWidget(QFrame):
-    def __init__(self, record: TrackingRecordDisplay, parent: QWidget | None = None):
+    explain_record_requested = Signal(object)
+    
+    def __init__(
+        self,
+        record: TrackingRecordDisplay,
+        character: Character,
+        parent: QWidget | None = None
+    ) -> None:
         super().__init__(parent)
         self.setObjectName("trackingRecordItemWidget")
         self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        self.chronica = character
         self.record = record
 
         self.header = PlainIconHeader(
@@ -99,4 +113,30 @@ class TrackingRecordItemWidget(QFrame):
         layout.addWidget(self.header)
         layout.addWidget(self.content)
         
+        self.info_button.clicked.connect(self._on_info_button_clicked)
         self.setStyleSheet(Stylesheets.load("tracking_record_item_widget.qss"))
+    
+    @Slot()
+    def _on_info_button_clicked(self) -> None:
+        self.explain_record_requested.emit(self.record)
+
+        self.chronica.say_random(
+            scenario=Scenario.BRIEFLY_TALK_ABOUT_A_RECORD,
+            context=self._generate_dialogue_context()
+        )
+
+    def _generate_dialogue_context(self) -> DialogueRenderContext:
+        return DialogueRenderContextBuilder() \
+            .with_line_render_context(
+                "explain_record",
+                record_title=self.record.title,
+                record_generated_at=ymd_hms(self.record.generated_at),
+                record_started_at=ymd_hms(self.record.start),
+                record_stopped_at=ymd_hms(self.record.end),
+                record_duration=human_readable(self.record.duration)
+            ) \
+            .with_line_render_context(
+                "explain_record_description",
+                record_description=self.record.description
+            ) \
+            .build()
