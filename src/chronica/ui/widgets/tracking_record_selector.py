@@ -83,6 +83,7 @@ class TrackingRecordSelector(QFrame):
     def add_tracking_record_item(self, record: TrackingRecordDisplay) -> None:
         item = QListWidgetItem(self.list_widget)
         widget = TrackingRecordItemWidget(record, self.chronica)
+        widget.delete_record_requested.connect(self._on_delete_record_requested)
 
         hint = widget.sizeHint()
         hint.setHeight(hint.height() + 10)
@@ -91,6 +92,15 @@ class TrackingRecordSelector(QFrame):
 
         self.list_widget.addItem(item)
         self.list_widget.setItemWidget(item, widget)
+    
+    def _find_record_specific(self, record_item: TrackingRecordItemWidget) -> QListWidgetItem | None:
+        for row in range(self.list_widget.count()):
+            item = self.list_widget.item(row)
+            
+            if self.list_widget.itemWidget(item) is record_item:
+                return item
+        
+        return None
 
     def _on_query_applied(self, query: TrackingRecordQuery) -> None:
         tracking_records = self.app_ctx.storage.tracking_records
@@ -100,3 +110,21 @@ class TrackingRecordSelector(QFrame):
         self.list_widget.clear()
         for record in query_result:
             self.add_tracking_record_item(TrackingRecordDisplay.from_tracking_record(record, ts_ctx))
+
+    def _on_delete_record_requested(self, record_title: str, record_item: TrackingRecordItemWidget) -> None:
+        list_item = self._find_record_specific(record_item)
+        
+        if list_item is None:
+            return
+        
+        row = self.list_widget.row(list_item)
+        self.list_widget.removeItemWidget(list_item)
+        removed_item = self.list_widget.takeItem(row)
+        
+        record_item.deleteLater()
+        del removed_item
+        
+        tracking_records = self.app_ctx.storage.tracking_records
+        tracking_records.delete_by_title(record_title)
+        
+        print(f"Deleted {record_title}")

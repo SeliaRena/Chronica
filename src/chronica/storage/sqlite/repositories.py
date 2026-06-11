@@ -191,6 +191,16 @@ class TrackingRecordRepository:
                 (record_id,),
             )
 
+    def delete_by_title(self, record_title: str) -> None:
+        with self._db.transaction() as conn:
+            conn.execute(
+                """
+                DELETE FROM tracking_records
+                WHERE title = ?
+                """,
+                (record_title,),
+            )
+
     @staticmethod
     def _tracking_record_row_from_sqlite(row: sqlite3.Row) -> TrackingRecordRow:
         return TrackingRecordRow(

@@ -10,6 +10,8 @@ from src.chronica.characters.character import Character
 from src.chronica.characters.builders import DialogueRenderContextBuilder
 from src.chronica.characters.dialogues import Scenario
 
+from src.chronica.ui.presentation.formatters import ymd_hms
+
 class RuntimeController:
     def __init__(self, window: ChronicaMainWindow, engine: ClockheartEngine):
         self.window = window
@@ -72,6 +74,10 @@ class RuntimeController:
         record = self.engine.generate_tracking_record()
         record_service = self.app_ctx.storage.tracking_records
         record_selector = self.window.tracking_archive.tracking_record_selector
+        
+        # Rename the record to make it more identifiable (Do this before saving)
+        record_generated_dt = ts_ctx.datetime_from_ts_ms(record.generated_at_ts_ms)
+        record.set_title(f"Chronica - {ymd_hms(record_generated_dt)}")
 
         record_service.save(record)
         record_selector.add_tracking_record_item(TrackingRecordDisplay.from_tracking_record(record, ts_ctx))

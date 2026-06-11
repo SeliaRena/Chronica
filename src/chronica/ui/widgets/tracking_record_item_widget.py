@@ -4,7 +4,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QFrame,
-    QSizePolicy
+    QSizePolicy,
+    QMessageBox
 )
 
 from PySide6.QtCore import Qt, Signal, Slot
@@ -37,6 +38,7 @@ from src.chronica.characters.builders import DialogueRenderContextBuilder
 
 class TrackingRecordItemWidget(QFrame):
     explain_record_requested = Signal(object)
+    delete_record_requested = Signal(str, object)
     
     def __init__(
         self,
@@ -95,8 +97,17 @@ class TrackingRecordItemWidget(QFrame):
             tooltip="Let Chronica tells you more about this record"
         )
         
+        self.delete_button = icon_button(
+            QIcons.get("trash.svg"),
+            button_size=20,
+            icon_size=16,
+            object_name="recordItemDeleteButton",
+            tooltip="Delete this record"
+        )
+        
         buttons_layout.addWidget(self.edit_button)
         buttons_layout.addWidget(self.info_button)
+        buttons_layout.addWidget(self.delete_button)
         
         # Assemble
         self.content = QFrame(frameShape=QFrame.Shape.NoFrame)
@@ -114,6 +125,7 @@ class TrackingRecordItemWidget(QFrame):
         layout.addWidget(self.content)
         
         self.info_button.clicked.connect(self._on_info_button_clicked)
+        self.delete_button.clicked.connect(self._on_delete_button_clicked)
         self.setStyleSheet(Stylesheets.load("tracking_record_item_widget.qss"))
     
     @Slot()
@@ -124,6 +136,25 @@ class TrackingRecordItemWidget(QFrame):
             scenario=Scenario.BRIEFLY_TALK_ABOUT_A_RECORD,
             context=self._generate_dialogue_context()
         )
+
+    @Slot()
+    def _on_delete_button_clicked(self) -> None:
+        chronica_judge: str = "Chronica: Forgive my creator for how useless he is that he couldn't make me interact with this delete event."
+        chronica_judge2: str = "But well, he indeed tried his best."
+        
+        box = QMessageBox(self)
+        box.setWindowTitle("Delete tracking record")
+        box.setText(f"Are you sure you want to delete this tracking record '{self.record.title}'?\n\n{chronica_judge}\n{chronica_judge2}")
+        box.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        box.setDefaultButton(QMessageBox.StandardButton.No)
+        box.setIcon(QMessageBox.Icon.Question)
+        box.finished.connect(self._on_message_box_finished)
+        box.open()
+    
+    @Slot()
+    def _on_message_box_finished(self, result: int) -> None:
+        if result == QMessageBox.StandardButton.Yes:
+            self.delete_record_requested.emit(self.record.title, self)
 
     def _generate_dialogue_context(self) -> DialogueRenderContext:
         return DialogueRenderContextBuilder() \

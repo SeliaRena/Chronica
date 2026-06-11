@@ -95,3 +95,6 @@ class TrackingRecordService:
                 res.sort(key=lambda r: r.title)
         
         return res
+
+    def delete_by_title(self, record_title: str) -> None:
+        self._repo.delete_by_title(record_title)
