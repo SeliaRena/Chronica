@@ -1,6 +1,7 @@
 from src.chronica.application.engine.clockheart_engine import ClockheartEngine
 from src.chronica.infra.logging.logging_config import setup_runtime_logger
 from src.chronica.infra.report.report_writer import write_report
+from src.chronica.infra.notifications.windows_notifier import WindowsNotifier
 from src.chronica.ui.pages.main_window import ChronicaMainWindow
 from src.chronica.ui.controllers.runtime_controller import RuntimeController
 from src.chronica.ui.resources import QFonts, QIcons
@@ -52,6 +53,20 @@ def run_gui() -> int:
         window.show()
         exit_code = app.exec()
     finally:
+        if controller.tracking:
+            try:
+                controller.stop_tracking_backend()
+            except Exception as e:
+                logger.error(f"Failed to stop tracking backend: {e}", exc_info=True)
+                exit_code = 1
+            else:
+                WindowsNotifier.notify(
+                    "Message from Chronica: ",
+                    "It seems like you have accidentally closed the window while tracking.\n"
+                    "But don't worry, "
+                    "the tracking record has been generated and saved successfully.\n"
+                )
+        
         app_runtime_context.storage.db.close()
         
     return exit_code

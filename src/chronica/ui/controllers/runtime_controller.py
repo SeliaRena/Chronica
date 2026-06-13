@@ -23,6 +23,8 @@ class RuntimeController:
         self.timer.setInterval(self.engine.tick_interval)
         self.timer.timeout.connect(self.timer_event)
         
+        self.tracking: bool = False
+        
         self.window.control_bar.set_active_nav("dashboard")
         self.window.control_bar.set_tracking_idle()
         self._connect_ui()
@@ -53,6 +55,7 @@ class RuntimeController:
     def start_tracking(self) -> None:
         self.engine.start()
         self.timer.start()
+        self.tracking = True
         
         self.chronica.say_random(Scenario.START_TRACKING)
 
@@ -64,6 +67,7 @@ class RuntimeController:
     def stop_tracking(self) -> None:
         self.engine.stop()
         self.timer.stop()
+        self.tracking = False
         
         self.chronica.say_random(Scenario.STOP_TRACKING)
 
@@ -83,6 +87,27 @@ class RuntimeController:
         record_selector.add_tracking_record_item(TrackingRecordDisplay.from_tracking_record(record, ts_ctx))
 
         self.refresh_ui()
+        self.engine.reset()
+
+    def stop_tracking_backend(self) -> None:
+        """
+        This version of stop tracking only contains backend logic
+        """
+        
+        self.engine.stop()
+        self.timer.stop()
+        self.tracking = False
+
+        ts_ctx = self.app_ctx.ts_ctx_provider.get()
+        record = self.engine.generate_tracking_record()
+        record_service = self.app_ctx.storage.tracking_records
+        record_selector = self.window.tracking_archive.tracking_record_selector
+
+        # Rename the record to make it more identifiable (Do this before saving)
+        record_generated_dt = ts_ctx.datetime_from_ts_ms(record.generated_at_ts_ms)
+        record.set_title(f"Chronica - {ymd_hms(record_generated_dt)}")
+
+        record_service.save(record)
         self.engine.reset()
 
     def refresh_ui(self) -> None:
