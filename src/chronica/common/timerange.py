@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from src.chronica.common.timestamp import UnixTimestampMs, as_ts_ms
 
 @dataclass(frozen=True, slots=True)
@@ -53,3 +53,21 @@ class DatetimeRangeMaker:
     
     def minutes_till_now(self, minutes: int) -> DatetimeRange:
         return DatetimeRange(self.timepoint - timedelta(minutes=minutes), self.timepoint)
+
+def strip_to_hms(dt: datetime) -> time:
+    return dt.time().replace(microsecond=0)
+
+@dataclass(frozen=True, slots=True)
+class HmsRange:
+    start: time
+    end: time
+    
+    def __post_init__(self) -> None:
+        if self.start.microsecond != 0 or self.end.microsecond != 0:
+            raise ValueError(f"Microsecond must be stripped: {self.start!r} & {self.end!r}")
+    
+    def __contains__(self, t: time) -> bool:
+        if self.start <= self.end:
+            return self.start <= t <= self.end
+        else:
+            return self.start <= t or t <= self.end

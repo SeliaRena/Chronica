@@ -12,6 +12,10 @@ from src.chronica.characters.dialogues import Scenario
 
 from src.chronica.ui.presentation.formatters import ymd_hms
 
+from src.chronica.common.timerange import HmsRange, strip_to_hms
+from datetime import datetime, time
+import random
+
 class RuntimeController:
     def __init__(self, window: ChronicaMainWindow, engine: ClockheartEngine):
         self.window = window
@@ -45,12 +49,29 @@ class RuntimeController:
         self.chronica.line_skippable.connect(dialogue_panel.on_line_skippable)
         
         # Say something, Chronica
-        self.chronica.say_random(Scenario.BOOTUP)
+        self._chronica_say_bootup()
         
     def _connect_ui(self) -> None:
         bar = self.window.control_bar
         bar.start_requested.connect(self.start_tracking)
         bar.stop_requested.connect(self.stop_tracking)
+
+    # This function should be abstracted as a part of the character's behavior
+    # I wrote this just to quickly implement this dialogue feature
+    # TODO: Refactor
+    def _chronica_say_bootup(self) -> None:
+        ts_ctx = self.app_ctx.ts_ctx_provider.get()
+        now = ts_ctx.now_datetime()
+        now_hms = strip_to_hms(now)
+        
+        if now_hms in HmsRange(time(5, 0, 1, 0), time(7, 0, 0, 0)):
+            choices = [Scenario.BOOTUP, Scenario.BOOTUP_EARLY_MORNING]
+            self.chronica.say_random(random.choices(population=choices, weights=[0.2, 0.8], k=1)[0])
+        elif now_hms in HmsRange(time(0, 0, 0, 0), time(5, 0, 0, 0)):
+            choices = [Scenario.BOOTUP, Scenario.BOOTUP_MIDNIGHT]
+            self.chronica.say_random(random.choices(population=choices, weights=[0.2, 0.8], k=1)[0])
+        else:
+            self.chronica.say_random(Scenario.BOOTUP)
 
     def start_tracking(self) -> None:
         self.engine.start()
