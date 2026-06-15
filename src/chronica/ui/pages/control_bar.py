@@ -45,10 +45,10 @@ class ControlBar(QFrame):
         title.setObjectName("controlBarTitle")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.mode_label = QLabel("Mode: Idle")
+        self.mode_label = QLabel("Not set yet.")
         self.mode_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.status_hint_label = QLabel("Ready.")
+        self.status_hint_label = QLabel("Not set yet.")
         self.status_hint_label.setWordWrap(True)
         self.status_hint_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -100,6 +100,7 @@ class ControlBar(QFrame):
             icon=QIcons.get("settings.svg"),
             icon_size=18,
         )
+        self.settings_button.setEnabled(False)
 
         buttons_layout.addWidget(self.dashboard_button)
         buttons_layout.addWidget(self.tracking_archive_button)
@@ -130,7 +131,7 @@ class ControlBar(QFrame):
         
         self.control_header = PlainIconHeader(
             QIcons.get("eye.png"),
-            "Tracking Controls",
+            "Tracking",
             icon_w=24,
             icon_h=24,
             title_px=13,
@@ -159,6 +160,7 @@ class ControlBar(QFrame):
         root_layout.addStretch()
 
         # functional initialization
+        self.set_tracking_idle()
         self._connect_internal_signals()
         self.setStyleSheet(Stylesheets.load("control_bar.qss"))
 
@@ -171,13 +173,13 @@ class ControlBar(QFrame):
         self.stop_button.clicked.connect(self.stop_requested.emit)
 
     def set_tracking_idle(self) -> None:
-        self.mode_label.setText("Mode: Idle")
-        self.status_hint_label.setText("Ready.")
+        self.mode_label.setText("Status: Idle")
+        self.status_hint_label.setText("Ready to start.")
         self.start_button.setEnabled(True)
         self.stop_button.setEnabled(False)
 
     def set_tracking_running(self) -> None:
-        self.mode_label.setText("Mode: Sampling")
+        self.mode_label.setText("Status: Tracking")
         self.status_hint_label.setText("Tracking is active.")
         self.start_button.setEnabled(False)
         self.stop_button.setEnabled(True)

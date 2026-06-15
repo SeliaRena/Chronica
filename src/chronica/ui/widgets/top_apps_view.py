@@ -37,7 +37,7 @@ class TopAppsView(QFrame):
         
         self.header = PlainIconHeader(
             icon=QIcons.get("trophy.png"),
-            title="Top Apps",
+            title="Top (Most Used) Apps",
             icon_w=24,
             icon_h=24,
             title_px=18

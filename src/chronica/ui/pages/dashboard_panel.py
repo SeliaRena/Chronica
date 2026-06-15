@@ -20,6 +20,7 @@ from src.chronica.ui.presentation.models import (
     RecentSessionsItemData
 )
 
+from src.chronica.ui.widgets.elided_label import ElidedLabel
 from src.chronica.ui.widgets.common import (
     PlainIconHeader,
     VMetricCard
@@ -62,7 +63,7 @@ class DashboardPanel(QFrame):
         
         card_header = PlainIconHeader(
             icon=QIcons.get("bar-chart.png"),
-            title="Latest Observation",
+            title="Current Activity",
             icon_w=24,
             icon_h=24,
             title_px=18,
@@ -94,10 +95,10 @@ class DashboardPanel(QFrame):
         
         titles_layout.addWidget(QLabel("Current App:"))
         titles_layout.addWidget(QLabel("Current Window:"))
-        titles_layout.addWidget(QLabel("Last External App:"))
-        titles_layout.addWidget(QLabel("Last External Window:"))
-        titles_layout.addWidget(QLabel("Last Observed Duration:"))
-        titles_layout.addWidget(QLabel("Last Observed At:"))
+        titles_layout.addWidget(QLabel("Previous App:"))
+        titles_layout.addWidget(QLabel("Previous Window:"))
+        titles_layout.addWidget(QLabel("Time in Previous Window:"))
+        titles_layout.addWidget(QLabel("Last Window Switched At:"))
         
         stat_values, values_layout = container(
             host=QFrame(frameShape=QFrame.Shape.NoFrame),
@@ -107,12 +108,12 @@ class DashboardPanel(QFrame):
             spacing=5
         )
         
-        self.current_app_value = QLabel("Chronica")
-        self.current_window_value = QLabel("Dashboard")
-        self.last_external_app_value = QLabel("Chrome")
-        self.last_external_window_value = QLabel("Personal submissions - Codeforces")
-        self.last_observed_duration_value = QLabel("12s")
-        self.last_observed_at_value = QLabel("06:00:12")
+        self.current_app_value = ElidedLabel("N/A")
+        self.current_window_value = ElidedLabel("N/A")
+        self.last_external_app_value = ElidedLabel("N/A")
+        self.last_external_window_value = ElidedLabel("N/A")
+        self.last_observed_duration_value = ElidedLabel("0s")
+        self.last_observed_at_value = ElidedLabel("00:00:00")
         
         values_layout.addWidget(self.current_app_value)
         values_layout.addWidget(self.current_window_value)
@@ -140,10 +141,10 @@ class DashboardPanel(QFrame):
             spacing=12
         )
 
-        self.tracked_time_card = self._make_dashboard_metric_card("Tracked Time", "20m 35s")
-        self.sessions_emitted_card = self._make_dashboard_metric_card("Sessions Emitted", "15")
-        self.unique_apps_card = self._make_dashboard_metric_card("Unique Apps", "7")
-        self.top_app_card = self._make_dashboard_metric_card("Top App", "Chrome")
+        self.tracked_time_card = self._make_dashboard_metric_card("Tracked Time", "0s")
+        self.sessions_emitted_card = self._make_dashboard_metric_card("Sessions Recorded", "0")
+        self.unique_apps_card = self._make_dashboard_metric_card("Apps Used", "0")
+        self.top_app_card = self._make_dashboard_metric_card("Most Used App", "N/A")
 
         summary_layout.addWidget(self.tracked_time_card)
         summary_layout.addWidget(self.sessions_emitted_card)

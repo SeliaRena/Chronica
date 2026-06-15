@@ -14,6 +14,8 @@ from src.chronica.ui.resources import (
     Stylesheets
 )
 
+from src.chronica.ui.widgets.elided_label import ElidedLabel
+
 class ProgressRow(QFrame):
     def __init__(self, title: str, subtitle: str, percentage: int, parent: QWidget | None = None):
         super().__init__(parent)
@@ -25,15 +27,15 @@ class ProgressRow(QFrame):
         self.title_label = QLabel(f"{title}: {percentage}%")
         self.title_label.setObjectName("progressRowTitleLabel")
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.title_label.setWordWrap(True)
+        self.title_label.setWordWrap(False)
         
-        self.subtitle_label = QLabel(subtitle)
+        self.subtitle_label = ElidedLabel(f"- {subtitle}")
         self.subtitle_label.setObjectName("progressRowSubtitleLabel")
-        self.subtitle_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        self.subtitle_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.subtitle_label.setWordWrap(True)
         
         title_layout = QHBoxLayout()
-        title_layout.addWidget(self.title_label, 1)
+        title_layout.addWidget(self.title_label, 0)
         title_layout.addWidget(self.subtitle_label, 1)
         
         self.progress_bar = QProgressBar()

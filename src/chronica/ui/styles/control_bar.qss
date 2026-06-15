@@ -21,7 +21,7 @@ QFrame#controlBarControlButtons {
 QLabel#controlBarTitle {
     color: #4FD1C5;
 
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 400;
     font-family: "Sora";
 }

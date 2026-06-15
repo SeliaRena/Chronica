@@ -47,7 +47,7 @@ class WindowUsageItemWidget(QFrame):
         major_stats_layout.setContentsMargins(0, 0, 0, 0)
         major_stats_layout.setSpacing(10)
         
-        self.usage_time_card = VMetricCard("Usage Time", data.total_usage_time)
+        self.usage_time_card = VMetricCard("Time Spent", data.total_usage_time)
         self.focus_count_card = VMetricCard("Focus Count", str(data.session_count))
         
         major_stats_layout.addWidget(self.usage_time_card)
@@ -61,8 +61,17 @@ class WindowUsageItemWidget(QFrame):
         progress_bars_layout.setContentsMargins(0, 0, 0, 0)
         progress_bars_layout.setSpacing(10)
         
-        self.usage_ratio_row = ProgressRow("Usage Ratio", "", data.usage_ratio_percentage)
-        self.focus_ratio_row = ProgressRow("Focus Ratio", "", data.session_ratio_percentage)
+        self.usage_ratio_row = ProgressRow(
+            "Time Share Within App", 
+            "Percentage of this app's total usage time spent on this window.", 
+            data.usage_ratio_percentage
+        )
+        
+        self.focus_ratio_row = ProgressRow(
+            "Focus Share Within App", 
+            "Percentage of this app's total focus events that occurred on this window.", 
+            data.session_ratio_percentage
+        )
         
         progress_bars_layout.addWidget(self.usage_ratio_row)
         progress_bars_layout.addWidget(self.focus_ratio_row)
@@ -75,11 +84,11 @@ class WindowUsageItemWidget(QFrame):
         minor_stats_layout.setContentsMargins(0, 0, 0, 0)
         minor_stats_layout.setSpacing(0)
         
-        self.longest_stay_strip = MetricStrip("Longest Stay", data.peak_session_duration)
-        self.longest_absence_strip = MetricStrip("Longest Absence", data.peak_gap_duration)
-        self.average_stay_strip = MetricStrip("Average Stay", data.avg_session_duration)
-        self.first_used_at_strip = MetricStrip("First Used At", data.first_used_at)
-        self.last_used_at_strip = MetricStrip("Last Used At", data.last_used_at)
+        self.longest_stay_strip = MetricStrip("Longest Focus Duration", data.peak_session_duration)
+        self.longest_absence_strip = MetricStrip("Longest Time Away", data.peak_gap_duration)
+        self.average_stay_strip = MetricStrip("Average Focus Duration", data.avg_session_duration)
+        self.first_used_at_strip = MetricStrip("First Used", data.first_used_at)
+        self.last_used_at_strip = MetricStrip("Last Used", data.last_used_at)
         
         minor_stats_layout.addWidget(self.longest_stay_strip)
         minor_stats_layout.addWidget(self.longest_absence_strip)

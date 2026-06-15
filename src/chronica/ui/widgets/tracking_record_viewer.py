@@ -67,7 +67,7 @@ class TrackingRecordViewer(QFrame):
         
         self.bar_header = PlainIconHeader(
             QIcons.load("dashboard.png"),
-            "View Modes",
+            "Views",
             icon_w=24,
             icon_h=24,
             title_px=12

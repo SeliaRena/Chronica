@@ -51,7 +51,7 @@ class AppUsageItemWidget(QFrame):
         # 2. Digital Time Strip
         digital_time = self.data.usage_time_digital
         self.digital_time_strip = DigitalTimeStrip(
-            title="Usage Time",
+            title="Time Spent",
             shaded=digital_time.shaded,
             emphasized=digital_time.emphasized,
         )
@@ -65,7 +65,7 @@ class AppUsageItemWidget(QFrame):
         major_stats_layout.setSpacing(10)
         
         self.focus_count_card = VMetricCard("Focus Count", str(self.data.session_count))
-        self.entry_count_card = VMetricCard("Entry Count", str(self.data.app_entry_count))
+        self.entry_count_card = VMetricCard("Times Entered", str(self.data.app_entry_count))
         self.window_count_card = VMetricCard("Window Count", str(self.data.window_count))
         self.most_used_window_card = VMetricCard("Most Used Window", self.data.most_used_window, value_font_px=12)
         
@@ -83,21 +83,26 @@ class AppUsageItemWidget(QFrame):
         progress_rows_layout.setSpacing(10)
         
         self.usage_ratio_row = ProgressRow(
-            title="Usage Ratio", 
-            subtitle="", 
+            title="Time Share", 
+            subtitle="Percentage of total tracked time spent on this app.", 
             percentage=self.data.usage_ratio_percentage
         )
         
         self.focus_ratio_row = ProgressRow(
-            title="Focus Ratio", 
-            subtitle="window switches included.", 
+            title="Focus Share", 
+            subtitle="Percentage of all focus events in this report that occurred in this app.", 
             percentage=self.data.session_ratio_percentage
         )
         
         self.entry_ratio_row = ProgressRow(
-            title="Entry Ratio", 
-            subtitle="window switches excluded.", 
+            title="App Entry Share", 
+            subtitle="Percentage of all app entries in this report that belong to this app.", 
             percentage=self.data.app_entry_ratio_percentage
+        )
+        
+        self.entry_ratio_row.subtitle_label.setToolTip(
+            f"{self.entry_ratio_row.subtitle_label.toolTip()}\n"
+            "In other words, number of times you entered this app from another app. Window switches within the same app are merged."
         )
         
         progress_rows_layout.addWidget(self.usage_ratio_row)
@@ -112,10 +117,10 @@ class AppUsageItemWidget(QFrame):
         minor_stats_layout.setContentsMargins(0, 0, 0, 0)
         minor_stats_layout.setSpacing(0)
         
-        self.average_stay_strip = MetricStrip("Average Stay", self.data.avg_session_duration)
-        self.average_entry_duration_strip = MetricStrip("Average Entry Duration", self.data.avg_app_entry_duration)
-        self.first_used_at_strip = MetricStrip("First Used At", self.data.first_used_at)
-        self.last_used_at_strip = MetricStrip("Last Used At", self.data.last_used_at)
+        self.average_stay_strip = MetricStrip("Average Focus Duration", self.data.avg_session_duration)
+        self.average_entry_duration_strip = MetricStrip("Average App Entry Duration", self.data.avg_app_entry_duration)
+        self.first_used_at_strip = MetricStrip("First Used", self.data.first_used_at)
+        self.last_used_at_strip = MetricStrip("Last Used", self.data.last_used_at)
         
         minor_stats_layout.addWidget(self.average_stay_strip)
         minor_stats_layout.addWidget(self.average_entry_duration_strip)
