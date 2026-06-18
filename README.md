@@ -191,7 +191,7 @@ Over time, my goal shifted toward creating a small but meaningful presence in pe
 Copyright © 2026 Selia Rena.
 
 Chronica is licensed under the
-[GNU General Public License v3.0 or later](LICENSE)
+[GNU General Public License v3.0 or later](LICENSE.txt)
 (`GPL-3.0-or-later`).
 
 You may use, modify, and redistribute the source code under the terms of the GPLv3. Distributed derivative works must remain available under the same license.
