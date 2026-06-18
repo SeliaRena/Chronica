@@ -188,4 +188,21 @@ Over time, my goal shifted toward creating a small but meaningful presence in pe
 
 ## License
 
-License information will be added before the first public release.
+Copyright © 2026 Selia Rena.
+
+Chronica is licensed under the
+[GNU General Public License v3.0 or later](LICENSE)
+(`GPL-3.0-or-later`).
+
+You may use, modify, and redistribute the source code under the terms of the GPLv3. Distributed derivative works must remain available under the same license.
+
+Chronica's name, logo, character artwork, and other visual identity assets are not covered by the GPLv3 unless explicitly stated otherwise.
+
+Third-party icons and visual assets are not covered by this license and remain
+subject to their respective licenses. See
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Third-Party Assets
+
+Third-party icons and visual assets are credited in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
