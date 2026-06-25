@@ -35,7 +35,8 @@ class DialoguePanel(QFrame):
         self.portrait_label = QLabel("Chronica")
         self.portrait_label.setObjectName("dialoguePortrait")
         self.portrait_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.portrait_label.setFixedSize(116, 116)
+        self.portrait_label.setFixedSize(128, 128)
+        self.portrait_label.setScaledContents(False)
         self.portrait_label.setWordWrap(True)
 
         # Right: text block

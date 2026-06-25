@@ -4,3 +4,4 @@ logs/
 reports/
 /data/*
 !/data/.gitkeep
+.vscode

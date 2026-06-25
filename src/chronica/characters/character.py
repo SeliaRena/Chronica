@@ -30,6 +30,7 @@ class Character(QObject):
     def __init__(
         self,
         dialogue_box: QLabel,
+        expression_box: QLabel,
         database: DialogueDatabase = CHRONICA_DIALOGUE_DATABASE,
         *,
         parent: QObject | None = None
@@ -37,7 +38,8 @@ class Character(QObject):
         super().__init__(parent)
         
         self._player: DialoguePlayer = DialoguePlayer(
-            bound_label=dialogue_box, 
+            bound_label=dialogue_box,
+            bound_expression_label=expression_box,
             autoplay=False,
             parent=self,
         )

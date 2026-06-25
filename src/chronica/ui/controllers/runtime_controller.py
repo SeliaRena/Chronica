@@ -35,7 +35,8 @@ class RuntimeController:
         
         # Chronica is alive !! :D
         dialogue_box = self.window.dialogue.text_label
-        self.chronica: Character = Character(dialogue_box)
+        expression_box = self.window.dialogue.portrait_label
+        self.chronica: Character = Character(dialogue_box, expression_box)
         
         # Dependency injections
         # This is a temporarily solution to let chronica gain control of every record item in tracking record list.

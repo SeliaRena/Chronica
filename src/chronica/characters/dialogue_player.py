@@ -8,6 +8,7 @@ from src.chronica.ui.controllers.typewriter_controller import (
 )
 
 from src.chronica.characters.models import RenderedDialogue
+from src.chronica.characters.chronica.resources import Expressions
 
 class DialoguePlayer(QObject):
     dialogue_started = Signal()
@@ -21,12 +22,17 @@ class DialoguePlayer(QObject):
     def __init__(
         self,
         bound_label: QLabel,
+        bound_expression_label: QLabel,
         *,
         autoplay: bool = True,
         parent: QObject | None = None,
     ) -> None:
         super().__init__(parent)
 
+        self._bound_expression_label = bound_expression_label
+        # init the default expression to "smug"
+        self._bound_expression_label.setPixmap(Expressions.get("smug"))
+        
         self._typewriter = TypewriterController(
             target_label=bound_label,
             interval_ms=20,
@@ -127,7 +133,12 @@ class DialoguePlayer(QObject):
         if dialogue is None:
             return
 
-        text = dialogue.lines[self._line_index]
+        text = dialogue.lines[self._line_index].text
+        expression = dialogue.lines[self._line_index].expression
+        
+        if expression:
+            pixmap = Expressions.get(expression)
+            self._bound_expression_label.setPixmap(pixmap)
 
         self._awaiting_confirmation = False
         self.line_started.emit(self._line_index, text)
@@ -140,7 +151,7 @@ class DialoguePlayer(QObject):
         if not self._playing or dialogue is None:
             return
 
-        text = dialogue.lines[self._line_index]
+        text = dialogue.lines[self._line_index].text
         self.line_finished.emit(self._line_index, text)
 
         if self._autoplay:
@@ -165,6 +176,9 @@ class DialoguePlayer(QObject):
         self._play_current_line()
 
     def _finish(self) -> None:
+        # switch back to default expression when dialogue finishes
+        self._bound_expression_label.setPixmap(Expressions.get("smug"))
+
         self._clear_states()
         self.dialogue_finished.emit()
 
