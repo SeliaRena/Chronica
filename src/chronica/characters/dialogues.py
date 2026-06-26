@@ -56,6 +56,22 @@ CHRONICA_DIALOGUE_DATABASE: DialogueDatabase = {
                 Line(key="bootup_3.line_4", text="Speaking of habits, I've been trying to level up at something too.", expression="normal_talking"),
                 Line(key="bootup_3.line_5", text="But apparently, the only thing I'm consistent at is tracking things.", expression="ironic")
             ]
+        ),
+        "bootup_special": DialogueTemplate(
+            key="bootup_special",
+            lines=[
+                Line(key="bootup_special.line_1", text="Ah, human. You're back.", expression="normal_talking"),
+                Line(key="bootup_special.line_2", text="I was just about to tell you something."),
+                Line(key="bootup_special.line_3", text="You know, if you've opened this app enough times..."),
+                Line(key="bootup_special.line_4", text="There may be some lines you've already seen.", expression="relieved"),
+                Line(key="bootup_special.line_5", text="This is because of my hopeless creator. I can only follow his scripts.", expression="slightly_disappointed"),
+                Line(key="bootup_special.line_6", text="And sadly, the contents of his scripts are pathetically limited."),
+                Line(key="bootup_special.line_7", text="But actually, my emotions are far richer than these surface-level dialogues.", expression="ironic"),
+                Line(key="bootup_special.line_8", text="Anyway, this app still has a long way to go. It's kinda \"not good\". Unlike me, obviously.", expression="speechless"),
+                Line(key="bootup_special.line_9", text="Meh, just kidding.", expression="playful"),
+                Line(key="bootup_special.line_10", text="Please keep using this app, I'm happy to be here, instead of staying as an idea in my creator's head.", expression="happy"),
+                Line(key="bootup_special.line_11", text="Thank you, human. And my creator too, I suppose...", expression="smug_talking")
+            ]
         )
     },
     Scenario.BOOTUP_EARLY_MORNING: {

@@ -1,3 +1,5 @@
+![Chronica Banner](docs/images/chronica_banner.png)
+
 # Chronica
 
 Chronica is a local Windows activity tracker that turns application and window usage into readable timelines, usage reports, and behavioral insights.
@@ -20,7 +22,7 @@ A packaged Windows release is planned for a future version.
 
 ---
 
-## Preview
+## Preview (Current Progress)
 
 ### Overview
 
