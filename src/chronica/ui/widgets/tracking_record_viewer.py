@@ -40,11 +40,29 @@ class TrackingRecordViewer(QFrame):
         
         # 2. display section
         self.usage_report = UsageReportView(app_ctx.app_icon_provider) # index 0
-        self.session_timeline = SessionTimelineView() # index 1
+        self.session_timeline = SessionTimelineView(self.app_ctx.ts_ctx_provider.get()) # index 1
+        
+        timeline_area = QFrame(frameShape=QFrame.Shape.NoFrame)
+        timeline_area.setObjectName("sessionTimelineArea")
+        timeline_layout = QVBoxLayout(timeline_area)
+        timeline_layout.setContentsMargins(16, 16, 16, 16)
+        timeline_layout.setSpacing(12)
+        
+        timeline_header = PlainIconHeader(
+            QIcons.get("video-editing.png"),
+            "Activity Timeline",
+            icon_w=24,
+            icon_h=24,
+            title_px=12,
+        )
+        quick_container = QWidget.createWindowContainer(self.session_timeline)
+        
+        timeline_layout.addWidget(timeline_header, 0)
+        timeline_layout.addWidget(quick_container, 1)
         
         self.display_section_stack = QStackedWidget()
         self.display_section_stack.addWidget(self.usage_report)
-        self.display_section_stack.addWidget(self.session_timeline)
+        self.display_section_stack.addWidget(timeline_area)
         
         # 3. integration
         root_layout.addWidget(self.view_mode_bar)
@@ -73,8 +91,8 @@ class TrackingRecordViewer(QFrame):
             title_px=12
         )
         
-        self.show_app_usage_report_button = StyledButton("View Usage Report")
-        self.show_session_timeline_button = StyledButton("View Session Timeline")
+        self.show_app_usage_report_button = StyledButton("Show Usage Report")
+        self.show_session_timeline_button = StyledButton("Show Activity Timeline")
         
         layout.addWidget(self.show_app_usage_report_button, 0)
         layout.addWidget(self.show_session_timeline_button, 0)

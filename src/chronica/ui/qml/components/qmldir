@@ -1,0 +1,3 @@
+module Chronica.Components
+
+CyberScrollBar 1.0 CyberScrollBar.qml

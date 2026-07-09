@@ -1,0 +1,6 @@
+module Chronica.SessionTimeline
+
+SessionTimelineView    1.0 SessionTimelineView.qml
+SessionTimelineAxis    1.0 SessionTimelineAxis.qml
+SessionTimelineRow     1.0 SessionTimelineRow.qml
+SessionTimelineSegment 1.0 SessionTimelineSegment.qml
