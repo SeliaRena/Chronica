@@ -45,7 +45,7 @@ class TrackingRecordViewer(QFrame):
         timeline_area = QFrame(frameShape=QFrame.Shape.NoFrame)
         timeline_area.setObjectName("sessionTimelineArea")
         timeline_layout = QVBoxLayout(timeline_area)
-        timeline_layout.setContentsMargins(16, 16, 16, 16)
+        timeline_layout.setContentsMargins(14, 14, 14, 14)
         timeline_layout.setSpacing(12)
         
         timeline_header = PlainIconHeader(

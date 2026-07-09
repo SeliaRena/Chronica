@@ -36,6 +36,10 @@ A packaged Windows release is planned for a future version.
 
 ![Chronica Usage Report](docs/images/chronica_usage_report.png)
 
+### Activity Timeline
+
+![Chronica Activity Timeline](docs/images/chronica_activity_timeline.png)
+
 ---
 
 ## Features
@@ -143,13 +147,13 @@ Current limitations may include:
 
 ### Planned
 
-- Complete Chronica's character design
+- Complete Chronica's character design (OK)
 - Improve performance for large usage reports
 - Expand data export options
 - Add more contextual dialogue and character interactions
 - Refine application packaging and distribution
 - Improve error handling and recovery
-- Begin exploring a QML-based interface for richer visuals
+- Begin exploring a QML-based interface for richer visuals (Ongoing)
 - Add customizable tracking rules and more gamified interactions
 
 ### Exploring
@@ -185,6 +189,7 @@ Over time, my goal shifted toward creating a small but meaningful presence in pe
 - PySide6
 - Qt Widgets
 - QSS
+- QML
 
 ---
 
@@ -198,7 +203,7 @@ Chronica is licensed under the
 
 You may use, modify, and redistribute the source code under the terms of the GPLv3. Distributed derivative works must remain available under the same license.
 
-Chronica's name, logo, character artwork, and other visual identity assets are not covered by the GPLv3 unless explicitly stated otherwise.
+Character artwork, illustrations, character design, and related visual assets are **not** covered by the GPL license. They are © **Mutonui** and/or **Selia Rena**. All rights reserved. Do not reuse, redistribute, modify, or use them in other projects without explicit permission.
 
 Third-party icons and visual assets are not covered by this license and remain
 subject to their respective licenses. See
