@@ -11,7 +11,7 @@ QFrame#selectorRecordList {
 }
 
 QListWidget#selectorListWidget {
-    background-color: #1b1b1b;
+    background-color: #111111;
     border: none;
     border-radius: 8px;
 }
@@ -22,7 +22,7 @@ QListWidget#selectorListWidget::item {
 }
 
 QFrame#selectorListWrapper {
-    background-color: #1b1b1b;
+    background-color: #111111;
     border: none;
     border-radius: 8px;
 }

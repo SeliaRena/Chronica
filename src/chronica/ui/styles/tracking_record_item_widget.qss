@@ -4,6 +4,11 @@ QFrame#trackingRecordItemWidget {
     border-radius: 8px;
 }
 
+QFrame#trackingRecordItemWidget:hover {
+    background-color: #1b1b1b;
+    border: 1px solid #4FD1C5;
+}
+
 QLabel#recordItemStartTimeLabel,
 QLabel#recordItemEndTimeLabel {
     font-size: 10px;

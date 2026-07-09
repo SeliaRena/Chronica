@@ -4,6 +4,10 @@ QFrame#appUsageItemWidget {
     border-radius: 8px;
 }
 
+QFrame#appUsageItemWidget:hover {
+    border: 1px solid #4FD1C5;
+}
+
 QFrame#appItemMajorStats,
 QFrame#appItemProgressRows,
 QFrame#appItemMinorStats {
